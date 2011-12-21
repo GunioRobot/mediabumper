@@ -20,7 +20,7 @@ module ActionController
       @request_method ||= (!parameters[:_method].blank? && @env['REQUEST_METHOD'] == 'POST') ?
         parameters[:_method].to_s.downcase.to_sym :
         @env['REQUEST_METHOD'].downcase.to_sym
-      
+
       @request_method == :head ? :get : @request_method
     end
 
@@ -44,14 +44,14 @@ module ActionController
       method == :delete
     end
 
-    # Is this a HEAD request?  HEAD is mapped as :get for request.method, so here we ask the 
+    # Is this a HEAD request?  HEAD is mapped as :get for request.method, so here we ask the
     # REQUEST_METHOD header directly. Thus, for head, both get? and head? will return true.
     def head?
       @env['REQUEST_METHOD'].downcase.to_sym == :head
     end
 
     # Determine whether the body of a HTTP call is URL-encoded (default)
-    # or matches one of the registered param_parsers. 
+    # or matches one of the registered param_parsers.
     #
     # For backward compatibility, the post format is extracted from the
     # X-Post-Data-Format HTTP header if present.
@@ -59,7 +59,7 @@ module ActionController
       @content_type ||=
         begin
           content_type = @env['CONTENT_TYPE'].to_s.downcase
-          
+
           if x_post_format = @env['HTTP_X_POST_DATA_FORMAT']
             case x_post_format.to_s.downcase
             when 'yaml'
@@ -68,7 +68,7 @@ module ActionController
               content_type = 'application/xml'
             end
           end
-          
+
           Mime::Type.lookup(content_type)
         end
     end
@@ -169,9 +169,9 @@ module ActionController
 
       # Cut off the path to the installation directory if given
       path.sub!(%r/^#{relative_url_root}/, '')
-      path || ''      
+      path || ''
     end
-    
+
     # Returns the path minus the web server relative installation directory.
     # This can be set with the environment variable RAILS_RELATIVE_URL_ROOT.
     # It can be automatically extracted for Apache setups. If the server is not
@@ -217,14 +217,14 @@ module ActionController
       @symbolized_path_parameters = @parameters = nil
     end
 
-    # The same as <tt>path_parameters</tt> with explicitly symbolized keys 
-    def symbolized_path_parameters 
+    # The same as <tt>path_parameters</tt> with explicitly symbolized keys
+    def symbolized_path_parameters
       @symbolized_path_parameters ||= path_parameters.symbolize_keys
     end
 
-    # Returns a hash with the parameters used to form the path of the request 
+    # Returns a hash with the parameters used to form the path of the request
     #
-    # Example: 
+    # Example:
     #
     #   {:action => 'my_action', :controller => 'my_controller'}
     def path_parameters

@@ -14,7 +14,7 @@ class BenchmarkController < ActionController::Base
     @people = [ Person.new("David"), Person.new("Mary") ]
     render_template "hello: <% for person in @people %>Name: <%= person.name %><% end %>"
   end
-  
+
   def form_helper
     @person = Person.new "david", "hyacintvej", 24
     render_template(

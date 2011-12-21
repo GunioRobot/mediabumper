@@ -50,7 +50,7 @@ module ActionController #:nodoc:
           params.delete(k)
           params.delete(k.to_sym)
         end
-    
+
         params.map { |k,v| [ CGI.escape(k.to_s), CGI.escape(v.to_s) ].join('=') }.sort.join('&')
       end
     end
@@ -118,14 +118,14 @@ module ActionController #:nodoc:
         end
       end
       @parameters = nil # reset TestRequest#parameters to use the new path_parameters
-    end                        
-    
+    end
+
     def recycle!
       self.request_parameters = {}
       self.query_parameters   = {}
       self.path_parameters    = {}
       @request_method, @accepts, @content_type = nil, nil, nil
-    end    
+    end
 
     private
       def initialize_containers
@@ -135,7 +135,7 @@ module ActionController #:nodoc:
       def initialize_default_values
         @host                    = "test.host"
         @request_uri             = "/"
-        self.remote_addr         = "0.0.0.0"        
+        self.remote_addr         = "0.0.0.0"
         @env["SERVER_PORT"]      = 80
         @env['REQUEST_METHOD']   = "GET"
       end
@@ -148,7 +148,7 @@ module ActionController #:nodoc:
     def response_code
       headers['Status'][0,3].to_i rescue 0
     end
-    
+
     # returns a String to ensure compatibility with Net::HTTPResponse
     def code
       headers['Status'].to_s.split(' ')[0]
@@ -195,7 +195,7 @@ module ActionController #:nodoc:
     end
 
     # returns the template path of the file which was used to
-    # render this response (or nil) 
+    # render this response (or nil)
     def rendered_file(with_controller=false)
       unless template.first_render.nil?
         unless with_controller
@@ -216,7 +216,7 @@ module ActionController #:nodoc:
       session['flash'] || {}
     end
 
-    # do we have a flash? 
+    # do we have a flash?
     def has_flash?
       !session['flash'].empty?
     end
@@ -241,14 +241,14 @@ module ActionController #:nodoc:
       template.assigns || {}
     end
 
-    # does the specified template object exist? 
+    # does the specified template object exist?
     def has_template_object?(name=nil)
-      !template_objects[name].nil?      
+      !template_objects[name].nil?
     end
 
     # Returns the response cookies, converted to a Hash of (name => CGI::Cookie) pairs
     # Example:
-    # 
+    #
     # assert_equal ['AuthorOfNewPage'], r.cookies['author'].value
     def cookies
       headers['cookie'].inject({}) { |hash, cookie| hash[cookie.name] = cookie; hash }
@@ -261,7 +261,7 @@ module ActionController #:nodoc:
 
       sio = StringIO.new
 
-      begin 
+      begin
         $stdout = sio
         body.call
       ensure
@@ -324,10 +324,10 @@ module ActionController #:nodoc:
   class TestUploadedFile
     # The filename, *not* including the path, of the "uploaded" file
     attr_reader :original_filename
-    
+
     # The content type of the "uploaded" file
     attr_reader :content_type
-    
+
     def initialize(path, content_type = 'text/plain')
       raise "#{path} file does not exist" unless File.exist?(path)
       @content_type = content_type
@@ -335,18 +335,18 @@ module ActionController #:nodoc:
       @tempfile = Tempfile.new(@original_filename)
       FileUtils.copy_file(path, @tempfile.path)
     end
-    
+
     def path #:nodoc:
       @tempfile.path
     end
-    
+
     alias local_path path
-    
+
     def method_missing(method_name, *args, &block) #:nodoc:
       @tempfile.send(method_name, *args, &block)
     end
   end
-  
+
   module TestProcess
     def self.included(base)
       # execute the request simulating a specific http method and set/volley the response
@@ -404,13 +404,13 @@ module ActionController #:nodoc:
       get(@response.redirected_to.delete(:action), @response.redirected_to.stringify_keys)
     end
 
-    def assigns(key = nil) 
-      if key.nil? 
-        @response.template.assigns 
-      else 
-        @response.template.assigns[key.to_s] 
-      end 
-    end 
+    def assigns(key = nil)
+      if key.nil?
+        @response.template.assigns
+      else
+        @response.template.assigns[key.to_s]
+      end
+    end
 
     def session
       @response.session
@@ -454,19 +454,19 @@ module ActionController #:nodoc:
       return @controller.send(selector, *args) if ActionController::Routing::Routes.named_routes.helpers.include?(selector)
       return super
     end
-    
+
     # Shortcut for ActionController::TestUploadedFile.new(Test::Unit::TestCase.fixture_path + path, type). Example:
     #   post :change_avatar, :avatar => fixture_file_upload('/files/spongebob.png', 'image/png')
     def fixture_file_upload(path, mime_type = nil)
       ActionController::TestUploadedFile.new(
-        Test::Unit::TestCase.respond_to?(:fixture_path) ? Test::Unit::TestCase.fixture_path + path : path, 
+        Test::Unit::TestCase.respond_to?(:fixture_path) ? Test::Unit::TestCase.fixture_path + path : path,
         mime_type
       )
     end
 
     # A helper to make it easier to test different route configurations.
     # This method temporarily replaces ActionController::Routing::Routes
-    # with a new RouteSet instance. 
+    # with a new RouteSet instance.
     #
     # The new instance is yielded to the passed block. Typically the block
     # will create some routes using map.draw { map.connect ... }:
@@ -487,11 +487,11 @@ module ActionController #:nodoc:
 
       temporary_routes = ActionController::Routing::RouteSet.new
       ActionController::Routing.send :const_set, :Routes, temporary_routes
-  
+
       yield temporary_routes
     ensure
       if ActionController::Routing.const_defined? :Routes
-        ActionController::Routing.send(:remove_const, :Routes) 
+        ActionController::Routing.send(:remove_const, :Routes)
       end
       ActionController::Routing.const_set(:Routes, real_routes) if real_routes
     end

@@ -164,7 +164,7 @@ class AssertSelectTest < Test::Unit::TestCase
     end
   end
 
-  
+
   def test_nested_assert_select
     render_html %Q{<div id="1">foo</div><div id="2">foo</div>}
     assert_select "div" do |elements|

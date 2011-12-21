@@ -33,6 +33,6 @@ production:
   adapter: mysql
   database: mediabumper_production
   username: root
-  password: 
+  password:
   host: localhost
   encoding: utf8

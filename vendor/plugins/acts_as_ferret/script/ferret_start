@@ -7,15 +7,15 @@
 #
 #
 # To run the demo project's unit tests against the drb server, start it with
-# 
-# RAILS_ENV=test script/ferret_start 
 #
-# and run your tests with the AAF_REMOTE environment variable set to a 
+# RAILS_ENV=test script/ferret_start
+#
+# and run your tests with the AAF_REMOTE environment variable set to a
 # non-empty value:
 #
 # AAF_REMOTE=true rake
 #
-# The server writes a log file in log/ferret_server.log, it's 
+# The server writes a log file in log/ferret_server.log, it's
 # STDOUT gets redirected to log/ferret_server.out
 
 

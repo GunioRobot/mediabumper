@@ -45,11 +45,11 @@ module ActiveRecord
       def quoted_true
         "'t'"
       end
-      
+
       def quoted_false
         "'f'"
       end
-      
+
       def quoted_date(value)
         value.strftime("%Y-%m-%d %H:%M:%S")
       end

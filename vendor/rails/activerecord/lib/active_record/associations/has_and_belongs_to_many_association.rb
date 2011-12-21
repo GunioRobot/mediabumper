@@ -5,7 +5,7 @@ module ActiveRecord
         super
         construct_sql
       end
- 
+
       def build(attributes = {})
         load_target
         record = @reflection.klass.new(attributes)
@@ -27,7 +27,7 @@ module ActiveRecord
       def find_first
         load_target.first
       end
-      
+
       def find(*args)
         options = Base.send(:extract_options_from_args!, args)
 
@@ -66,8 +66,8 @@ module ActiveRecord
           args << options
           @reflection.klass.find(*args)
         end
-      end      
-      
+      end
+
       # Deprecated as of Rails 1.2.   If your associations require attributes
       # you should be using has_many :through
       def push_with_attributes(record, join_attributes = {})
@@ -131,10 +131,10 @@ module ActiveRecord
 
             @owner.connection.execute(sql)
           end
-          
+
           return true
         end
-        
+
         def delete_records(records)
           if sql = @reflection.options[:delete_sql]
             records.each { |record| @owner.connection.execute(interpolate_sql(sql, record)) }
@@ -144,7 +144,7 @@ module ActiveRecord
             @owner.connection.execute(sql)
           end
         end
-        
+
         def construct_sql
           interpolate_sql_options!(@reflection.options, :finder_sql)
 

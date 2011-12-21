@@ -154,7 +154,7 @@ module TMail
     end
 
     attr_reader :name
-    
+
     def ==( other )
       other.respond_to? :to_a and @addresses == other.to_a
     end
@@ -212,7 +212,7 @@ module TMail
     end
 
     alias push add
-    
+
     def delete( a )
       @addresses.delete a
     end

@@ -113,7 +113,7 @@ module Rails
           @found ||= {}
           generator_name = generator_name.to_s.downcase
           @found[generator_name] ||= cache.find { |spec| spec.name == generator_name }
-          unless @found[generator_name] 
+          unless @found[generator_name]
             chars = generator_name.scan(/./).map{|c|"#{c}.*?"}
             rx = /^#{chars}$/
             gns = cache.select{|spec| spec.name =~ rx }

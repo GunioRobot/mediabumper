@@ -24,7 +24,7 @@ class CompiledTemplateTests < Test::Unit::TestCase
     hi_world = ct.method_names['hi world']
     hi_sexy = ct.method_names['hi sexy']
     wish_upon_a_star = ct.method_names['I love seeing decent error messages']
-    
+
     assert_equal hi_world, ct.method_names['hi world']
     assert_equal hi_sexy, ct.method_names['hi sexy']
     assert_equal wish_upon_a_star, ct.method_names['I love seeing decent error messages']

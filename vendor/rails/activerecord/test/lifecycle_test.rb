@@ -28,9 +28,9 @@ end
 
 class TopicaObserver < ActiveRecord::Observer
   def self.observed_class() Topic end
-  
+
   attr_reader :topic
-  
+
   def after_find(topic)
     @topic = topic
   end
@@ -38,7 +38,7 @@ end
 
 class TopicObserver < ActiveRecord::Observer
   attr_reader :topic
-  
+
   def after_find(topic)
     @topic = topic
   end

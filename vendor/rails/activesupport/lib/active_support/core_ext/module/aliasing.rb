@@ -29,7 +29,7 @@ class Module
     alias_method target, "#{aliased_target}_with_#{feature}#{punctuation}"
   end
 
-  # Allows you to make aliases for attributes, which includes 
+  # Allows you to make aliases for attributes, which includes
   # getter, setter, and query methods.
   #
   # Example:

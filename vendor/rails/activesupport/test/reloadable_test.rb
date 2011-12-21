@@ -84,16 +84,16 @@ class ReloadableTest < Test::Unit::TestCase
       assert ! results.include?(ReloadableTestSandbox.const_get(name)), "Expected #{name} NOT to be reloadable"
     end
   end
-  
+
   def test_including_reloadable_should_warn
     c = Class.new
     assert_deprecated_reloadable do
       c.send :include, Reloadable
     end
-    
+
     assert_deprecated_reloadable { c.reloadable? }
   end
-  
+
   def test_include_subclasses_should_warn
     c = Class.new
     result, deps = collect_deprecations do
@@ -104,18 +104,18 @@ class ReloadableTest < Test::Unit::TestCase
 
     assert_deprecated_reloadable { c.reloadable? }
   end
-  
+
   def test_include_deprecated_should_not_warn
     c = Class.new
     result, deps = collect_deprecations do
       c.send :include, Reloadable::Deprecated
     end
     assert_equal 0, deps.size
-    
+
     assert c.respond_to?(:reloadable?)
     assert_deprecated_reloadable { c.reloadable? }
   end
-  
+
   protected
     def assert_deprecated_reloadable(&block)
       assert_deprecated(/reloadable/, &block)

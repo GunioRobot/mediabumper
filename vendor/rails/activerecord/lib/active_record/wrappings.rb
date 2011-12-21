@@ -27,8 +27,8 @@ module ActiveRecord
       def save_wrapped_attribute(record) #:nodoc:
         if record.attribute_present?(@attribute)
           record.send(
-            "write_attribute", 
-            @attribute, 
+            "write_attribute",
+            @attribute,
             wrap(record.send("read_attribute", @attribute))
           )
         end
@@ -37,20 +37,20 @@ module ActiveRecord
       def load_wrapped_attribute(record) #:nodoc:
         if record.attribute_present?(@attribute)
           record.send(
-            "write_attribute", 
-            @attribute, 
+            "write_attribute",
+            @attribute,
             unwrap(record.send("read_attribute", @attribute))
           )
         end
       end
-  
+
       alias_method :before_save, :save_wrapped_attribute #:nodoc:
       alias_method :after_save, :load_wrapped_attribute #:nodoc:
       alias_method :after_initialize, :after_save #:nodoc:
 
       # Overwrite to implement the logic that'll take the regular attribute and wrap it.
       def wrap(attribute) end
-  
+
       # Overwrite to implement the logic that'll take the wrapped attribute and unwrap it.
       def unwrap(attribute) end
     end

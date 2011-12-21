@@ -15,7 +15,7 @@ class TestInvokeService < ActionWebService::Base
     @invoked = true
     a + b
   end
-  
+
   def null
   end
 end
@@ -83,7 +83,7 @@ class TestInvokeTest < Test::Unit::TestCase
       end
     end
   end
-  
+
   def test_layered_fail_with_wrong_number_of_arguments
     [:soap, :xmlrpc].each do |protocol|
       @protocol = protocol
@@ -98,15 +98,15 @@ class TestInvokeTest < Test::Unit::TestCase
     @controller = TestInvokeDelegatedController.new
     assert_raise(ArgumentError) { invoke_delegated :service, :add, 1 }
   end
-  
+
   def test_direct_fail_with_wrong_number_of_arguments
     @controller = TestInvokeDirectController.new
     assert_raise(ArgumentError) { invoke :add, 1 }
   end
-  
+
   def test_with_no_parameters_declared
     @controller = TestInvokeDirectController.new
     assert_nil invoke(:null)
   end
-  
+
 end

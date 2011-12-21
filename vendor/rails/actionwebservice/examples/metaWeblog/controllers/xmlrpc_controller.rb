@@ -3,7 +3,7 @@
 # in a way that should be compatible with clients supporting both/either.
 #
 # test by pointing your client at http://URL/xmlrpc/api
-# 
+#
 
 require 'meta_weblog_service'
 require 'blogger_service'

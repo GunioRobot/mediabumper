@@ -189,8 +189,8 @@ if ActiveRecord::Base.connection.supports_migrations?
       Person.connection.create_table :testings do |t|
         t.column :foo, :string
       end
-      
-      con = Person.connection     
+
+      con = Person.connection
       Person.connection.enable_identity_insert("testings", true) if current_adapter?(:SybaseAdapter)
       Person.connection.execute "insert into testings (#{con.quote_column_name('id')}, #{con.quote_column_name('foo')}) values (1, 'hello')"
       Person.connection.enable_identity_insert("testings", false) if current_adapter?(:SybaseAdapter)
@@ -370,7 +370,7 @@ if ActiveRecord::Base.connection.supports_migrations?
         ActiveRecord::Base.connection.rename_table :octopuses, :octopi
 
         # Using explicit id in insert for compatibility across all databases
-        con = ActiveRecord::Base.connection     
+        con = ActiveRecord::Base.connection
         con.enable_identity_insert("octopi", true) if current_adapter?(:SybaseAdapter)
         assert_nothing_raised { con.execute "INSERT INTO octopi (#{con.quote_column_name('id')}, #{con.quote_column_name('url')}) VALUES (1, 'http://www.foreverflying.com/octopus-black7.jpg')" }
         con.enable_identity_insert("octopi", false) if current_adapter?(:SybaseAdapter)
@@ -389,11 +389,11 @@ if ActiveRecord::Base.connection.supports_migrations?
           t.column :url, :string
         end
         ActiveRecord::Base.connection.add_index :octopuses, :url
-        
+
         ActiveRecord::Base.connection.rename_table :octopuses, :octopi
 
         # Using explicit id in insert for compatibility across all databases
-        con = ActiveRecord::Base.connection     
+        con = ActiveRecord::Base.connection
         con.enable_identity_insert("octopi", true) if current_adapter?(:SybaseAdapter)
         assert_nothing_raised { con.execute "INSERT INTO octopi (#{con.quote_column_name('id')}, #{con.quote_column_name('url')}) VALUES (1, 'http://www.foreverflying.com/octopus-black7.jpg')" }
         con.enable_identity_insert("octopi", false) if current_adapter?(:SybaseAdapter)
@@ -420,17 +420,17 @@ if ActiveRecord::Base.connection.supports_migrations?
       old_columns = Topic.connection.columns(Topic.table_name, "#{name} Columns")
       assert old_columns.find { |c| c.name == 'approved' and c.type == :boolean and c.default == true }
       assert_nothing_raised { Topic.connection.change_column :topics, :approved, :boolean, :default => false }
-      new_columns = Topic.connection.columns(Topic.table_name, "#{name} Columns")     
+      new_columns = Topic.connection.columns(Topic.table_name, "#{name} Columns")
       assert_nil new_columns.find { |c| c.name == 'approved' and c.type == :boolean and c.default == true }
       assert new_columns.find { |c| c.name == 'approved' and c.type == :boolean and c.default == false }
       assert_nothing_raised { Topic.connection.change_column :topics, :approved, :boolean, :default => true }
     end
-    
+
     def test_change_column_with_nil_default
       Person.connection.add_column "people", "contributor", :boolean, :default => true
       Person.reset_column_information
       assert Person.new.contributor?
-      
+
       assert_nothing_raised { Person.connection.change_column "people", "contributor", :boolean, :default => nil }
       Person.reset_column_information
       assert !Person.new.contributor?
@@ -446,13 +446,13 @@ if ActiveRecord::Base.connection.supports_migrations?
       Person.reset_column_information
       assert !Person.new.administrator?
     end
-    
+
     def test_change_column_default
       Person.connection.change_column_default "people", "first_name", "Tester"
       Person.reset_column_information
       assert_equal "Tester", Person.new.first_name
     end
-    
+
     def test_change_column_default_to_null
       Person.connection.change_column_default "people", "first_name", nil
       Person.reset_column_information
@@ -718,13 +718,13 @@ if ActiveRecord::Base.connection.supports_migrations?
       ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/fixtures/migrations_with_missing_versions/', 500)
       assert !Person.column_methods_hash.include?(:middle_name)
     	assert_equal 4, ActiveRecord::Migrator.current_version
-			
+
 			ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/fixtures/migrations_with_missing_versions/', 2)
 			assert !Reminder.table_exists?
-      assert Person.column_methods_hash.include?(:last_name)			
+      assert Person.column_methods_hash.include?(:last_name)
 			assert_equal 2, ActiveRecord::Migrator.current_version
     end
-    
+
     def test_create_table_with_custom_sequence_name
       return unless current_adapter? :OracleAdapter
 

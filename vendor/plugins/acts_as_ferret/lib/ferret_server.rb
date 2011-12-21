@@ -28,7 +28,7 @@ module Remote
   # This class acts as a drb server listening for indexing and
   # search requests from models declared to 'acts_as_ferret :remote => true'
   #
-  # Usage: 
+  # Usage:
   # - copy doc/ferret_server.yml to RAILS_ROOT/config and modify to suit
   # your needs.
   # - run script/ferret_server (in the plugin directory) via script/runner:
@@ -54,8 +54,8 @@ module Remote
     # instance of the correct model class.
     #
     # Calls are not queued atm, so this will block until the call returned.
-    # Might throw the occasional LockError, too, which most probably means that you're 
-    # a) rebuilding your index or 
+    # Might throw the occasional LockError, too, which most probably means that you're
+    # a) rebuilding your index or
     # b) have *really* high load. I wasn't able to reproduce this case until
     # now, if you do, please contact me.
     #

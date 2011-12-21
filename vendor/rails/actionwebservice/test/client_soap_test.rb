@@ -49,7 +49,7 @@ end
 class TC_ClientSoap < Test::Unit::TestCase
   include ClientTest
   include ClientSoapTest
-  
+
   fixtures :users
 
   def setup
@@ -90,11 +90,11 @@ class TC_ClientSoap < Test::Unit::TestCase
     assert_equal(true, @client.struct_pass([new_person]))
     assert_equal([[new_person]], @container.value_struct_pass)
   end
-  
+
   def test_nil_struct_return
     assert_nil @client.nil_struct_return
   end
-  
+
   def test_inner_nil
     outer = @client.inner_nil
     assert_equal 'outer', outer.name
@@ -118,7 +118,7 @@ class TC_ClientSoap < Test::Unit::TestCase
     assert_equal([5, 6], @container.value_normal)
     @container.value_normal = nil
   end
-  
+
   def test_model_return
     user = @client.user_return
     assert_equal 1, user.id
@@ -127,7 +127,7 @@ class TC_ClientSoap < Test::Unit::TestCase
     assert_kind_of Date, user.created_on
     assert_equal Date.today, user.created_on
   end
-  
+
   def test_with_model
     with_model = @client.with_model_return
     assert_equal 'Kent', with_model.user.name
@@ -136,13 +136,13 @@ class TC_ClientSoap < Test::Unit::TestCase
       assert_kind_of User, user
     end
   end
-  
+
   def test_scoped_model_return
     scoped_model = @client.scoped_model_return
     assert_kind_of Accounting::User, scoped_model
     assert_equal 'Kent', scoped_model.name
   end
-  
+
   def test_multi_dim_return
     md_struct = @client.multi_dim_return
     assert_kind_of Array, md_struct.pref

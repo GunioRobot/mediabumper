@@ -6,11 +6,11 @@ class ScaffoldingSandbox
   def sandbox_binding
     binding
   end
-  
+
   def default_input_block
     Proc.new { |record, column| "<p><label for=\"#{record}_#{column.name}\">#{column.human_name}</label><br/>\n#{input(record, column.name)}</p>\n" }
   end
-  
+
 end
 
 class ActionView::Helpers::InstanceTag
@@ -30,7 +30,7 @@ class ActionView::Helpers::InstanceTag
   def to_datetime_select_tag(options = {})
     "<%= datetime_select '#{@object_name}', '#{@method_name}' #{options.empty? ? '' : ', '+ options.inspect} %>"
   end
-  
+
   def to_time_select_tag(options = {})
     "<%= time_select '#{@object_name}', '#{@method_name}' #{options.empty? ? '' : ', '+ options.inspect} %>"
   end
@@ -153,8 +153,8 @@ class ScaffoldGenerator < Rails::Generator::NamedBase
     def scaffold_actions
       scaffold_views + %w(index create update destroy)
     end
-    
-    def model_name 
+
+    def model_name
       class_name.demodulize
     end
 
@@ -179,7 +179,7 @@ class ScaffoldGenerator < Rails::Generator::NamedBase
       sandbox.suffix = suffix
       sandbox
     end
-    
+
     def model_instance
       base = class_nesting.split('::').inject(Object) do |base, nested|
         break base.const_get(nested) if base.const_defined?(nested)

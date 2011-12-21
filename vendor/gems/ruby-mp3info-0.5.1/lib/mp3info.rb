@@ -68,19 +68,19 @@ class Mp3Info
 
   TAGSIZE = 128
   #MAX_FRAME_COUNT = 6  #number of frame to read for encoder detection
-  V1_V2_TAG_MAPPING = { 
+  V1_V2_TAG_MAPPING = {
     "title"    => "TIT2",
-    "artist"   => "TPE1", 
+    "artist"   => "TPE1",
     "album"    => "TALB",
     "year"     => "TYER",
     "tracknum" => "TRCK",
     "comments" => "COMM",
     "genre_s"  => "TCON"
   }
-  
+
   # http://www.codeproject.com/audio/MPEGAudioInfo.asp
   SAMPLES_PER_FRAME = [
-    [384, 384, 384],    # Layer I   
+    [384, 384, 384],    # Layer I
     [1152, 1152, 1152], # Layer II
     [1152, 576, 576]    # Layer III
   ]
@@ -129,7 +129,7 @@ class Mp3Info
 
   # Moved hastag1? and hastag2? to be booleans
   attr_reader(:hastag1, :hastag2)
-  
+
   # Test the presence of an id3v1 tag in file +filename+
   def self.hastag1?(filename)
     File.open(filename) { |f|
@@ -153,7 +153,7 @@ class Mp3Info
       File.open(filename, "rb+") { |f| f.truncate(newsize) }
     end
   end
-  
+
   # Remove id3v2 tag from +filename+
   def self.removetag2(filename)
     self.open(filename) do |mp3|
@@ -172,7 +172,7 @@ class Mp3Info
   def reload
     raise(Mp3InfoError, "empty file") unless File.size?(@filename)
     @hastag1 = false
-    
+
     @tag1 = {}
     @tag1.extend(HashKeys)
 
@@ -180,7 +180,7 @@ class Mp3Info
 
     @file = File.new(filename, "rb")
     @file.extend(Mp3FileMethods)
-    
+
     begin
       parse_tags
       @tag1_orig = @tag1.dup
@@ -194,7 +194,7 @@ class Mp3Info
       if hastag2?
 	@tag = {}
       #creation of a sort of "universal" tag, regardless of the tag version
-	V1_V2_TAG_MAPPING.each do |key1, key2| 
+	V1_V2_TAG_MAPPING.each do |key1, key2|
 	  t2 = @tag2[key2]
 	  next unless t2
 	  @tag[key1] = t2.is_a?(Array) ? t2.first : t2
@@ -212,11 +212,11 @@ class Mp3Info
 
       ### extracts MPEG info from MPEG header and stores it in the hash @mpeg
       ###  head (fixnum) = valid 4 byte MPEG header
-      
+
       found = false
 
       5.times do
-	head = find_next_frame() 
+	head = find_next_frame()
 	@mpeg_version = [2, 1][head[19]]
 	@layer = LAYER[bits(head, 18,17)]
 	next if @layer.nil?
@@ -235,26 +235,26 @@ class Mp3Info
       raise(Mp3InfoError, "Cannot find good frame") unless found
 
 
-      seek = @mpeg_version == 1 ? 
-	(@channel_num == 3 ? 17 : 32) :       
+      seek = @mpeg_version == 1 ?
+	(@channel_num == 3 ? 17 : 32) :
 	(@channel_num == 3 ?  9 : 17)
 
       @file.seek(seek, IO::SEEK_CUR)
-      
+
       vbr_head = @file.read(4)
       if vbr_head == "Xing"
 	puts "Xing header (VBR) detected" if $DEBUG
 	flags = @file.get32bits
 	@streamsize = @frames = 0
 	flags[1] == 1 and @frames = @file.get32bits
-	flags[2] == 1 and @streamsize = @file.get32bits 
+	flags[2] == 1 and @streamsize = @file.get32bits
 	puts "#{@frames} frames" if $DEBUG
 	raise(Mp3InfoError, "bad VBR header") if @frames.zero?
 	# currently this just skips the TOC entries if they're found
 	@file.seek(100, IO::SEEK_CUR) if flags[0] == 1
 	@vbr_quality = @file.get32bits if flags[3] == 1
 
-        @samples_per_frame = SAMPLES_PER_FRAME[@layer-1][@mpeg_version-1] 
+        @samples_per_frame = SAMPLES_PER_FRAME[@layer-1][@mpeg_version-1]
 	@length = @frames * @samples_per_frame / Float(@samplerate)
 
 	@bitrate = (((@streamsize/@frames)*@samplerate)/144) >> 10
@@ -306,7 +306,7 @@ class Mp3Info
     end
     self
   end
-  
+
   def removetag2
     @tag2.clear
     self
@@ -331,7 +331,7 @@ class Mp3Info
   def rename(new_filename)
     @filename = new_filename
   end
-  
+
   # Flush pending modifications to tags and close the file
   def close
     puts "close" if $DEBUG
@@ -344,7 +344,7 @@ class Mp3Info
 	  @tag1[k] = v
 	end
       end
-      
+
       V1_V2_TAG_MAPPING.each do |key1, key2|
         @tag2[key2] = @tag[key1] if @tag[key1]
       end
@@ -382,7 +382,7 @@ class Mp3Info
       raise(Mp3InfoError, "file is not writable") unless File.writable?(@filename)
       tempfile_name = nil
       File.open(@filename, 'rb+') do |file|
-	
+
 	#if tag2 already exists, seek to end of it
 	if @tag2.valid?
 	  file.seek(@tag2.io_position)
@@ -421,7 +421,7 @@ class Mp3Info
 
 
 private
-  
+
   ### parses the id3 tags of the currently open @file
   def parse_tags
     return if @file.stat.size < TAGSIZE  # file is too small
@@ -433,13 +433,13 @@ private
     rescue RuntimeError => e
       raise(Mp3InfoError, e.message)
     end
-      
+
     unless @hastag1         # v1 tag at end
         # this preserves the file pos if tag2 found, since gettag2 leaves
         #  the file at the best guess as to the first MPEG frame
         pos = (@tag2.valid? ? @file.pos : 0)
         # seek to where id3v1 tag should be
-        @file.seek(-TAGSIZE, IO::SEEK_END) 
+        @file.seek(-TAGSIZE, IO::SEEK_END)
         gettag1 if @file.read(3) == "TAG"
         @file.seek(pos)
     end
@@ -460,7 +460,7 @@ private
     return s.strip
     #return (s[0..2] == "eng" ? s[3..-1] : s)
   end
-  
+
   ### gets id3v1 tag information from @file
   ### assumes @file is pointing to char after "TAG" id
   def gettag1

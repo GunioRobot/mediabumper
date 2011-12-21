@@ -88,21 +88,21 @@ class DispatcherTest < Test::Unit::TestCase
   ensure
     $stdin = old_stdin
   end
-  
+
   def test_preparation_callbacks
     old_mechanism = Dependencies.mechanism
-    
+
     a = b = c = nil
     Dispatcher.to_prepare { a = b = c = 1 }
     Dispatcher.to_prepare { b = c = 2 }
     Dispatcher.to_prepare { c = 3 }
-    
+
     Dispatcher.send :prepare_application
-    
+
     assert_equal 1, a
     assert_equal 2, b
     assert_equal 3, c
-    
+
     # When mechanism is :load, perform the callbacks each request:
     Dependencies.mechanism = :load
     a = b = c = nil
@@ -110,7 +110,7 @@ class DispatcherTest < Test::Unit::TestCase
     assert_equal 1, a
     assert_equal 2, b
     assert_equal 3, c
-    
+
     # But when not :load, make sure they are only run once
     a = b = c = nil
     Dependencies.mechanism = :not_load
@@ -119,12 +119,12 @@ class DispatcherTest < Test::Unit::TestCase
   ensure
     Dependencies.mechanism = old_mechanism
   end
-  
+
   def test_to_prepare_with_identifier_replaces
     a = b = nil
     Dispatcher.to_prepare(:unique_id) { a = b = 1 }
     Dispatcher.to_prepare(:unique_id) { a = 2 }
-    
+
     Dispatcher.send :prepare_application
     assert_equal 2, a
     assert_equal nil, b

@@ -45,8 +45,8 @@ class ActionMailerUrlTest < Test::Unit::TestCase
   end
 
   def test_signed_up_with_url
-    ActionController::Routing::Routes.draw do |map| 
-      map.connect ':controller/:action/:id' 
+    ActionController::Routing::Routes.draw do |map|
+      map.connect ':controller/:action/:id'
     end
 
     expected = new_mail

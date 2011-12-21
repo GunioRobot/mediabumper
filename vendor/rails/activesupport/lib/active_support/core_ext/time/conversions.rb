@@ -14,9 +14,9 @@ module ActiveSupport #:nodoc:
           klass.send(:alias_method, :to_default_s, :to_s)
           klass.send(:alias_method, :to_s, :to_formatted_s)
         end
-        
+
         def to_formatted_s(format = :default)
-          DATE_FORMATS[format] ? strftime(DATE_FORMATS[format]).strip : to_default_s          
+          DATE_FORMATS[format] ? strftime(DATE_FORMATS[format]).strip : to_default_s
         end
 
         def to_date

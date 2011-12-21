@@ -24,7 +24,7 @@ module ActionView
       # +options+ are:
       # <tt>:name</tt>::                 the routing name for this paginator
       #                                  (defaults to +page+)
-      # <tt>:window_size</tt>::          the number of pages to show around 
+      # <tt>:window_size</tt>::          the number of pages to show around
       #                                  the current page (defaults to +2+)
       # <tt>:always_show_anchors</tt>::  whether or not the first and last
       #                                  pages should always be shown
@@ -37,7 +37,7 @@ module ActionView
       def pagination_links(paginator, options={}, html_options={})
         name = options[:name] || DEFAULT_OPTIONS[:name]
         params = (options[:params] || DEFAULT_OPTIONS[:params]).clone
-        
+
         pagination_links_each(paginator, options) do |n|
           params[name] = n
           link_to(n.to_s, params, html_options)
@@ -54,16 +54,16 @@ module ActionView
         current_page = paginator.current_page
         window_pages = current_page.window(options[:window_size]).pages
         return if window_pages.length <= 1 unless link_to_current_page
-        
+
         first, last = paginator.first, paginator.last
-        
+
         html = ''
         if always_show_anchors and not (wp_first = window_pages[0]).first?
           html << yield(first.number)
           html << ' ... ' if wp_first.number - first.number > 1
           html << ' '
         end
-          
+
         window_pages.each do |page|
           if current_page == page && !link_to_current_page
             html << page.number.to_s
@@ -72,15 +72,15 @@ module ActionView
           end
           html << ' '
         end
-        
-        if always_show_anchors and not (wp_last = window_pages[-1]).last? 
+
+        if always_show_anchors and not (wp_last = window_pages[-1]).last?
           html << ' ... ' if last.number - wp_last.number > 1
           html << yield(last.number)
         end
-        
+
         html
       end
-      
+
     end # PaginationHelper
   end # Helpers
 end # ActionView

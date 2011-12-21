@@ -1,5 +1,5 @@
 def deprecated_task(name, new_name)
-  task name=>new_name do 
+  task name=>new_name do
     $stderr.puts "The rake task #{name} has been deprecated, please use the replacement version #{new_name}"
   end
 end

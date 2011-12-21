@@ -46,7 +46,7 @@ module ActionController #:nodoc:
         assert_block(msg) { actual.nil? or actual.empty? }
       end
       deprecate :assert_no_cookie => "use assert(!@response.cookies.key?(key))"
-    
+
       def assert_cookie_equal(expected = nil, key = nil, message = nil) #:nodoc:
         actual = @response.cookies[key]
         actual = actual.first if actual
@@ -54,7 +54,7 @@ module ActionController #:nodoc:
         assert_block(msg) { expected == actual }
       end
       deprecate :assert_cookie_equal => "use assert(@response.cookies.key?(key))"
-    
+
       # -- flash assertions ---------------------------------------------------
 
       # ensure that the flash has an object with the specified name
@@ -84,7 +84,7 @@ module ActionController #:nodoc:
         assert_block(msg) { !@response.has_flash? }
       end
       deprecate :assert_flash_not_exists => "use assert(!@response.has_flash?)"
-    
+
       # ensure the flash is empty but existent
       def assert_flash_empty(message=nil) #:nodoc:
         msg = build_message(message, "the flash is not empty <?>", @response.flash)
@@ -98,13 +98,13 @@ module ActionController #:nodoc:
         assert_block(msg) { @response.has_flash_with_contents? }
       end
       deprecate :assert_flash_not_empty => "use assert(@response.has_flash_with_contents?)"
-    
+
       def assert_flash_equal(expected = nil, key = nil, message = nil) #:nodoc:
         msg = build_message(message, "<?> expected in flash['?'] but was <?>", expected, key, @response.flash[key])
         assert_block(msg) { expected == @response.flash[key] }
       end
       deprecate :assert_flash_equal => "use assert_equal(expected, @response.flash[key])"
-    
+
 
       # ensure our redirection url is an exact match
       def assert_redirect_url(url=nil, message=nil) #:nodoc:
@@ -122,7 +122,7 @@ module ActionController #:nodoc:
       end
       deprecate :assert_redirect_url_match => "use assert(@response.redirect_url_match?(pattern))"
 
-    
+
       # -- template assertions ------------------------------------------------
 
       # ensure that a template object with the given name exists

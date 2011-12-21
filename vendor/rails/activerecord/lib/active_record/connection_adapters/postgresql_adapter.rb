@@ -374,7 +374,7 @@ module ActiveRecord
           'bigint'
         end
       end
-      
+
       # SELECT DISTINCT clause for a given set of columns and a given ORDER BY clause.
       #
       # PostgreSQL requires the ORDER BY columns in the select list for distinct queries, and
@@ -395,18 +395,18 @@ module ActiveRecord
         sql = "DISTINCT ON (#{columns}) #{columns}, "
         sql << order_columns * ', '
       end
-      
+
       # ORDER BY clause for the passed order option.
-      # 
+      #
       # PostgreSQL does not allow arbitrary ordering when using DISTINCT ON, so we work around this
       # by wrapping the sql as a sub-select and ordering in that query.
       def add_order_by_for_association_limiting!(sql, options)
         return sql if options[:order].blank?
-        
+
         order = options[:order].split(',').collect { |s| s.strip }.reject(&:blank?)
         order.map! { |s| 'DESC' if s =~ /\bdesc$/i }
         order = order.zip((0...order.size).to_a).map { |s,i| "id_list.alias_#{i} #{s}" }.join(', ')
-        
+
         sql.replace "SELECT * FROM (#{sql}) AS id_list ORDER BY #{order}"
       end
 

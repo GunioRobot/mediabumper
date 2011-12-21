@@ -23,7 +23,7 @@ class InfoTest < Test::Unit::TestCase
     end
     assert !property_defined?('Test that this will not be defined')
   end
-  
+
   def test_edge_rails_revision_extracted_from_svn_info
     Rails::Info.property 'Test Edge Rails revision' do
       Rails::Info.edge_rails_revision <<-EOS
@@ -40,10 +40,10 @@ Properties Last Updated: 2005-10-28 19:30:00 -0500 (Fri, 28 Oct 2005)
 
 EOS
     end
-  
+
     assert_property 'Test Edge Rails revision', '2881'
   end
-  
+
   def test_property_with_block_swallows_exceptions_and_ignores_property
     assert_nothing_raised do
       Rails::Info.module_eval do
@@ -52,21 +52,21 @@ EOS
     end
     assert !property_defined?('Bogus')
   end
-  
+
   def test_property_with_string
     Rails::Info.module_eval do
       property 'Hello', 'World'
     end
     assert_property 'Hello', 'World'
   end
-  
+
   def test_property_with_block
     Rails::Info.module_eval do
       property('Goodbye') {'World'}
     end
     assert_property 'Goodbye', 'World'
   end
-  
+
   def test_component_version
     assert_property 'Active Support version', ActiveSupport::VERSION::STRING
   end
@@ -81,7 +81,7 @@ protected
       end
     end
   end
-  
+
   def properties
     Rails::Info.properties
   end
@@ -89,9 +89,9 @@ protected
   def property_defined?(property_name)
     properties.names.include? property_name
   end
-  
+
   def assert_property(property_name, value)
-    raise "Property #{property_name.inspect} not defined" unless 
+    raise "Property #{property_name.inspect} not defined" unless
       property_defined? property_name
     assert_equal value, properties.value_for(property_name)
   end

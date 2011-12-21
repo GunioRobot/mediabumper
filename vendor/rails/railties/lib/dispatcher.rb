@@ -25,7 +25,7 @@
 # to the appropriate controller and action. It also takes care of resetting
 # the environment (when Dependencies.load? is true) after each request.
 class Dispatcher
-  
+
   class << self
 
     # Dispatch the given CGI request, using the given session options, and
@@ -60,14 +60,14 @@ class Dispatcher
       ActiveSupport::Deprecation.silence do # TODO: Remove after 1.2
         Class.remove_class(*Reloadable.reloadable_classes)
       end
-        
+
       ActiveRecord::Base.clear_reloadable_connections! if defined?(ActiveRecord)
     end
-    
+
     # Add a preparation callback. Preparation callbacks are run before every
     # request in development mode, and before the first request in production
     # mode.
-    # 
+    #
     # An optional identifier may be supplied for the callback. If provided,
     # to_prepare may be called again with the same identifier to replace the
     # existing callback. Passing an identifier is a suggested practice if the
@@ -91,7 +91,7 @@ class Dispatcher
 
       attr_accessor :preparation_callbacks, :preparation_callbacks_run
       alias_method :preparation_callbacks_run?, :preparation_callbacks_run
-      
+
       # CGI.new plus exception handling.  CGI#read_multipart raises EOFError
       # if body.empty? or body.size != Content-Length and raises ArgumentError
       # if Content-Length is non-integer.
@@ -137,7 +137,7 @@ class Dispatcher
       rescue Exception  # errors from executed block
         begin
           output.write "Status: #{status}\r\n"
-          
+
           if exception
             message    = exception.to_s + "\r\n" + exception.backtrace.join("\r\n")
             error_path = File.join(RAILS_ROOT, 'public', '500.html')
@@ -161,10 +161,10 @@ class Dispatcher
         end
       end
   end
-  
+
   self.preparation_callbacks = []
   self.preparation_callbacks_run = false
-  
+
 end
 
 Dispatcher.to_prepare :activerecord_instantiate_observers do

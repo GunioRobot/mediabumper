@@ -16,7 +16,7 @@ RUNS = ARGV[0].to_i
 if ARGV[1] == "profile" then require 'profile' end
 
 runtime = Benchmark::measure {
-  RUNS.times { 
+  RUNS.times {
     Post.find_all(nil,nil,100).each { |p| p.title }
   }
 }

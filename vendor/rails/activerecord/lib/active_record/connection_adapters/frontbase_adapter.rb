@@ -23,16 +23,16 @@ module ActiveRecord
         session_name = config[:session_name]
 
         dbpassword = '' if dbpassword.nil?
-        
+
         # Turn off colorization since it makes tail/less output difficult
         self.colorize_logging = false
 
         require_library_or_gem 'frontbase' unless self.class.const_defined? :FBSQL_Connect
-        
+
         # Check bindings version
         version = "0.0.0"
         version = FBSQL_Connect::FB_BINDINGS_VERSION if defined? FBSQL_Connect::FB_BINDINGS_VERSION
-        
+
         if ActiveRecord::ConnectionAdapters::FrontBaseAdapter.compare_versions(version,"1.0.0") == -1
           raise AdapterNotFound,
             'The FrontBase adapter requires ruby-frontbase version 1.0.0 or greater; you appear ' <<
@@ -40,17 +40,17 @@ module ActiveRecord
         end
         connection = FBSQL_Connect.connect(host, port, database, username, password, dbpassword, session_name)
         ConnectionAdapters::FrontBaseAdapter.new(connection, logger, [host, port, database, username, password, dbpassword, session_name], config)
-      end            
-    end    
+      end
+    end
   end
-  
+
   module ConnectionAdapters
-    
+
     # From EOF Documentation....
     # buffer should have space for EOUniqueBinaryKeyLength (12) bytes.
     # Assigns a world-wide unique ID made up of:
     # < Sequence [2], ProcessID [2] , Time [4], IP Addr [4] >
-    
+
     class TwelveByteKey < String #:nodoc:
       @@mutex = Mutex.new
       @@sequence_number = rand(65536)
@@ -62,7 +62,7 @@ module ActiveRecord
         if string.nil?
           new_key = replace('_' * 12)
 
-          new_key[0..1]  = self.class.key_sequence_component        
+          new_key[0..1]  = self.class.key_sequence_component
           new_key[2..3]  = self.class.key_pid_component
           new_key[4..7]  = self.class.key_time_component
           new_key[8..11] = self.class.key_ip_component
@@ -75,15 +75,15 @@ module ActiveRecord
           super(string)
         end
       end
-            
+
       def inspect
         unpack("H*").first.upcase
       end
-    
+
       alias_method :to_s, :inspect
-      
+
       private
-            
+
         class << self
           def key_sequence_component
             seq = nil
@@ -91,13 +91,13 @@ module ActiveRecord
               seq = @@sequence_number
               @@sequence_number = (@@sequence_number + 1) % 65536
             end
-            
+
             sequence_component = "__"
             sequence_component[0] = seq >> 8
             sequence_component[1] = seq
             sequence_component
           end
-          
+
           def key_pid_component
             if @@key_cached_pid_component.nil?
               @@mutex.synchronize do
@@ -110,7 +110,7 @@ module ActiveRecord
             end
             @@key_cached_pid_component
           end
-          
+
           def key_time_component
             time = Time.new.to_i
             time_component = "____"
@@ -120,7 +120,7 @@ module ActiveRecord
             time_component[3] = (time & 0x000000FF)
             time_component
           end
-          
+
           def key_ip_component
             if @@key_cached_ip_component.nil?
               @@mutex.synchronize do
@@ -145,12 +145,12 @@ module ActiveRecord
           end
         end
     end
-    
+
     class FrontBaseColumn < Column #:nodoc:
       attr_reader :fb_autogen
-      
+
       def initialize(base, name, type, typename, limit, precision, scale, default, nullable)
-        
+
         @base       = base
         @name       = name
         @type       = simplified_type(type,typename,limit)
@@ -167,7 +167,7 @@ module ActiveRecord
           @default.gsub!(/^'(.*)'$/,'\1') if @text
           @fb_autogen =  @default.include?("SELECT UNIQUE FROM")
           case @type
-          when :boolean 
+          when :boolean
             @default = @default == "TRUE"
           when :binary
             if @default != "X''"
@@ -182,7 +182,7 @@ module ActiveRecord
           end
         end
       end
-      
+
       # Casts value (which is a String) to an appropriate instance.
       def type_cast(value)
         if type == :twelvebytekey
@@ -232,7 +232,7 @@ module ActiveRecord
     end
 
     class FrontBaseAdapter < AbstractAdapter
-        
+
       class << self
         def compare_versions(v1, v2)
           v1_seg  = v1.split(".")
@@ -242,17 +242,17 @@ module ActiveRecord
             return step unless step == 0
           end
           return v1_seg.length <=> v2_seg.length
-        end    
+        end
       end
-            
+
       def initialize(connection, logger, connection_options, config)
         super(connection, logger)
         @connection_options, @config = connection_options, config
         @transaction_mode = :pessimistic
-        
+
         # Start out in auto-commit mode
         self.rollback_db_transaction
-        
+
         # threaded_connections_test.rb will fail unless we set the session
         # to optimistic locking mode
 #         set_pessimistic_transactions
@@ -362,7 +362,7 @@ module ActiveRecord
                 if column && column.type == :binary
                   s = value.unpack("H*").first
                   "X'#{s}'"
-                elsif column && [:integer, :float, :decimal].include?(column.type) 
+                elsif column && [:integer, :float, :decimal].include?(column.type)
                   value.to_s
                 else
                   "'#{quote_string(value)}'" # ' (for ruby-mode)
@@ -396,16 +396,16 @@ module ActiveRecord
                     else
                       "TIMESTAMP '#{quoted_date(value)}'"
                     end
-                  end 
+                  end
                 end #if column
-              else 
+              else
                 "'#{quote_string(value.to_yaml)}'"
             end #case
           end
         else
           retvalue = "NULL"
         end
-         
+
         retvalue
       end # def
 
@@ -421,7 +421,7 @@ module ActiveRecord
       def quoted_true
         "true"
       end
-      
+
       def quoted_false
         "false"
       end
@@ -459,7 +459,7 @@ module ActiveRecord
 
         fbresult.each do |row|
           puts "SQL <- #{row.inspect}"  if FB_TRACE
-          hashed_row = {}    
+          hashed_row = {}
           colnum     = 0
           row.each do |col|
             hashed_row[columns[colnum]] = col
@@ -480,10 +480,10 @@ module ActiveRecord
         fbresult     = execute(fbsql, name)
         puts "SQL -> #{fbsql}"  if FB_TRACE
         columns = fbresult.columns
-        
+
         fbresult.each do |row|
           puts "SQL <- #{row.inspect}"  if FB_TRACE
-          hashed_row = {}    
+          hashed_row = {}
           colnum     = 0
           row.each do |col|
             hashed_row[columns[colnum]] = col
@@ -518,7 +518,7 @@ module ActiveRecord
           raise e
         end
       end
-      
+
       # Returns the last auto-generated ID from the affected table.
       def insert(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil) #:nodoc:
         puts "SQL -> #{sql.inspect}"  if FB_TRACE
@@ -567,13 +567,13 @@ module ActiveRecord
       def add_limit_offset!(sql, options) #:nodoc:
         if limit = options[:limit]
           offset = options[:offset] || 0
-        
+
 # Here is the full syntax FrontBase supports:
 # (from gclem@frontbase.com)
-# 
+#
 #       TOP <limit - unsigned integer>
 #       TOP ( <offset expr>, <limit expr>)
-        
+
           # "TOP 0" is not allowed, so we have
           # to use a cheap trick.
           if limit.zero?
@@ -625,7 +625,7 @@ module ActiveRecord
       def classes_for_table_name(table)
         ActiveRecord::Base.send(:subclasses).select {|klass| klass.table_name == table}
       end
-      
+
       def reset_pk_sequence!(table, pk = nil, sequence = nil)
         klasses = classes_for_table_name(table)
         klass   = klasses.nil? ? nil : klasses.first
@@ -652,7 +652,7 @@ module ActiveRecord
       def create_database(name) #:nodoc:
         execute "CREATE DATABASE #{name}"
       end
-      
+
       def drop_database(name) #:nodoc:
         execute "DROP DATABASE #{name}"
       end
@@ -663,10 +663,10 @@ module ActiveRecord
 
       def tables(name = nil) #:nodoc:
         select_values(<<-SQL, nil)
-          SELECT "TABLE_NAME" 
+          SELECT "TABLE_NAME"
           FROM   INFORMATION_SCHEMA.TABLES   AS T0,
-                 INFORMATION_SCHEMA.SCHEMATA AS T1 
-          WHERE  T0.SCHEMA_PK  = T1.SCHEMA_PK 
+                 INFORMATION_SCHEMA.SCHEMATA AS T1
+          WHERE  T0.SCHEMA_PK  = T1.SCHEMA_PK
           AND    "SCHEMA_NAME" = CURRENT_SCHEMA
         SQL
       end
@@ -675,19 +675,19 @@ module ActiveRecord
         indexes = []
         current_index = nil
         sql = <<-SQL
-          SELECT   INDEX_NAME, T2.ORDINAL_POSITION, INDEX_COLUMN_COUNT, INDEX_TYPE, 
-                   "COLUMN_NAME", IS_NULLABLE 
-          FROM     INFORMATION_SCHEMA.TABLES             AS T0, 
-                   INFORMATION_SCHEMA.INDEXES            AS T1, 
-                   INFORMATION_SCHEMA.INDEX_COLUMN_USAGE AS T2, 
-                   INFORMATION_SCHEMA.COLUMNS            AS T3 
-          WHERE    T0."TABLE_NAME" = '#{table_name}' 
-            AND    INDEX_TYPE <> 0 
-            AND    T0.TABLE_PK   = T1.TABLE_PK 
-            AND    T0.TABLE_PK   = T2.TABLE_PK 
-            AND    T0.TABLE_PK   = T3.TABLE_PK 
-            AND    T1.INDEXES_PK = T2.INDEX_PK 
-            AND    T2.COLUMN_PK  = T3.COLUMN_PK 
+          SELECT   INDEX_NAME, T2.ORDINAL_POSITION, INDEX_COLUMN_COUNT, INDEX_TYPE,
+                   "COLUMN_NAME", IS_NULLABLE
+          FROM     INFORMATION_SCHEMA.TABLES             AS T0,
+                   INFORMATION_SCHEMA.INDEXES            AS T1,
+                   INFORMATION_SCHEMA.INDEX_COLUMN_USAGE AS T2,
+                   INFORMATION_SCHEMA.COLUMNS            AS T3
+          WHERE    T0."TABLE_NAME" = '#{table_name}'
+            AND    INDEX_TYPE <> 0
+            AND    T0.TABLE_PK   = T1.TABLE_PK
+            AND    T0.TABLE_PK   = T2.TABLE_PK
+            AND    T0.TABLE_PK   = T3.TABLE_PK
+            AND    T1.INDEXES_PK = T2.INDEX_PK
+            AND    T2.COLUMN_PK  = T3.COLUMN_PK
           ORDER BY INDEX_NAME, T2.ORDINAL_POSITION
         SQL
 
@@ -698,9 +698,9 @@ module ActiveRecord
           ndx_colcount = row[2]
           index_type   = row[3]
           column_name  = row[4]
-          
+
           is_unique = index_type == 1
-          
+
           columns << column_name
           if ord_position == ndx_colcount
             indexes << IndexDefinition.new(table_name, index_name, is_unique , columns)
@@ -712,16 +712,16 @@ module ActiveRecord
 
       def columns(table_name, name = nil)#:nodoc:
         sql = <<-SQL
-          SELECT   "TABLE_NAME", "COLUMN_NAME", ORDINAL_POSITION, IS_NULLABLE, COLUMN_DEFAULT, 
-                   DATA_TYPE, DATA_TYPE_CODE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, 
-                   NUMERIC_PRECISION_RADIX, NUMERIC_SCALE, DATETIME_PRECISION, DATETIME_PRECISION_LEADING 
-          FROM     INFORMATION_SCHEMA.TABLES               T0, 
-                   INFORMATION_SCHEMA.COLUMNS              T1, 
-                   INFORMATION_SCHEMA.DATA_TYPE_DESCRIPTOR T3 
-          WHERE    "TABLE_NAME" = '#{table_name}' 
-            AND    T0.TABLE_PK  = T1.TABLE_PK 
-            AND    T0.TABLE_PK  = T3.TABLE_OR_DOMAIN_PK 
-            AND    T1.COLUMN_PK = T3.COLUMN_NAME_PK 
+          SELECT   "TABLE_NAME", "COLUMN_NAME", ORDINAL_POSITION, IS_NULLABLE, COLUMN_DEFAULT,
+                   DATA_TYPE, DATA_TYPE_CODE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION,
+                   NUMERIC_PRECISION_RADIX, NUMERIC_SCALE, DATETIME_PRECISION, DATETIME_PRECISION_LEADING
+          FROM     INFORMATION_SCHEMA.TABLES               T0,
+                   INFORMATION_SCHEMA.COLUMNS              T1,
+                   INFORMATION_SCHEMA.DATA_TYPE_DESCRIPTOR T3
+          WHERE    "TABLE_NAME" = '#{table_name}'
+            AND    T0.TABLE_PK  = T1.TABLE_PK
+            AND    T0.TABLE_PK  = T3.TABLE_OR_DOMAIN_PK
+            AND    T1.COLUMN_PK = T3.COLUMN_NAME_PK
           ORDER BY T1.ORDINAL_POSITION
         SQL
 
@@ -741,7 +741,7 @@ module ActiveRecord
          end
         columns
       end
-      
+
       def create_table(name, options = {})
         table_definition = TableDefinition.new(self)
         table_definition.primary_key(options[:primary_key] || "id") unless options[:id] == false
@@ -762,7 +762,7 @@ module ActiveRecord
         rescue ActiveRecord::StatementInvalid => e
           raise e unless e.message.match(/Table name - \w* - exists/)
       end
-      
+
       def rename_table(name, new_name)
         columns = columns(name)
         pkcol = columns.find {|c| c.fb_autogen}
@@ -775,7 +775,7 @@ module ActiveRecord
           execute "SET UNIQUE=#{mpk} FOR #{new_name}"
           commit_db_transaction
         end
-      end  
+      end
 
       # Drops a table from the database.
       def drop_table(name, options = {})
@@ -837,7 +837,7 @@ module ActiveRecord
         end
 
         execute(change_column_sql)
-        
+
 #         change_column_sql = "ALTER TABLE #{table_name} CHANGE #{column_name} #{column_name} #{type_to_sql(type, options[:limit])}"
 #         add_column_options!(change_column_sql, options)
 #         execute(change_column_sql)
@@ -846,13 +846,13 @@ module ActiveRecord
       def rename_column(table_name, column_name, new_column_name) #:nodoc:
         execute %( ALTER COLUMN NAME "#{table_name}"."#{column_name}" TO "#{new_column_name}" )
       end
-            
+
       private
-      
+
         # Clean up sql to make it something FrontBase can digest
         def cleanup_fb_sql(sql) #:nodoc:
           # Turn non-standard != into standard <>
-          cleansql = sql.gsub("!=", "<>") 
+          cleansql = sql.gsub("!=", "<>")
           # Strip blank lines and comments
           cleansql.split("\n").reject { |line| line.match(/^(?:\s*|--.*)$/) } * "\n"
         end

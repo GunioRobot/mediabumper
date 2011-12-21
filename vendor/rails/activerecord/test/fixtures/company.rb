@@ -5,7 +5,7 @@ class Company < ActiveRecord::Base
   validates_presence_of :name
 
   has_one :dummy_account, :foreign_key => "firm_id", :class_name => "Account"
-  
+
   def arbitrary_method
     "I am Jack's profound disappointment"
   end
@@ -67,12 +67,12 @@ class Client < Company
     end
     true
   end
-  
+
   # Used to test that read and question methods are not generated for these attributes
   def ruby_type
     read_attribute :ruby_type
   end
-  
+
   def rating?
     query_attribute :rating
   end
@@ -87,7 +87,7 @@ end
 
 class Account < ActiveRecord::Base
   belongs_to :firm
-  
+
   def self.destroyed_account_ids
     @destroyed_account_ids ||= Hash.new { |h,k| h[k] = [] }
   end
@@ -98,8 +98,8 @@ class Account < ActiveRecord::Base
     end
     true
   end
-  
-  
+
+
   protected
     def validate
       errors.add_on_empty "credit_limit"

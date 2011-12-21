@@ -9,7 +9,7 @@ module ActsAsFerret
       @aaf_configuration = aaf_configuration
       @logger = Logger.new("#{RAILS_ROOT}/log/ferret_index.log")
     end
-    
+
     class << self
       def proxy_method(name, *args)
         define_method name do |*args|

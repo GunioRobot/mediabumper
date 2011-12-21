@@ -72,7 +72,7 @@ begin
           @connection.commit
           @connection.set_auto_commit_on
         end
-        
+
         def rollback_db_transaction
           @connection.rollback
           @connection.set_auto_commit_on
@@ -132,14 +132,14 @@ begin
           result = []
           schema = @connection_options[:schema] || '%'
           with_statement do |stmt|
-            stmt.columns(table_name, schema).each do |c| 
+            stmt.columns(table_name, schema).each do |c|
               c_name = c[3].downcase
               c_default = c[12] == 'NULL' ? nil : c[12]
               c_default.gsub!(/^'(.*)'$/, '\1') if !c_default.nil?
               c_type = c[5].downcase
               c_type += "(#{c[6]})" if !c[6].nil? && c[6] != ''
               result << Column.new(c_name, c_default, c_type, c[17] == 'YES')
-            end 
+            end
           end
           result
         end

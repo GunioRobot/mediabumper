@@ -40,17 +40,17 @@ class TestJSONEmitters < Test::Unit::TestCase
   def setup
     unquote(false)
   end
-  
+
   def teardown
     unquote(true)
   end
-  
+
   def test_hash_encoding
     assert_equal %({\"a\": \"b\"}), { :a => :b }.to_json
     assert_equal %({\"a\": 1}), { 'a' => 1  }.to_json
     assert_equal %({\"a\": [1, 2]}), { 'a' => [1,2] }.to_json
-    
-    sorted_json  = 
+
+    sorted_json  =
       '{' + {:a => :b, :c => :d}.to_json[1..-2].split(', ').sort.join(', ') + '}'
     assert_equal %({\"a\": \"b\", \"c\": \"d\"}), sorted_json
   end
@@ -68,15 +68,15 @@ class TestJSONEmitters < Test::Unit::TestCase
     a << a
     assert_raises(ActiveSupport::JSON::CircularReferenceError) { a.to_json }
   end
-  
+
   def test_unquote_hash_key_identifiers
-    values = {0 => 0, 1 => 1, :_ => :_, "$" => "$", "a" => "a", :A => :A, :A0 => :A0, "A0B" => "A0B"}    
-    
+    values = {0 => 0, 1 => 1, :_ => :_, "$" => "$", "a" => "a", :A => :A, :A0 => :A0, "A0B" => "A0B"}
+
     assert_equal %({"a": "a"}), {"a"=>"a"}.to_json
     assert_equal %({0: 0}),   { 0 => 0 }.to_json
     assert_equal %({"_": "_"}), {:_ =>:_ }.to_json
     assert_equal %({"$": "$"}), {"$"=>"$"}.to_json
-    
+
     unquote(true) do
       assert_equal %({a: "a"}), {"a"=>"a"}.to_json
       assert_equal %({0: 0}),   { 0 => 0 }.to_json
@@ -84,7 +84,7 @@ class TestJSONEmitters < Test::Unit::TestCase
       assert_equal %({$: "$"}), {"$"=>"$"}.to_json
     end
   end
-  
+
   protected
     def unquote(value)
       previous_value = ActiveSupport::JSON.unquote_hash_key_identifiers
@@ -93,5 +93,5 @@ class TestJSONEmitters < Test::Unit::TestCase
     ensure
       ActiveSupport::JSON.unquote_hash_key_identifiers = previous_value if block_given?
     end
-    
+
 end

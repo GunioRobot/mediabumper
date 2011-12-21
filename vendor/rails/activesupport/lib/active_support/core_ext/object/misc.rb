@@ -27,7 +27,7 @@ class Object #:nodoc:
   def with_options(options)
     yield ActiveSupport::OptionMerger.new(self, options)
   end
-  
+
   def to_json
     ActiveSupport::JSON.encode(self)
   end

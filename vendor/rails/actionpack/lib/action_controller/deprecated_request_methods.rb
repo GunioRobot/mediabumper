@@ -1,7 +1,7 @@
 module ActionController
   class AbstractRequest
     # Determine whether the body of a HTTP call is URL-encoded (default)
-    # or matches one of the registered param_parsers. 
+    # or matches one of the registered param_parsers.
     #
     # For backward compatibility, the post format is extracted from the
     # X-Post-Data-Format HTTP header if present.

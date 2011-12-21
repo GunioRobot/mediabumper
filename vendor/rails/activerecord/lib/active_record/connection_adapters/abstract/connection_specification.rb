@@ -25,18 +25,18 @@ module ActiveRecord
       def thread_safe_active_connections #:nodoc:
         @@active_connections[Thread.current.object_id] ||= {}
       end
-     
+
       def single_threaded_active_connections #:nodoc:
         @@active_connections
       end
-     
+
       # pick up the right active_connection method from @@allow_concurrency
       if @@allow_concurrency
         alias_method :active_connections, :thread_safe_active_connections
       else
         alias_method :active_connections, :single_threaded_active_connections
       end
-     
+
       # set concurrency support flag (not thread safe, like most of the methods in this file)
       def allow_concurrency=(threaded) #:nodoc:
         logger.debug "allow_concurrency=#{threaded}" if logger
@@ -50,7 +50,7 @@ module ActiveRecord
         end
         log_connections if logger
       end
-      
+
       def active_connection_name #:nodoc:
         @active_connection_name ||=
            if active_connections[name] || @@defined_connections[name]
@@ -86,8 +86,8 @@ module ActiveRecord
           conn.disconnect!
         end
       end
-      
-      # Clears the cache which maps classes 
+
+      # Clears the cache which maps classes
       def clear_reloadable_connections!
         @@active_connections.each do |name, conn|
           if conn.requires_reloading?
@@ -104,7 +104,7 @@ module ActiveRecord
             conn.disconnect!
           end
         end
-        
+
         active_connections.each_value do |connection|
           connection.verify!(@@verification_timeout)
         end
@@ -140,7 +140,7 @@ module ActiveRecord
             clear_cache!(cache, thread_id, &block)
           end
         end
-        
+
         def clear_all_cached_connections!
           if @@allow_concurrency
             @@active_connections.each_value do |connection_hash_for_thread|
@@ -150,7 +150,7 @@ module ActiveRecord
           else
             @@active_connections.each_value {|conn| conn.disconnect! }
           end
-          @@active_connections.clear          
+          @@active_connections.clear
         end
     end
 

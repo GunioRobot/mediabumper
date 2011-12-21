@@ -19,7 +19,7 @@ Rails without spending a lot of time delving into protocol details.
 
 You specify the methods you want to make available as API methods in an
 ActionWebService::API::Base derivative, and then specify this API
-definition class wherever you want to use that API. 
+definition class wherever you want to use that API.
 
 The implementation of the methods is done separately from the API
 specification.
@@ -42,7 +42,7 @@ ActionWebService::API::Base +inflect_names+ option.
   :add       => Add
   :find_all  => FindAll
 
-  
+
 ==== Disabling inflection
 
   class PersonAPI < ActionWebService::API::Base
@@ -258,7 +258,7 @@ Example:
     end
   end
 
-This example invokes the API method <tt>test</tt>, defined on 
+This example invokes the API method <tt>test</tt>, defined on
 the PersonController, and returns the result.
 
 
@@ -290,7 +290,7 @@ Right Thing.
 *Note*: The client support is intended for communication between Ruby on Rails
 applications that both use Action Web Service. It may work with other servers, but
 that is not its intended use, and interoperability can't be guaranteed, especially
-not for .NET web services. 
+not for .NET web services.
 
 Web services protocol specifications are complex, and Action Web Service client
 support can only be guaranteed to work with a subset.

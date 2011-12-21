@@ -64,7 +64,7 @@ module ActionWebService
               register_type(m_type)
             end
           end
-          
+
           @type2binding[type]
         end
         alias :lookup_type :register_type
@@ -101,7 +101,7 @@ module ActionWebService
           end
 
           def mark_typed_array(array, qname)
-            (class << array; self; end).class_eval do 
+            (class << array; self; end).class_eval do
               define_method(:arytype) do
                 qname
               end
@@ -214,7 +214,7 @@ module ActionWebService
           end
           soap_obj
         end
-      
+
         def soap2obj(obj_class, node, info, map)
           return false
         end

@@ -142,11 +142,11 @@ CREATE TABLE colnametests (
 CREATE TABLE mixins (
   id serial,
   parent_id integer,
-  type character varying,  
+  type character varying,
   pos integer,
   lft integer,
   rgt integer,
-  root_id integer,  
+  root_id integer,
   created_at timestamp,
   updated_at timestamp,
   PRIMARY KEY  (id)
@@ -166,8 +166,8 @@ CREATE TABLE readers (
     primary key (id)
 );
 
-CREATE TABLE binaries ( 
-  id serial , 
+CREATE TABLE binaries (
+  id serial ,
   data bytea,
   PRIMARY KEY (id)
 );

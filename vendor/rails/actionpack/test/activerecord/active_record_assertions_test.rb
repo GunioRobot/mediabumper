@@ -29,7 +29,7 @@ class ActiveRecordAssertionsController < ActionController::Base
 
   # this will fail validation
   def bad_company
-    @company = Company.new 
+    @company = Company.new
     render :inline => "Who's Bad?"
   end
 

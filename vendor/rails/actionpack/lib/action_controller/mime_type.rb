@@ -47,13 +47,13 @@ module Mime
       def register(string, symbol, synonyms = [])
         Mime.send :const_set, symbol.to_s.upcase, Type.new(string, symbol, synonyms)
         SET << Mime.send(:const_get, symbol.to_s.upcase)
-        LOOKUP[string] = EXTENSION_LOOKUP[symbol.to_s] = SET.last        
+        LOOKUP[string] = EXTENSION_LOOKUP[symbol.to_s] = SET.last
       end
 
       def parse(accept_header)
         # keep track of creation order to keep the subsequent sort stable
         index = 0
-        list = accept_header.split(/,/).map! do |i| 
+        list = accept_header.split(/,/).map! do |i|
           AcceptItem.new(index += 1, *i.split(/;\s*q=/))
         end.sort!
 
@@ -73,7 +73,7 @@ module Mime
 
           # delete text_xml from the list
           list.delete_at(text_xml)
-  
+
         elsif text_xml
           list[text_xml].name = "application/xml"
         end
@@ -99,20 +99,20 @@ module Mime
         list
       end
     end
-    
+
     def initialize(string, symbol = nil, synonyms = [])
       @symbol, @synonyms = symbol, synonyms
       @string = string
     end
-    
+
     def to_s
       @string
     end
-    
+
     def to_str
       to_s
     end
-    
+
     def to_sym
       @symbol || @string.to_sym
     end
@@ -124,7 +124,7 @@ module Mime
         super
       end
     end
-    
+
     def ==(mime_type)
       (@synonyms + [ self ]).any? { |synonym| synonym.to_s == mime_type.to_s } if mime_type
     end

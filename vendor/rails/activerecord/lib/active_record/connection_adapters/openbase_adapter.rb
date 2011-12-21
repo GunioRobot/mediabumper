@@ -10,7 +10,7 @@ module ActiveRecord
       host     = config[:host]
       username = config[:username].to_s
       password = config[:password].to_s
-      
+
 
       if config.has_key?(:database)
         database = config[:database]
@@ -21,10 +21,10 @@ module ActiveRecord
       oba = ConnectionAdapters::OpenBaseAdapter.new(
         OpenBase.new(database, host, username, password), logger
       )
-      
+
       oba
     end
-    
+
   end
 
   module ConnectionAdapters
@@ -50,7 +50,7 @@ module ActiveRecord
     # The OpenBase adapter will make use of OpenBase's ability to generate unique ids
     # for any column with an unique index applied.  Thus, if the value of a primary
     # key is not specified at the time an INSERT is performed, the adapter will prefetch
-    # a unique id for the primary key.  This prefetching is also necessary in order 
+    # a unique id for the primary key.  This prefetching is also necessary in order
     # to return the id after an insert.
     #
     # Caveat: Operations involving LIMIT and OFFSET do not yet work!
@@ -60,7 +60,7 @@ module ActiveRecord
       def adapter_name
         'OpenBase'
       end
-      
+
       def native_database_types
         {
           :primary_key => "integer UNIQUE INDEX DEFAULT _rowid",
@@ -77,19 +77,19 @@ module ActiveRecord
           :boolean     => { :name => "boolean" }
         }
       end
-      
+
       def supports_migrations?
         false
-      end      
-      
+      end
+
       def prefetch_primary_key?(table_name = nil)
         true
       end
-      
+
       def default_sequence_name(table_name, primary_key) # :nodoc:
         "#{table_name} #{primary_key}"
       end
-      
+
       def next_sequence_value(sequence_name)
         ary = sequence_name.split(' ')
         if (!ary[1]) then
@@ -99,9 +99,9 @@ module ActiveRecord
         @connection.unique_row_id(ary[0], ary[1])
       end
 
-      
+
       # QUOTING ==================================================
-      
+
       def quote(value, column = nil)
         if value.kind_of?(String) && column && column.type == :binary
           "'#{@connection.insert_binary(value)}'"
@@ -109,15 +109,15 @@ module ActiveRecord
           super
         end
       end
-      
+
       def quoted_true
         "1"
       end
-      
+
       def quoted_false
         "0"
       end
-      
+
 
 
       # DATABASE STATEMENTS ======================================
@@ -132,7 +132,7 @@ module ActiveRecord
           end
         end
       end
-      
+
       def select_all(sql, name = nil) #:nodoc:
         select(sql, name)
       end
@@ -148,7 +148,7 @@ module ActiveRecord
         update_nulls_after_insert(sql, name, pk, id_value, sequence_name)
         id_value
       end
-      
+
       def execute(sql, name = nil) #:nodoc:
         log(sql, name) { @connection.execute(sql) }
       end
@@ -176,7 +176,7 @@ module ActiveRecord
       rescue Exception
         # Transactions aren't supported
       end
-#=end      
+#=end
 
       # SCHEMA STATEMENTS ========================================
 
@@ -228,12 +228,12 @@ module ActiveRecord
             col_names << info.name
             date_cols << info.name if info.type == "date"
           end
-          
+
           rows = []
           if ( results.rows_affected )
             results.each do |row|  # loop through result rows
               hashed_row = {}
-              row.each_index do |index| 
+              row.each_index do |index|
                 hashed_row["#{col_names[index]}"] = row[index] unless col_names[index] == "_rowid"
               end
               date_cols.each do |name|
@@ -246,28 +246,28 @@ module ActiveRecord
           end
           rows
         end
-        
+
         def default_value(value)
           # Boolean type values
           return true if value =~ /true/
           return false if value =~ /false/
- 
+
           # Date / Time magic values
           return Time.now.to_s if value =~ /^now\(\)/i
- 
+
           # Empty strings should be set to null
           return nil if value.empty?
-          
+
           # Otherwise return what we got from OpenBase
           # and hope for the best...
           return value
-        end 
-        
+        end
+
         def sql_type_name(type_name, length)
           return "#{type_name}(#{length})" if ( type_name =~ /char/ )
           type_name
         end
-                
+
         def index_name(row = [])
           name = ""
           name << "UNIQUE " if row[3]
@@ -275,16 +275,16 @@ module ActiveRecord
           name << "INDEX"
           name
         end
-        
+
         def translate_sql(sql)
-          
+
           # Change table.* to list of columns in table
           while (sql =~ /SELECT.*\s(\w+)\.\*/)
             table = $1
             cols = columns(table)
             if ( cols.size == 0 ) then
               # Maybe this is a table alias
-              sql =~ /FROM(.+?)(?:LEFT|OUTER|JOIN|WHERE|GROUP|HAVING|ORDER|RETURN|$)/  
+              sql =~ /FROM(.+?)(?:LEFT|OUTER|JOIN|WHERE|GROUP|HAVING|ORDER|RETURN|$)/
               $1 =~ /[\s|,](\w+)\s+#{table}[\s|,]/ # get the tablename for this alias
               cols = columns($1)
             end
@@ -294,7 +294,7 @@ module ActiveRecord
             end
             sql.gsub!(table + '.*',select_columns.join(", ")) if select_columns
           end
-   
+
           # Change JOIN clause to table list and WHERE condition
           while (sql =~ /JOIN/)
             sql =~ /((LEFT )?(OUTER )?JOIN (\w+) ON )(.+?)(?:LEFT|OUTER|JOIN|WHERE|GROUP|HAVING|ORDER|RETURN|$)/
@@ -313,7 +313,7 @@ module ActiveRecord
             sql.gsub!(from_clause,"#{from_clause}, #{join_table} ")
             sql.gsub!(join_clause,"")
           end
-    
+
           # ORDER BY _rowid if no explicit ORDER BY
           # This will ensure that find(:first) returns the first inserted row
           if (sql !~ /(ORDER BY)|(GROUP BY)/)
@@ -323,10 +323,10 @@ module ActiveRecord
               sql << " ORDER BY _rowid"
             end
           end
-          
+
           sql
         end
-        
+
         def update_nulls_after_insert(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil)
           sql =~ /INSERT INTO (\w+) \((.*)\) VALUES\s*\((.*)\)/m
           table = $1
@@ -344,7 +344,7 @@ module ActiveRecord
           update_sql << " WHERE #{pk}=#{quote(id_value)}"
           execute(update_sql, name + " NULL Correction") if update_cols.size > 0
         end
-        
+
       end
   end
 end

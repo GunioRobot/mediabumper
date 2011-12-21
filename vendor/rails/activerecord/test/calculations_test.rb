@@ -71,7 +71,7 @@ class CalculationsTest < Test::Unit::TestCase
   end
 
   def test_should_group_by_summed_field_having_condition
-    c = Account.sum(:credit_limit, :group => :firm_id, 
+    c = Account.sum(:credit_limit, :group => :firm_id,
                                    :having => 'sum(credit_limit) > 50')
     assert_nil        c[1]
     assert_equal 105, c[6]
@@ -84,22 +84,22 @@ class CalculationsTest < Test::Unit::TestCase
     assert_equal 105,  c[companies(:rails_core)]
     assert_equal 60,   c[companies(:first_client)]
   end
-  
+
   def test_should_sum_field_with_conditions
     assert_equal 105, Account.sum(:credit_limit, :conditions => 'firm_id = 6')
   end
 
   def test_should_group_by_summed_field_with_conditions
-    c = Account.sum(:credit_limit, :conditions => 'firm_id > 1', 
+    c = Account.sum(:credit_limit, :conditions => 'firm_id > 1',
                                    :group => :firm_id)
     assert_nil        c[1]
     assert_equal 105, c[6]
     assert_equal 60,  c[2]
   end
-  
+
   def test_should_group_by_summed_field_with_conditions_and_having
-    c = Account.sum(:credit_limit, :conditions => 'firm_id > 1', 
-                                   :group => :firm_id, 
+    c = Account.sum(:credit_limit, :conditions => 'firm_id > 1',
+                                   :group => :firm_id,
                                    :having => 'sum(credit_limit) > 60')
     assert_nil        c[1]
     assert_equal 105, c[6]
@@ -112,30 +112,30 @@ class CalculationsTest < Test::Unit::TestCase
     assert_equal 105, c[6]
     assert_equal 60,  c[2]
   end
-  
+
   def test_should_calculate_with_invalid_field
     assert_equal 6, Account.calculate(:count, '*')
     assert_equal 6, Account.calculate(:count, :all)
   end
-  
+
   def test_should_calculate_grouped_with_invalid_field
     c = Account.count(:all, :group => 'accounts.firm_id')
     assert_equal 1, c[1]
     assert_equal 2, c[6]
     assert_equal 1, c[2]
   end
-  
+
   def test_should_calculate_grouped_association_with_invalid_field
     c = Account.count(:all, :group => :firm)
     assert_equal 1, c[companies(:first_firm)]
     assert_equal 2, c[companies(:rails_core)]
     assert_equal 1, c[companies(:first_client)]
   end
-  
+
   def test_should_not_modify_options_when_using_includes
     options = {:conditions => 'companies.id > 1', :include => :firm}
     options_copy = options.dup
-    
+
     Account.count(:all, options)
     assert_equal options_copy, options
   end
@@ -147,7 +147,7 @@ class CalculationsTest < Test::Unit::TestCase
     assert_equal 3, c['CLIENT']
     assert_equal 2, c['FIRM']
   end
-  
+
   def test_should_calculate_grouped_by_function_with_table_alias
     c = Company.count(:all, :group => "UPPER(companies.#{QUOTED_TYPE})")
     assert_equal 2, c[nil]
@@ -155,7 +155,7 @@ class CalculationsTest < Test::Unit::TestCase
     assert_equal 3, c['CLIENT']
     assert_equal 2, c['FIRM']
   end
-  
+
   def test_should_not_overshadow_enumerable_sum
     assert_equal 6, [1, 2, 3].sum(&:abs)
   end
@@ -187,15 +187,15 @@ class CalculationsTest < Test::Unit::TestCase
         # empty options are valid
         Company.send(:validate_calculation_options, func)
         # these options are valid for all calculations
-        [:select, :conditions, :joins, :order, :group, :having, :distinct].each do |opt| 
+        [:select, :conditions, :joins, :order, :group, :having, :distinct].each do |opt|
           Company.send(:validate_calculation_options, func, opt => true)
         end
       end
-      
+
       # :include is only valid on :count
       Company.send(:validate_calculation_options, :count, :include => true)
     end
-    
+
     assert_raises(ArgumentError) { Company.send(:validate_calculation_options, :sum,   :foo => :bar) }
     assert_raises(ArgumentError) { Company.send(:validate_calculation_options, :count, :foo => :bar) }
   end

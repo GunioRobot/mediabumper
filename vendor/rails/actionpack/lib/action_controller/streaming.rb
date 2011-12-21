@@ -4,7 +4,7 @@ module ActionController #:nodoc:
     DEFAULT_SEND_FILE_OPTIONS = {
       :type         => 'application/octet-stream'.freeze,
       :disposition  => 'attachment'.freeze,
-      :stream       => true, 
+      :stream       => true,
       :buffer_size  => 4096
     }.freeze
 
@@ -22,7 +22,7 @@ module ActionController #:nodoc:
       #   Defaults to File.basename(path).
       # * <tt>:type</tt> - specifies an HTTP content type.
       #   Defaults to 'application/octet-stream'.
-      # * <tt>:disposition</tt> - specifies whether the file will be shown inline or downloaded.  
+      # * <tt>:disposition</tt> - specifies whether the file will be shown inline or downloaded.
       #   Valid values are 'inline' and 'attachment' (default).
       # * <tt>:stream</tt> - whether to send the file to the user agent as it is read (true)
       #   or to read the entire file before sending (false). Defaults to true.
@@ -87,7 +87,7 @@ module ActionController #:nodoc:
       # * <tt>:filename</tt> - Suggests a filename for the browser to use.
       # * <tt>:type</tt> - specifies an HTTP content type.
       #   Defaults to 'application/octet-stream'.
-      # * <tt>:disposition</tt> - specifies whether the file will be shown inline or downloaded.  
+      # * <tt>:disposition</tt> - specifies whether the file will be shown inline or downloaded.
       #   Valid values are 'inline' and 'attachment' (default).
       # * <tt>:status</tt> - specifies the status code to send with the response. Defaults to '200 OK'.
       #
@@ -127,10 +127,10 @@ module ActionController #:nodoc:
         )
 
         # Fix a problem with IE 6.0 on opening downloaded files:
-        # If Cache-Control: no-cache is set (which Rails does by default), 
-        # IE removes the file it just downloaded from its cache immediately 
-        # after it displays the "open/save" dialog, which means that if you 
-        # hit "open" the file isn't there anymore when the application that 
+        # If Cache-Control: no-cache is set (which Rails does by default),
+        # IE removes the file it just downloaded from its cache immediately
+        # after it displays the "open/save" dialog, which means that if you
+        # hit "open" the file isn't there anymore when the application that
         # is called for handling the download is run, so let's workaround that
         headers['Cache-Control'] = 'private' if headers['Cache-Control'] == 'no-cache'
       end

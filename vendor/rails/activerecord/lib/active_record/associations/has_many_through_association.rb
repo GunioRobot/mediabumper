@@ -75,7 +75,7 @@ module ActiveRecord
         records.each { |associate| raise_on_type_mismatch(associate) }
         records.reject! { |associate| @target.delete(associate) if associate.new_record? }
         return if records.empty?
-        
+
         @delete_join_finder ||= "find_all_by_#{@reflection.source_reflection.association_foreign_key}"
         through = @reflection.through_reflection
         through.klass.transaction do
@@ -101,15 +101,15 @@ module ActiveRecord
       def sum(*args, &block)
         calculate(:sum, *args, &block)
       end
-      
+
       def count(*args)
         column_name, options = @reflection.klass.send(:construct_count_options_from_legacy_args, *args)
         if @reflection.options[:uniq]
           # This is needed becase 'SELECT count(DISTINCT *)..' is not valid sql statement.
           column_name = "#{@reflection.klass.table_name}.#{@reflection.klass.primary_key}" if column_name == :all
-          options.merge!(:distinct => true) 
+          options.merge!(:distinct => true)
         end
-        @reflection.klass.send(:with_scope, construct_scope) { @reflection.klass.count(column_name, options) } 
+        @reflection.klass.send(:with_scope, construct_scope) { @reflection.klass.count(column_name, options) }
       end
 
       protected

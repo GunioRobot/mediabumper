@@ -78,10 +78,10 @@ module ActionController
       #   # assert that there is a "span" containing between 2 and 4 "em" tags
       #   # as immediate children
       #   assert_tag :tag => "span",
-      #              :children => { :count => 2..4, :only => { :tag => "em" } } 
+      #              :children => { :count => 2..4, :only => { :tag => "em" } }
       #
       #   # get funky: assert that there is a "div", with an "ul" ancestor
-      #   # and an "li" parent (with "class" = "enum"), and containing a 
+      #   # and an "li" parent (with "class" = "enum"), and containing a
       #   # "span" descendant that contains text matching /hello world/
       #   assert_tag :tag => "div",
       #              :ancestor => { :tag => "ul" },
@@ -102,7 +102,7 @@ module ActionController
           assert tag, "expected tag, but no tag found matching #{opts.inspect} in:\n#{@response.body.inspect}"
         end
       end
-      
+
       # Identical to #assert_tag, but asserts that a matching tag does _not_
       # exist. (See #assert_tag for a full discussion of the syntax.)
       def assert_no_tag(*opts)

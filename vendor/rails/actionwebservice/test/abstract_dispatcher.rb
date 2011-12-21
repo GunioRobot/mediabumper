@@ -68,7 +68,7 @@ module DispatcherTest
   class VirtualAPI < ActionWebService::API::Base
     default_api_method :fallback
   end
- 
+
   class Service < ActionWebService::Base
     web_service_api API
 
@@ -126,15 +126,15 @@ module DispatcherTest
     def getCategories
       ["mtCat1", "mtCat2"]
     end
-    
+
     def bool
       'y'
     end
-    
+
     def alwaysFail
       raise "MT AlwaysFail"
     end
-    
+
     def person
       Person.new('id' => 1, 'name' => 'person1')
     end
@@ -165,11 +165,11 @@ module DispatcherTest
       to_wsdl
     end
   end
- 
+
   class DelegatedController < AbstractController
     web_service_dispatching_mode :delegated
     wsdl_namespace WsdlNamespace
-  
+
     web_service(:test_service) { @service ||= Service.new; @service }
   end
 
@@ -180,7 +180,7 @@ module DispatcherTest
     web_service(:mt) { @mt_service ||= MTService.new; @mt_service }
     web_service(:blogger) { @blogger_service ||= BloggerService.new; @blogger_service }
   end
- 
+
   class DirectController < AbstractController
     web_service_api DirectAPI
     web_service_dispatching_mode :direct
@@ -206,7 +206,7 @@ module DispatcherTest
       @void_called = false
       @struct_pass_value = false
     end
-  
+
     def add
       @added = params['a'] + params['b']
     end
@@ -249,7 +249,7 @@ module DispatcherTest
       p2 = { 'id' => '2', :name => 'person2' }
       [p1, p2]
     end
-    
+
     def void
       @void_called = @method_params
     end
@@ -312,7 +312,7 @@ module DispatcherCommonTests
   def test_direct_entrypoint
     assert(@direct_controller.respond_to?(:api))
   end
-  
+
   def test_virtual_dispatching
     assert_equal("fallback!", do_method_call(@virtual_controller, 'VirtualOne'))
     assert_equal("fallback!", do_method_call(@virtual_controller, 'VirtualTwo'))
@@ -389,7 +389,7 @@ module DispatcherCommonTests
   def test_casting
     assert_equal 70, do_method_call(@direct_controller, 'Add', "50", "20")
     assert_equal false, @direct_controller.struct_pass_value
-    person = DispatcherTest::Person.new(:id => 1, :name => 'test') 
+    person = DispatcherTest::Person.new(:id => 1, :name => 'test')
     result = do_method_call(@direct_controller, 'StructPass', person)
     assert(nil == result || true == result)
     assert_equal person, @direct_controller.struct_pass_value

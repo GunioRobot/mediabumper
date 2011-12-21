@@ -21,7 +21,7 @@ class AAACreateTablesTest < Test::Unit::TestCase
     end
     assert true
   end
-  
+
   def test_drop_and_create_courses_table
     recreate Course, '2'
     assert true

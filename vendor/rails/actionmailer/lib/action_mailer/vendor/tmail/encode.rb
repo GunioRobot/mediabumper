@@ -60,7 +60,7 @@ module TMail
     end
 
     alias to_s decoded
-  
+
     def accept_strategy( klass, eol, charset, dest = nil )
       dest ||= ''
       accept klass.new(create_dest(dest), charset, eol)
@@ -117,7 +117,7 @@ module TMail
     def header_body( str )
       @f << decode(str)
     end
-      
+
     def space
       @f << ' '
     end
@@ -127,7 +127,7 @@ module TMail
     def lwsp( str )
       @f << str
     end
-      
+
     def meta( str )
       @f << str
     end
@@ -364,7 +364,7 @@ module TMail
         i += 1
       end
     end
-    
+
     METHOD_ID = {
       ?j => :extract_J,
       ?e => :extract_E,

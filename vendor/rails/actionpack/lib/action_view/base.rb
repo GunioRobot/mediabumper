@@ -4,13 +4,13 @@ module ActionView #:nodoc:
   class ActionViewError < StandardError #:nodoc:
   end
 
-  # Action View templates can be written in three ways. If the template file has a +.rhtml+ extension then it uses a mixture of ERb 
-  # (included in Ruby) and HTML. If the template file has a +.rxml+ extension then Jim Weirich's Builder::XmlMarkup library is used. 
+  # Action View templates can be written in three ways. If the template file has a +.rhtml+ extension then it uses a mixture of ERb
+  # (included in Ruby) and HTML. If the template file has a +.rxml+ extension then Jim Weirich's Builder::XmlMarkup library is used.
   # If the template file has a +.rjs+ extension then it will use ActionView::Helpers::PrototypeHelper::JavaScriptGenerator.
-  # 
+  #
   # = ERb
-  # 
-  # You trigger ERb by using embeddings such as <% %>, <% -%>, and <%= %>. The <%= %> tag set is used when you want output. Consider the 
+  #
+  # You trigger ERb by using embeddings such as <% %>, <% -%>, and <%= %>. The <%= %> tag set is used when you want output. Consider the
   # following loop for names:
   #
   #   <b>Names of all the people</b>
@@ -50,7 +50,7 @@ module ActionView #:nodoc:
   #   <title><%= @page_title %></title>
   #
   # == Passing local variables to sub templates
-  # 
+  #
   # You can pass local variables to sub templates by using a hash with the variable names as keys and the objects as values:
   #
   #   <%= render "shared/header", { :headline => "Welcome", :person => person } %>
@@ -76,8 +76,8 @@ module ActionView #:nodoc:
   #
   # == Builder
   #
-  # Builder templates are a more programmatic alternative to ERb. They are especially useful for generating XML content. An +XmlMarkup+ object 
-  # named +xml+ is automatically made available to templates with a +.rxml+ extension. 
+  # Builder templates are a more programmatic alternative to ERb. They are especially useful for generating XML content. An +XmlMarkup+ object
+  # named +xml+ is automatically made available to templates with a +.rxml+ extension.
   #
   # Here are some basic examples:
   #
@@ -86,7 +86,7 @@ module ActionView #:nodoc:
   #   xml.a("A Link", "href"=>"http://onestepback.org") # => <a href="http://onestepback.org">A Link</a>
   #   xml.target("name"=>"compile", "option"=>"fast")   # => <target option="fast" name="compile"\>
   #                                                     # NOTE: order of attributes is not specified.
-  # 
+  #
   # Any method with a block will be treated as an XML markup tag with nested markup in the block. For example, the following:
   #
   #   xml.div {
@@ -110,7 +110,7 @@ module ActionView #:nodoc:
   #       xml.description "Basecamp: Recent items"
   #       xml.language "en-us"
   #       xml.ttl "40"
-  # 
+  #
   #       for item in @recent_items
   #         xml.item do
   #           xml.title(item_title(item))
@@ -118,7 +118,7 @@ module ActionView #:nodoc:
   #           xml.pubDate(item_pubDate(item))
   #           xml.guid(@person.firm.account.url + @recent_items.url(item))
   #           xml.link(@person.firm.account.url + @recent_items.url(item))
-  #       
+  #
   #           xml.tag!("dc:creator", item.author_name) if item_has_creator?(item)
   #         end
   #       end
@@ -129,12 +129,12 @@ module ActionView #:nodoc:
   #
   # == JavaScriptGenerator
   #
-  # JavaScriptGenerator templates end in +.rjs+. Unlike conventional templates which are used to 
-  # render the results of an action, these templates generate instructions on how to modify an already rendered page. This makes it easy to 
-  # modify multiple elements on your page in one declarative Ajax response. Actions with these templates are called in the background with Ajax 
+  # JavaScriptGenerator templates end in +.rjs+. Unlike conventional templates which are used to
+  # render the results of an action, these templates generate instructions on how to modify an already rendered page. This makes it easy to
+  # modify multiple elements on your page in one declarative Ajax response. Actions with these templates are called in the background with Ajax
   # and make updates to the page where the request originated from.
-  # 
-  # An instance of the JavaScriptGenerator object named +page+ is automatically made available to your template, which is implicitly wrapped in an ActionView::Helpers::PrototypeHelper#update_page block. 
+  #
+  # An instance of the JavaScriptGenerator object named +page+ is automatically made available to your template, which is implicitly wrapped in an ActionView::Helpers::PrototypeHelper#update_page block.
   #
   # When an .rjs action is called with +link_to_remote+, the generated JavaScript is automatically evaluated.  Example:
   #
@@ -144,10 +144,10 @@ module ActionView #:nodoc:
   #
   #   page.replace_html  'sidebar', :partial => 'sidebar'
   #   page.remove        "person-#{@person.id}"
-  #   page.visual_effect :highlight, 'user-list' 
+  #   page.visual_effect :highlight, 'user-list'
   #
   # This refreshes the sidebar, removes a person element and highlights the user list.
-  # 
+  #
   # See the ActionView::Helpers::PrototypeHelper::GeneratorMethods documentation for more details.
   class Base
     include ERB::Util
@@ -178,20 +178,20 @@ module ActionView #:nodoc:
     # shortly.
     @@local_assigns_support_string_keys = true
     cattr_accessor :local_assigns_support_string_keys
-    
+
     # Specify whether RJS responses should be wrapped in a try/catch block
-    # that alert()s the caught exception (and then re-raises it). 
+    # that alert()s the caught exception (and then re-raises it).
     @@debug_rjs = false
     cattr_accessor :debug_rjs
 
     @@template_handlers = HashWithIndifferentAccess.new
- 
+
     module CompiledTemplates #:nodoc:
       # holds compiled template code
     end
     include CompiledTemplates
 
-    # Maps inline templates to their method names 
+    # Maps inline templates to their method names
     @@method_names = {}
     # Map method names to their compile time
     @@compile_time = {}
@@ -231,11 +231,11 @@ module ActionView #:nodoc:
       @base_path, @assigns = base_path, assigns_for_first_render
       @assigns_added = nil
       @controller = controller
-      @logger = controller && controller.logger 
+      @logger = controller && controller.logger
     end
 
-    # Renders the template present at <tt>template_path</tt>. If <tt>use_full_path</tt> is set to true, 
-    # it's relative to the template_root, otherwise it's absolute. The hash in <tt>local_assigns</tt> 
+    # Renders the template present at <tt>template_path</tt>. If <tt>use_full_path</tt> is set to true,
+    # it's relative to the template_root, otherwise it's absolute. The hash in <tt>local_assigns</tt>
     # is made available as local variables.
     def render_file(template_path, use_full_path = true, local_assigns = {}) #:nodoc:
       @first_render ||= template_path
@@ -268,7 +268,7 @@ module ActionView #:nodoc:
       end
     end
 
-    # Renders the template present at <tt>template_path</tt> (relative to the template_root). 
+    # Renders the template present at <tt>template_path</tt> (relative to the template_root).
     # The hash in <tt>local_assigns</tt> is made available as local variables.
     def render(options = {}, old_local_assigns = {}, &block) #:nodoc:
       if options.is_a?(String)
@@ -358,7 +358,7 @@ module ActionView #:nodoc:
         template_exists?(template_file_name, template_file_extension)
       else
         cached_template_extension(template_path) ||
-           %w(erb builder javascript delegate).any? do |template_type| 
+           %w(erb builder javascript delegate).any? do |template_type|
              send("#{template_type}_template_exists?", template_path)
            end
       end
@@ -440,7 +440,7 @@ module ActionView #:nodoc:
         render_symbol = @@method_names[method_key]
 
         if @@compile_time[render_symbol] && supports_local_assigns?(render_symbol, local_assigns)
-          if file_name && !@@cache_template_loading 
+          if file_name && !@@cache_template_loading
             @@compile_time[render_symbol] < File.mtime(file_name) ||
               (File.symlink?(file_name) && (@@compile_time[render_symbol] < File.lstat(file_name).mtime))
           end
@@ -518,7 +518,7 @@ module ActionView #:nodoc:
             line_offset += 2
           end
         end
-        
+
         begin
           unless file_name.blank?
             CompiledTemplates.module_eval(render_source, file_name, -line_offset)

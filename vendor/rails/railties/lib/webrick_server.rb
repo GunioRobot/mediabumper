@@ -11,11 +11,11 @@ class CGI #:nodoc:
   def stdinput
     @stdin || $stdin
   end
-  
+
   def env_table
     @env_table || ENV
   end
-  
+
   def initialize(type = "query", table = nil, stdin = nil)
     @env_table, @stdin = table, stdin
 
@@ -59,16 +59,16 @@ class DispatchServlet < WEBrick::HTTPServlet::AbstractServlet
     server.mount('/', DispatchServlet, options)
 
     trap("INT") { server.shutdown }
-    
+
     server.start
   end
 
   def initialize(server, options) #:nodoc:
     @server_options = options
     @file_handler = WEBrick::HTTPServlet::FileHandler.new(server, options[:server_root])
-    # Change to the RAILS_ROOT, since Webrick::Daemon.start does a Dir::cwd("/") 
-    # OPTIONS['working_directory'] is an absolute path of the RAILS_ROOT, set in railties/lib/commands/servers/webrick.rb 
-    Dir.chdir(OPTIONS['working_directory']) if defined?(OPTIONS) && File.directory?(OPTIONS['working_directory']) 
+    # Change to the RAILS_ROOT, since Webrick::Daemon.start does a Dir::cwd("/")
+    # OPTIONS['working_directory'] is an absolute path of the RAILS_ROOT, set in railties/lib/commands/servers/webrick.rb
+    Dir.chdir(OPTIONS['working_directory']) if defined?(OPTIONS) && File.directory?(OPTIONS['working_directory'])
     super
   end
 
@@ -93,12 +93,12 @@ class DispatchServlet < WEBrick::HTTPServlet::AbstractServlet
       path = req.path.dup
 
       # Add .html if the last path piece has no . in it
-      path << '.html' if path != '/' && (%r{(^|/)[^./]+$} =~ path) 
+      path << '.html' if path != '/' && (%r{(^|/)[^./]+$} =~ path)
       path.gsub!('+', ' ') # Unescape + since FileHandler doesn't do so.
 
       req.instance_variable_set(:@path_info, path) # Set the modified path...
 
-      @file_handler.send(:service, req, res)      
+      @file_handler.send(:service, req, res)
       return true
     rescue HTTPStatus::PartialContent, HTTPStatus::NotModified => err
       res.set_error(err)
@@ -111,8 +111,8 @@ class DispatchServlet < WEBrick::HTTPServlet::AbstractServlet
   def handle_dispatch(req, res, origin = nil) #:nodoc:
     data = StringIO.new
     Dispatcher.dispatch(
-      CGI.new("query", create_env_table(req, origin), StringIO.new(req.body || "")), 
-      ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS, 
+      CGI.new("query", create_env_table(req, origin), StringIO.new(req.body || "")),
+      ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS,
       data
     )
 
@@ -122,14 +122,14 @@ class DispatchServlet < WEBrick::HTTPServlet::AbstractServlet
     assign_status(res, header)
     res.cookies.concat(header.delete('set-cookie') || [])
     header.each { |key, val| res[key] = val.join(", ") }
-    
+
     res.body = body
     return true
   rescue => err
     p err, err.backtrace
     return false
   end
-  
+
   private
     def create_env_table(req, origin)
       env = req.meta_vars.clone
@@ -138,17 +138,17 @@ class DispatchServlet < WEBrick::HTTPServlet::AbstractServlet
       env["REQUEST_URI"]  = origin if origin
       return env
     end
-    
+
     def extract_header_and_body(data)
       data.rewind
       data = data.read
 
       raw_header, body = *data.split(/^[\xd\xa]{2}/on, 2)
       header = WEBrick::HTTPUtils::parse_header(raw_header)
-      
+
       return header, body
     end
-    
+
     def set_charset(header)
       ct = header["content-type"]
       if ct.any? { |x| x =~ /^text\// } && ! ct.any? { |x| x =~ /charset=/ }

@@ -202,7 +202,7 @@ END
     end
 
    private
-    
+
     #Precompile each line
     def do_precompile
       @precompiled = ''
@@ -213,14 +213,14 @@ END
           _hamlout = @haml_stack[-1]
           _erbout = _hamlout.buffer
       END
-      
+
       supported_local_assigns = {}
       @@supported_local_assigns[@template] = supported_local_assigns
       @options[:locals].each do |k,v|
         supported_local_assigns[k] = true
         push_silent "#{k} = _haml_local_assigns[:#{k}]"
       end
-      
+
       old_line = nil
       old_index = nil
       old_spaces = nil
@@ -230,13 +230,13 @@ END
         spaces, tabs = count_soft_tabs(line)
         uline = line.lstrip[0...-1]
         line = uline.rstrip
-        
+
         if !line.empty?
           if old_line
             block_opened = tabs > old_tabs && !line.empty?
-            
+
             suppress_render = handle_multiline(old_tabs, old_line, old_index) unless @flat_spaces != -1
-            
+
             if !suppress_render
               line_empty = old_line.empty?
 
@@ -259,7 +259,7 @@ END
               end
             end
           end
-          
+
           old_line = line
           old_index = index
           old_spaces = spaces
@@ -282,7 +282,7 @@ END
 
       push_silent "@haml_is_haml = false\nend\n"
     end
-    
+
     # Processes and deals with lowering indentation.
     def process_indent(count, line)
       if count <= @template_tabs && @template_tabs > 0
@@ -347,7 +347,7 @@ END
         push_plain line
       end
     end
-    
+
     # Returns whether or not the line is a silent script line with one
     # of Ruby's mid-block keywords.
     def mid_block_keyword?(line)
@@ -388,7 +388,7 @@ END
     def is_multiline?(line)                                          # ' '[0] == 32
       line && line.length > 1 && line[-1] == MULTILINE_CHAR_VALUE && line[-2] == 32
     end
-    
+
     # Method for generating compiled method names basically ripped out of ActiveView::Base
     # If Haml is to be used as a standalone module without rails and still use the precompiled
     # methods technique, it will end up duplicating this stuff.  I can't decide whether
@@ -401,7 +401,7 @@ END
       @@render_method_count += 1
       @@method_names[template] = "_render_haml_#{@@render_method_count}".intern
     end
-    
+
     module CompiledTemplates
       # holds compiled template code
     end
@@ -515,7 +515,7 @@ END
         end
       end
     end
-    
+
     # Causes <tt>text</tt> to be evaluated, and Haml::Helpers#find_and_flatten
     # to be run on it afterwards.
     def push_flat_script(text)
@@ -572,7 +572,7 @@ END
       @template_tabs -= 1
       push_silent "_hamlout.close_comment(#{has_conditional}, #{@output_tabs})"
     end
-    
+
     # Closes a loud Ruby block.
     def close_loud(command)
       push_silent 'end', false, true
@@ -607,7 +607,7 @@ END
       @haml_comment = false
       @template_tabs -= 1
     end
-    
+
     # Iterates through the classes and ids supplied through <tt>.</tt>
     # and <tt>#</tt> syntax, and returns a hash with them as attributes,
     # that can then be merged with another attributes hash.
@@ -636,12 +636,12 @@ END
       # $5 holds the value matched by a string
       $2 || $5
     end
-    
-    def parse_literal_hash(text)  
+
+    def parse_literal_hash(text)
       unless text
         return {}
       end
-      
+
       attributes = {}
       if inner = text.scan(/^\{(.*)\}$/)[0]
         inner[0].split(',').each do |attrib|
@@ -663,7 +663,7 @@ END
     def build_attributes(attributes = {})
       @quote_escape = @options[:attr_wrapper] == '"' ? "&quot;" : "&apos;"
       @other_quote_char = @options[:attr_wrapper] == '"' ? "'" : '"'
-  
+
       result = attributes.collect do |a,v|
         v = v.to_s
         unless v.nil? || v.empty?
@@ -691,7 +691,7 @@ END
       else
         str = ">"
       end
-  
+
       "<#{name}#{build_attributes(attributes)}#{str}"
     end
 
@@ -715,7 +715,7 @@ END
         end
 
         flattened = (action == '~')
-        
+
         value_exists = !value.empty?
         literal_attributes = parse_literal_hash(attributes_hash)
         attributes_hash = "{nil}" if attributes_hash.nil? || literal_attributes || @options[:suppress_eval]
@@ -724,7 +724,7 @@ END
         if !attributes.empty? && '.#'.include?(attributes)
           raise SyntaxError.new("Illegal element: classes and ids must have values. Use %div instead.")
         end
-        
+
         # Preparse the attributes hash
         attributes = parse_class_and_id(attributes)
         Buffer.merge_attrs(attributes, literal_attributes) if literal_attributes
@@ -744,26 +744,26 @@ END
         if !@block_opened && !value_exists && @options[:autoclose].include?(tag_name)
           atomic = true
         end
-        
+
         do_one_liner = value_exists && !parse && Buffer.one_liner?(value)
-        
+
         if object_ref == "nil" && attributes_hash == "{nil}" && !flattened && (do_one_liner || !value_exists)
           # This means that we can render the tag directly to text and not process it in the buffer
           open_tag = prerender_tag(tag_name, atomic, attributes)
-          
+
           if do_one_liner
             open_tag += value
             open_tag += "</#{tag_name}>"
           end
-          
+
           open_tag += "\n"
-            
+
           push_silent "_hamlout.open_prerendered_tag(#{open_tag.dump}, #{@output_tabs})"
           return if do_one_liner
         else
           push_silent "_hamlout.open_tag(#{tag_name.inspect}, #{@output_tabs}, #{atomic.inspect}, #{value_exists.inspect}, #{attributes.inspect}, #{object_ref}, #{attributes_hash[1...-1]})", true
         end
-          
+
         unless atomic
           push_and_tabulate([:element, tag_name])
           @output_tabs += 1
@@ -810,7 +810,7 @@ END
         close
       end
     end
-    
+
     # Renders an XHTML doctype or XML shebang.
     def render_doctype(line)
       if @block_opened
@@ -865,7 +865,7 @@ END
       end
       [spaces, spaces/2]
     end
-    
+
     # Pushes value onto <tt>@to_close_stack</tt> and increases
     # <tt>@template_tabs</tt>.
     def push_and_tabulate(value)

@@ -16,7 +16,7 @@ module ActionView
       # * <tt>form_tag('/posts') => <form action="/posts" method="post"></tt>
       # * <tt>form_tag('/posts/1', :method => :put) => <form action="/posts/1" method="put"></tt>
       # * <tt>form_tag('/upload', :multipart => true) => <form action="/upload" method="post" enctype="multipart/form-data"></tt>
-      # 
+      #
       # ERb example:
       #   <% form_tag '/posts' do -%>
       #     <div><%= submit_tag 'Save' %></div>
@@ -28,7 +28,7 @@ module ActionView
       # Options:
       # * <tt>:multipart</tt> - If set to true, the enctype is set to "multipart/form-data".
       # * <tt>:method</tt>    - The method to use when submitting the form, usually either "get" or "post".
-      #                         If "put", "delete", or another verb is used, a hidden input with name _method 
+      #                         If "put", "delete", or another verb is used, a hidden input with name _method
       #                         is added to simulate the verb over post.
       def form_tag(url_for_options = {}, options = {}, *parameters_for_url, &block)
         html_options = options.stringify_keys
@@ -36,7 +36,7 @@ module ActionView
         html_options["action"]  = url_for(url_for_options, *parameters_for_url)
 
         method_tag = ""
-        
+
         case method = html_options.delete("method").to_s
           when /^get$/i # must be case-insentive, but can't use downcase as might be nil
             html_options["method"] = "get"
@@ -46,7 +46,7 @@ module ActionView
             html_options["method"] = "post"
             method_tag = content_tag(:div, tag(:input, :type => "hidden", :name => "_method", :value => method), :style => 'margin:0;padding:0')
         end
-        
+
         if block_given?
           content = capture(&block)
           concat(tag(:form, html_options, true) + method_tag, block.binding)
@@ -63,7 +63,7 @@ module ActionView
       def end_form_tag
         "</form>"
       end
-      
+
       deprecate :end_form_tag, :start_form_tag => :form_tag
 
       # Creates a dropdown selection box, or if the <tt>:multiple</tt> option is set to true, a multiple
@@ -88,7 +88,7 @@ module ActionView
       # * <tt>:disabled</tt> - If set to true, the user will not be able to use this input.
       # * <tt>:size</tt> - The number of visible characters that will fit in the input.
       # * <tt>:maxlength</tt> - The maximum number of characters that the browser will allow the user to enter.
-      # 
+      #
       # A hash of standard HTML options for the tag.
       def text_field_tag(name, value = nil, options = {})
         tag :input, { "type" => "text", "name" => name, "id" => name, "value" => value }.update(options.stringify_keys)
@@ -109,7 +109,7 @@ module ActionView
       #     <%= submit_tag %>
       #   <%= end_form_tag %>
       #
-      # The specified URL will then be passed a File object containing the selected file, or if the field 
+      # The specified URL will then be passed a File object containing the selected file, or if the field
       # was left blank, a StringIO object.
       def file_field_tag(name, options = {})
         text_field_tag(name, nil, options.update("type" => "file"))
@@ -157,14 +157,14 @@ module ActionView
       # then the value will be used to rename a disabled version of the submit button.
       def submit_tag(value = "Save changes", options = {})
         options.stringify_keys!
-        
+
         if disable_with = options.delete("disable_with")
           options["onclick"] = "this.disabled=true;this.value='#{disable_with}';this.form.submit();#{options["onclick"]}"
         end
-          
+
         tag :input, { "type" => "submit", "name" => "commit", "value" => value }.update(options.stringify_keys)
       end
-      
+
       # Displays an image which when clicked will submit the form.
       #
       # <tt>source</tt> is passed to AssetTagHelper#image_path

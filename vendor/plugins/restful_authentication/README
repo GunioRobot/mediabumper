@@ -15,7 +15,7 @@ The third parameter (--include-activation) generates the code for a ActionMailer
 
 You can pass --skip-migration to skip the user migration.
 
-From here, you will need to add the resource routes in config/routes.rb.  
+From here, you will need to add the resource routes in config/routes.rb.
 
   map.resources :users, :sessions
 

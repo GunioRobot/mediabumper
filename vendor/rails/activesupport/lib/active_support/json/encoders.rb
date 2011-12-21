@@ -4,11 +4,11 @@ module ActiveSupport
       mattr_accessor :encoders
       @@encoders = {}
 
-      class << self        
+      class << self
         def define_encoder(klass, &block)
           encoders[klass] = block
         end
-        
+
         def [](klass)
           klass.ancestors.each do |k|
             encoder = encoders[k]

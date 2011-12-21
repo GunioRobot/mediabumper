@@ -218,23 +218,23 @@ module ActionController #:nodoc:
           return if !@actions.include?(controller.action_name.to_sym) || controller.rendered_action_cache
           controller.write_fragment(controller.action_cache_path.path, controller.response.body)
         end
-        
+
         private
           def set_content_type!(controller, extension)
             controller.response.content_type = Mime::EXTENSION_LOOKUP[extension].to_s if extension
           end
-          
+
       end
-      
+
       class ActionCachePath
         attr_reader :path, :extension
-        
+
         class << self
           def path_for(controller, options)
             new(controller, options).path
           end
         end
-        
+
         def initialize(controller, options = {})
           @extension = extract_extension(controller.request.path)
           path = controller.url_for(options).split('://').last
@@ -242,16 +242,16 @@ module ActionController #:nodoc:
           add_extension!(path, @extension)
           @path = URI.unescape(path)
         end
-        
+
         private
           def normalize!(path)
             path << 'index' if path[-1] == ?/
           end
-        
+
           def add_extension!(path, extension)
             path << ".#{extension}" if extension
           end
-          
+
           def extract_extension(file_path)
             # Don't want just what comes after the last '.' to accomodate multi part extensions
             # such as tar.gz.
@@ -586,7 +586,7 @@ module ActionController #:nodoc:
         # ActiveRecord::Observer will mark this class as reloadable even though it should not be.
         # However, subclasses of ActionController::Caching::Sweeper should be Reloadable
         include Reloadable::Deprecated
-        
+
         def before(controller)
           self.controller = controller
           callback(:before)

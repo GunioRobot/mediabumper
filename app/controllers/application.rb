@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   before_filter :login_from_cookie
-  
+
   def current_playlist
     return unless logged_in?
     current_user.playlist ||= Playlist.new(:name => 'default')

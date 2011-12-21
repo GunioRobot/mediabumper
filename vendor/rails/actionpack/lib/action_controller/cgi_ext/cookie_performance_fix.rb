@@ -19,7 +19,7 @@ class CGI #:nodoc:
     # domain:: the domain for which this cookie applies.
     # expires:: the time at which this cookie expires, as a +Time+ object.
     # secure:: whether this cookie is a secure cookie or not (default to
-    #          false).  Secure cookies are only transmitted to HTTPS 
+    #          false).  Secure cookies are only transmitted to HTTPS
     #          servers.
     #
     # These keywords correspond to attributes of the cookie object.
@@ -39,7 +39,7 @@ class CGI #:nodoc:
         @secure = name['secure'] || false
         @path = name['path']
       end
-      
+
       unless @name
         raise ArgumentError, "`name' required"
       end

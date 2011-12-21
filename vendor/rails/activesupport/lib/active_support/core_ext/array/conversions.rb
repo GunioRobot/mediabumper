@@ -8,7 +8,7 @@ module ActiveSupport #:nodoc:
         def to_sentence(options = {})
           options.assert_valid_keys(:connector, :skip_last_comma)
           options.reverse_merge! :connector => 'and', :skip_last_comma => false
-          
+
           case length
           	when 0
           		""
@@ -25,12 +25,12 @@ module ActiveSupport #:nodoc:
         def to_param
           join '/'
         end
-        
+
         def self.included(klass) #:nodoc:
           klass.send(:alias_method, :to_default_s, :to_s)
           klass.send(:alias_method, :to_s, :to_formatted_s)
         end
-        
+
         def to_formatted_s(format = :default)
           case format
             when :db
@@ -43,7 +43,7 @@ module ActiveSupport #:nodoc:
               to_default_s
           end
         end
-        
+
         def to_xml(options = {})
           raise "Not all elements respond to to_xml" unless all? { |e| e.respond_to? :to_xml }
 

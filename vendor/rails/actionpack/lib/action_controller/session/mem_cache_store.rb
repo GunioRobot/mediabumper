@@ -78,7 +78,7 @@ begin
             # Ignore session update failures.
           end
         end
-      
+
         # Update and close the session's memcache entry.
         def close
           update
@@ -93,7 +93,7 @@ begin
           end
           @session_data = {}
         end
-        
+
         def data
           @session_data
         end

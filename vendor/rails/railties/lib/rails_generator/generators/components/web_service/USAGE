@@ -1,5 +1,5 @@
 Description:
-    The web service generator creates the controller and API definition for 
+    The web service generator creates the controller and API definition for
     a web service.
 
     The generator takes a web service name and a list of API methods as arguments.

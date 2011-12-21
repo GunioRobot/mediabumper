@@ -37,7 +37,7 @@ class RecordIdentifierTest < Test::Unit::TestCase
   def test_dom_class
     assert_equal @singular, dom_class(@record)
   end
-  
+
   def test_dom_class_with_prefix
     assert_equal "custom_prefix_#{@singular}", dom_class(@record, :custom_prefix)
   end

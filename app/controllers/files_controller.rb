@@ -8,7 +8,7 @@ class FilesController < ApplicationController
       @repositories = Repository.find :all
     end
   end
-  
+
   def search
     unless params[:q].blank?
       # Translate search query to FQL fuzzy search (see Ferret doc)
@@ -18,18 +18,18 @@ class FilesController < ApplicationController
       flash[:error] = "Please enter at least one search term."
     end
   end
-  
+
   def random
     limit = params[:s] || session[:random_selection_size] || '20'
     session[:random_selection_size] = limit
     @files = MediaFile.find(:all, :limit => limit, :order => 'RAND()')
   end
-  
+
   def stream
     if params[:id]
       file = MediaFile.find(params[:id])
       path = file.path
-      
+
       if logged_in?
         Playback.create :user => current_user, :media_file => file
       end
@@ -37,7 +37,7 @@ class FilesController < ApplicationController
       repository = Repository.find(params[:r])
       path = File.join(repository.path, params[:p])
     end
-    
+
     send_file path, :type => 'audio/mpeg', :disposition => 'inline'
   end
 end

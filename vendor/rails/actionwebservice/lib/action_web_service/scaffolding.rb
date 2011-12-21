@@ -69,7 +69,7 @@ module ActionWebService
                 post_params = params['method_params'] ? params['method_params'].dup : nil
                 params = []
                 @scaffold_method.expects.each_with_index do |spec, i|
-                  params << post_params[i.to_s]                                            
+                  params << post_params[i.to_s]
                 end if @scaffold_method.expects
                 params = @scaffold_method.cast_expects(params)
                 method_name = public_method_name(@scaffold_service.name, @scaffold_method.public_name)
@@ -187,9 +187,9 @@ module ActionWebService
           end
           content_tag('ul', parameters)
         else
-          # If the data source was structured previously we already have the index set          
+          # If the data source was structured previously we already have the index set
           field_name_base = "#{field_name_base}[#{idx}]" unless was_structured
-          
+
           case type.type
           when :int
             text_field_tag "#{field_name_base}"

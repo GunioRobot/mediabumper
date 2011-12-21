@@ -6,14 +6,14 @@ module ActiveSupport #:nodoc:
         DATE_FORMATS = {
           :db => Proc.new { |start, stop| "BETWEEN '#{start.to_s(:db)}' AND '#{stop.to_s(:db)}'" }
         }
-        
+
         def self.included(klass) #:nodoc:
           klass.send(:alias_method, :to_default_s, :to_s)
           klass.send(:alias_method, :to_s, :to_formatted_s)
         end
-        
+
         def to_formatted_s(format = :default)
-          DATE_FORMATS[format] ? DATE_FORMATS[format].call(first, last) : to_default_s   
+          DATE_FORMATS[format] ? DATE_FORMATS[format].call(first, last) : to_default_s
         end
       end
     end

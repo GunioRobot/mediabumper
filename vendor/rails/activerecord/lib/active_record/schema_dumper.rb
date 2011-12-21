@@ -6,11 +6,11 @@ module ActiveRecord
   # output format (i.e., ActiveRecord::Schema).
   class SchemaDumper #:nodoc:
     private_class_method :new
-    
-    # A list of tables which should not be dumped to the schema. 
+
+    # A list of tables which should not be dumped to the schema.
     # Acceptable values are strings as well as regexp.
     # This setting is only used if ActiveRecord::Base.schema_format == :ruby
-    cattr_accessor :ignore_tables 
+    cattr_accessor :ignore_tables
     @@ignore_tables = []
 
     def self.dump(connection=ActiveRecord::Base.connection, stream=STDOUT)
@@ -59,7 +59,7 @@ HEADER
             else
               raise StandardError, 'ActiveRecord::SchemaDumper.ignore_tables accepts an array of String and / or Regexp values.'
             end
-          end 
+          end
           table(tbl, stream)
         end
       end
@@ -111,7 +111,7 @@ HEADER
 
           tbl.puts "  end"
           tbl.puts
-          
+
           indexes(table, tbl)
 
           tbl.rewind
@@ -121,7 +121,7 @@ HEADER
           stream.puts "#   #{e.message}"
           stream.puts
         end
-        
+
         stream
       end
 
@@ -135,7 +135,7 @@ HEADER
           value.inspect
         end
       end
-      
+
       def indexes(table, stream)
         indexes = @connection.indexes(table)
         indexes.each do |index|

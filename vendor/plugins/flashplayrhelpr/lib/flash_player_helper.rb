@@ -21,9 +21,9 @@
 
 module GotRuby
   module FlashPlayerHelper
-    
+
     DEFAULT_PLAYER_OPTIONS = { :enablejs => true } unless const_defined?('DEFAULT_PLAYER_OPTIONS')
-  
+
     DEFAULT_FLASH_OPTIONS = {   :width => 300,
                                 :height => 300,
                                 :majorversion => 8,
@@ -31,14 +31,14 @@ module GotRuby
                                 :id => 'flash_player',
                                 :allowscriptaccess => 'always',
                                 :movie => '/mp3player.swf' } unless const_defined?('DEFAULT_FLASH_OPTIONS')
-                                
+
     DEFAULT_MOVIE_LOCATIONS = { :media_player => '/swf/mediaplayer.swf',
                                 :mp3_player => '/swf/mp3player.swf',
                                 :image_slideshow => '/swf/imagerotator.swf',
                                 :flv_player => '/swf/flvplayer.swf' } unless const_defined?('DEFAULT_MOVIE_LOCATIONS')
-                                
+
     DEFAULT_FLASH_REQUIRED_MESSAGE = "You need a <a href='http://www.flash.com'>Flash</a> plugin to view this player" unless const_defined?('FLASH_REQUIRED_MESSAGE')
-    
+
     # defines a helper method for a specific player (mp3, media, etc):
     def FlashPlayerHelper.define_specific_player(player_type)
       class_eval %( def #{player_type}(player_options = {}, flash_options = {})
@@ -46,7 +46,7 @@ module GotRuby
                       player player_options, flash_options
                     end )
     end
-    
+
     # define player-specific helper methods:
     #   media_player(player_options = {}, flash_options = {})
     #   mp3_player(player_options = {}, flash_options = {})
@@ -54,9 +54,9 @@ module GotRuby
     #   flv_player(player_options = {}, flash_options = {})
     [:media_player,
      :mp3_player,
-     :image_slideshow, 
+     :image_slideshow,
      :flv_player].each { |player_type| define_specific_player player_type }
-    
+
     #generic flash player helper method
     def player(player_options = {}, flash_options = {})
       player_options = DEFAULT_PLAYER_OPTIONS.dup.update(player_options)
@@ -64,30 +64,30 @@ module GotRuby
       flash_options = default_flash_options.update(flash_options)
       flash_options.update(:flashvars => hash_to_flash_vars(player_options))
       msg = GotRuby::FlashPlayerHelper.const_defined?('FLASH_REQUIRED_MESSAGE')? FLASH_REQUIRED_MESSAGE : DEFAULT_FLASH_REQUIRED_MESSAGE
-      
+
       out = content_tag 'div', msg, :id => "#{flash_options[:id]}_container"
       out << javascript_tag("UFO.create(#{hash_to_ufo_options flash_options}, \"#{flash_options[:id]}_container\");")
     end
-    
+
     def player_event(action, *args)
       if args.last.is_a? Hash then
         id = args.pop[:id].to_s
       end
       id ||= DEFAULT_FLASH_OPTIONS[:id]
       params = args.unshift(action).collect{|p| p.is_a?(Numeric)? p : "\"#{p}\""}
-      
+
       case action.to_sym
         when :load: "$(\"#{id}\").loadFile(#{params[1]});"
         else "$(\"#{id}\").sendEvent(#{params.join(',')});"
       end
     end
-    
+
     protected
-    
+
     def hash_to_flash_vars options
       options.collect{|k,v| "#{k}=#{CGI::escape(v.to_s)}"}.join '&'
     end
-    
+
     def hash_to_ufo_options options
       js = '{' + options.collect{|k,v| "#{k}:\"#{v}\""}.join(', ') + '}'
       #aka options_for_javascript :P

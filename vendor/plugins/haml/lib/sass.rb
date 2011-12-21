@@ -11,7 +11,7 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 # and implements various features that are useful
 # for creating manageable stylesheets.
 #
-# == Features 
+# == Features
 #
 # * Whitespace active
 # * Well-formatted output
@@ -137,12 +137,12 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #
 #   #main
 #     :width 97%
-#     
+#
 #     p, div
 #       :font-size 2em
 #       a
 #         :font-weight bold
-#         
+#
 #     pre
 #       :font-size 3em
 #
@@ -546,7 +546,7 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #   #main { color: #fff; background-color: #000; }
 #   #main p { width: 10em; }
 #
-#   .huge { font-size: 10em; font-weight: bold; text-decoration: underline; } 
+#   .huge { font-size: 10em; font-weight: bold; text-decoration: underline; }
 #
 # == Sass Options
 #
@@ -563,7 +563,7 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #                               as opposed to only when the template has been modified.
 #                               Defaults to false.
 #                               Only has meaning within Ruby on Rails.
-#                               
+#
 # [<tt>:always_check</tt>]      Whether a Sass template should be checked for updates every
 #                               time a controller is accessed,
 #                               as opposed to only when the Rails server starts.
@@ -590,7 +590,7 @@ $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
 #                               This defaults to the working directory and, in Rails,
 #                               whatever <tt>:template_location</tt> is
 #                               (by default <tt>RAILS_ROOT + "/public/stylesheets/sass"</tt>).
-# 
+#
 module Sass; end
 
 require 'sass/engine'

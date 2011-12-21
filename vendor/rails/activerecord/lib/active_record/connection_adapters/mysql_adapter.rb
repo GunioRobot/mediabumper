@@ -202,7 +202,7 @@ module ActiveRecord
       def quoted_true
         "1"
       end
-      
+
       def quoted_false
         "0"
       end
@@ -231,7 +231,7 @@ module ActiveRecord
         disconnect!
         connect
       end
-      
+
       def disconnect!
         @connection.close rescue nil
       end
@@ -297,7 +297,7 @@ module ActiveRecord
         else
           sql = "SHOW TABLES"
         end
-        
+
         select_all(sql).inject("") do |structure, table|
           table.delete('Table_type')
           structure += select_one("SHOW CREATE TABLE #{table.to_a.first.last}")["Create Table"] + ";\n\n"
@@ -312,7 +312,7 @@ module ActiveRecord
       def create_database(name) #:nodoc:
         execute "CREATE DATABASE `#{name}`"
       end
-      
+
       def drop_database(name) #:nodoc:
         execute "DROP DATABASE IF EXISTS `#{name}`"
       end
@@ -352,10 +352,10 @@ module ActiveRecord
       def create_table(name, options = {}) #:nodoc:
         super(name, {:options => "ENGINE=InnoDB"}.merge(options))
       end
-      
+
       def rename_table(name, new_name)
         execute "RENAME TABLE #{name} TO #{new_name}"
-      end  
+      end
 
       def change_column_default(table_name, column_name, default) #:nodoc:
         current_type = select_one("SHOW COLUMNS FROM #{table_name} LIKE '#{column_name}'")["Type"]

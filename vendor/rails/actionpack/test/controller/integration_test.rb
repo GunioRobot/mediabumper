@@ -200,7 +200,7 @@ class IntegrationTestTest < Test::Unit::TestCase
     @test.class.stubs(:fixture_table_names).returns([])
     @session = @test.open_session
   end
-  
+
   def test_opens_new_session
     @test.class.expects(:fixture_table_names).times(2).returns(['foo'])
 

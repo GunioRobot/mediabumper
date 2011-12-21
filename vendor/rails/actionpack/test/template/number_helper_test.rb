@@ -53,7 +53,7 @@ class NumberHelperTest < Test::Unit::TestCase
     assert_equal("x", number_with_delimiter("x"))
     assert_nil number_with_delimiter(nil)
   end
-  
+
   def test_number_with_precision
     assert_equal("111.235", number_with_precision(111.2346))
     assert_equal("111.23", number_with_precision(111.2346, 2))
@@ -62,7 +62,7 @@ class NumberHelperTest < Test::Unit::TestCase
     assert_equal("x", number_with_precision("x"))
     assert_nil number_with_precision(nil)
   end
-  
+
   def test_number_to_human_size
     assert_equal '0 Bytes',   number_to_human_size(0)
     assert_equal '1 Byte',    number_to_human_size(1)
@@ -83,7 +83,7 @@ class NumberHelperTest < Test::Unit::TestCase
     assert_nil number_to_human_size('x')
     assert_nil number_to_human_size(nil)
   end
-  
+
   def test_human_size_alias_is_deprecated
     assert_deprecated 'human_size' do
       assert_equal '0 Bytes', human_size(0)

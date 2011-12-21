@@ -190,7 +190,7 @@ module TMail
     def mime_encoded?( str )
       MIME_ENCODED === str
     end
-  
+
 
     def decode_params( hash )
       new = Hash.new

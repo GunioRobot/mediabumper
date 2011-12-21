@@ -54,13 +54,13 @@ class ActiveRecordTestConnector
         begin
           connection_options = {:adapter => 'sqlite3', :dbfile => ':memory:'}
           ActiveRecord::Base.establish_connection(connection_options)
-          ActiveRecord::Base.configurations = { 'sqlite3_ar_integration' => connection_options } 
+          ActiveRecord::Base.configurations = { 'sqlite3_ar_integration' => connection_options }
           ActiveRecord::Base.connection
         rescue Exception  # errors from establishing a connection
           $stderr.puts 'SQLite 3 unavailable; falling to SQLite 2.'
           connection_options = {:adapter => 'sqlite', :dbfile => ':memory:'}
           ActiveRecord::Base.establish_connection(connection_options)
-          ActiveRecord::Base.configurations = { 'sqlite2_ar_integration' => connection_options } 
+          ActiveRecord::Base.configurations = { 'sqlite2_ar_integration' => connection_options }
           ActiveRecord::Base.connection
         end
 

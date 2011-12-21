@@ -63,11 +63,11 @@ class ScaffoldResourceGenerator < Rails::Generator::NamedBase
 
       unless options[:skip_migration]
         m.migration_template(
-          'migration.rb', 'db/migrate', 
+          'migration.rb', 'db/migrate',
           :assigns => {
             :migration_name => "Create#{class_name.pluralize.gsub(/::/, '')}",
             :attributes     => attributes
-          }, 
+          },
           :migration_file_name => "create_#{file_path.gsub(/\//, '_').pluralize}"
         )
       end
@@ -86,7 +86,7 @@ class ScaffoldResourceGenerator < Rails::Generator::NamedBase
       %w[ index show new edit ]
     end
 
-    def model_name 
+    def model_name
       class_name.demodulize
     end
 end

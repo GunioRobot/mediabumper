@@ -5,11 +5,11 @@
   %ul
     - @repositories.each do |r|
       %li= link_to(h(r.name), :action => 'browse', :r => r)
-- else  
+- else
   %p
     Browsing
     = path_with_browse_links @repository, @relative_path
-  
+
   %ul.browse
     - if @relative_path
       %li= link_to '^ go to parent', :r => @repository, :p => parent_dir(@relative_path)

@@ -22,7 +22,7 @@ module ActionWebService
     # Action WebService Struct subclasses should be reloaded by the dispatcher in Rails
     # when Dependencies.mechanism = :load.
     include Reloadable::Deprecated
-    
+
     # If a Hash is given as argument to an ActionWebService::Struct constructor,
     # it can contain initial values for the structure member.
     def initialize(values={})
@@ -55,7 +55,7 @@ module ActionWebService
           def #{name}=(value); @#{name} = value; end
         END
       end
-  
+
       def members # :nodoc:
         read_inheritable_attribute("struct_members") || {}
       end

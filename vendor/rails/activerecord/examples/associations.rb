@@ -52,7 +52,7 @@ Person.new("name" => "David").save
 logger.info "\nUsing Finders"
 
 next_angle = Company.find(1)
-next_angle = Firm.find(1)    
+next_angle = Firm.find(1)
 next_angle = Company.find_first "name = 'Next Angle'"
 next_angle = Firm.find_by_sql("SELECT * FROM companies WHERE id = 1").first
 

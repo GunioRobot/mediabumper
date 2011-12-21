@@ -12,10 +12,10 @@ module ActiveRecord
         else
           record = @reflection.klass.new(attributes)
           set_belongs_to_association_for(record)
-          
+
           @target ||= [] unless loaded?
           @target << record
-          
+
           record
         end
       end
@@ -46,7 +46,7 @@ module ActiveRecord
         elsif @reflection.options[:finder_sql]
           @reflection.klass.count_by_sql(@finder_sql)
         else
-          column_name, options = @reflection.klass.send(:construct_count_options_from_legacy_args, *args)          
+          column_name, options = @reflection.klass.send(:construct_count_options_from_legacy_args, *args)
           options[:conditions] = options[:conditions].nil? ?
             @finder_sql :
             @finder_sql + " AND (#{sanitize_sql(options[:conditions])})"
@@ -103,8 +103,8 @@ module ActiveRecord
             @reflection.klass.with_scope(
               :create => create_scoping,
               :find => {
-                :conditions => @finder_sql, 
-                :joins      => @join_sql, 
+                :conditions => @finder_sql,
+                :joins      => @join_sql,
                 :readonly   => false
               }
             ) do
@@ -140,13 +140,13 @@ module ActiveRecord
           else
             @reflection.klass.count(:conditions => @counter_sql, :include => @reflection.options[:include])
           end
-          
+
           @target = [] and loaded if count == 0
-          
+
           if @reflection.options[:limit]
             count = [ @reflection.options[:limit], count ].min
           end
-          
+
           return count
         end
 
@@ -169,7 +169,7 @@ module ActiveRecord
           else
             ids = quoted_record_ids(records)
             @reflection.klass.update_all(
-              "#{@reflection.primary_key_name} = NULL", 
+              "#{@reflection.primary_key_name} = NULL",
               "#{@reflection.primary_key_name} = #{@owner.quoted_id} AND #{@reflection.klass.primary_key} IN (#{ids})"
             )
           end
@@ -185,11 +185,11 @@ module ActiveRecord
               @finder_sql = interpolate_sql(@reflection.options[:finder_sql])
 
             when @reflection.options[:as]
-              @finder_sql = 
-                "#{@reflection.klass.table_name}.#{@reflection.options[:as]}_id = #{@owner.quoted_id} AND " + 
+              @finder_sql =
+                "#{@reflection.klass.table_name}.#{@reflection.options[:as]}_id = #{@owner.quoted_id} AND " +
                 "#{@reflection.klass.table_name}.#{@reflection.options[:as]}_type = #{@owner.class.quote_value(@owner.class.base_class.name.to_s)}"
               @finder_sql << " AND (#{conditions})" if conditions
-            
+
             else
               @finder_sql = "#{@reflection.klass.table_name}.#{@reflection.primary_key_name} = #{@owner.quoted_id}"
               @finder_sql << " AND (#{conditions})" if conditions

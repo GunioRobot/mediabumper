@@ -13,7 +13,7 @@
 == Embedded? #{embedded}!
 .render= render :inline => "%em= 'wow!'", :type => :haml
 = "stuff followed by whitespace"
-  
+
 - if true
 
   %strong block with whitespace
@@ -44,7 +44,7 @@
 = "test" |
   "test" |
 -# Hard tabs shouldn't throw errors.
-	
+
 - case :foo
 - when :bar
   %br Blah

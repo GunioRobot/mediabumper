@@ -15,7 +15,7 @@ module Haml
       Profiler__::start_profile
       times.times &block
       Profiler__::stop_profile
-      
+
       # Outputs information to a StringIO, returns result
       io = StringIO.new
       Profiler__::print_profile(io)
@@ -29,7 +29,7 @@ module Haml
   # A profiler for Haml, mostly for development use. This simply implements
   # the Ruby profiler for profiling haml code.
   class Profiler
-  
+
     # Creates a new profiler that looks for templates in the base
     # directory.
     def initialize(base = File.join(File.dirname(__FILE__), 'haml', 'templates'))
@@ -44,9 +44,9 @@ module Haml
     # Profiles haml on the given template with the given number of runs.
     # The template name shouldn't have a file extension; this will
     # automatically look for a haml template.
-    # 
+    #
     # Returns the results of the profiling as a string.
-    def profile(runs = 100, template_name = 'standard')      
+    def profile(runs = 100, template_name = 'standard')
       AbstractProfiler.profile(runs) { @base.render template_name }
     end
   end

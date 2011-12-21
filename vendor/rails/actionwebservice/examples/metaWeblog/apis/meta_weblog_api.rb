@@ -1,4 +1,4 @@
-# 
+#
 # here lie structures, cousins of those on http://www.xmlrpc.com/metaWeblog
 # but they don't necessarily the real world reflect
 # so if you do, find that your client complains:

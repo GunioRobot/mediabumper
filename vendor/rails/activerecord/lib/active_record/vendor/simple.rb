@@ -94,7 +94,7 @@ module Transaction
     # levels (limited only by memory). If I open two transactions, commit
     # the second, but abort the first, the object will revert to the
     # original version.
-    # 
+    #
     # Transaction::Simple supports "named" transactions, so that multiple
     # levels of transactions can be committed, aborted, or rewound by
     # referring to the appropriate name of the transaction. Names may be any
@@ -139,32 +139,32 @@ module Transaction
     # == Named Transaction Usage
     #   v = "Hello, you."               # -> "Hello, you."
     #   v.extend(Transaction::Simple)   # -> "Hello, you."
-    #   
+    #
     #   v.start_transaction(:first)     # -> ... (a Marshal string)
     #   v.transaction_open?             # -> true
     #   v.transaction_open?(:first)     # -> true
     #   v.transaction_open?(:second)    # -> false
     #   v.gsub!(/you/, "world")         # -> "Hello, world."
-    #   
+    #
     #   v.start_transaction(:second)    # -> ... (a Marshal string)
     #   v.gsub!(/world/, "HAL")         # -> "Hello, HAL."
     #   v.rewind_transaction(:first)    # -> "Hello, you."
     #   v.transaction_open?             # -> true
     #   v.transaction_open?(:first)     # -> true
     #   v.transaction_open?(:second)    # -> false
-    #   
+    #
     #   v.gsub!(/you/, "world")         # -> "Hello, world."
     #   v.start_transaction(:second)    # -> ... (a Marshal string)
     #   v.gsub!(/world/, "HAL")         # -> "Hello, HAL."
     #   v.transaction_name              # -> :second
     #   v.abort_transaction(:first)     # -> "Hello, you."
     #   v.transaction_open?             # -> false
-    #   
+    #
     #   v.start_transaction(:first)     # -> ... (a Marshal string)
     #   v.gsub!(/you/, "world")         # -> "Hello, world."
     #   v.start_transaction(:second)    # -> ... (a Marshal string)
     #   v.gsub!(/world/, "HAL")         # -> "Hello, HAL."
-    #   
+    #
     #   v.commit_transaction(:first)    # -> "Hello, HAL."
     #   v.transaction_open?             # -> false
     #
@@ -205,32 +205,32 @@ module Transaction
     # == Named Transaction Usage
     #   v = "Hello, you."               # -> "Hello, you."
     #   v.extend(Transaction::Simple)   # -> "Hello, you."
-    #   
+    #
     #   v.start_transaction(:first)     # -> ... (a Marshal string)
     #   v.transaction_open?             # -> true
     #   v.transaction_open?(:first)     # -> true
     #   v.transaction_open?(:second)    # -> false
     #   v.gsub!(/you/, "world")         # -> "Hello, world."
-    #   
+    #
     #   v.start_transaction(:second)    # -> ... (a Marshal string)
     #   v.gsub!(/world/, "HAL")         # -> "Hello, HAL."
     #   v.rewind_transaction(:first)    # -> "Hello, you."
     #   v.transaction_open?             # -> true
     #   v.transaction_open?(:first)     # -> true
     #   v.transaction_open?(:second)    # -> false
-    #   
+    #
     #   v.gsub!(/you/, "world")         # -> "Hello, world."
     #   v.start_transaction(:second)    # -> ... (a Marshal string)
     #   v.gsub!(/world/, "HAL")         # -> "Hello, HAL."
     #   v.transaction_name              # -> :second
     #   v.abort_transaction(:first)     # -> "Hello, you."
     #   v.transaction_open?             # -> false
-    #   
+    #
     #   v.start_transaction(:first)     # -> ... (a Marshal string)
     #   v.gsub!(/you/, "world")         # -> "Hello, world."
     #   v.start_transaction(:second)    # -> ... (a Marshal string)
     #   v.gsub!(/world/, "HAL")         # -> "Hello, HAL."
-    #   
+    #
     #   v.commit_transaction(:first)    # -> "Hello, HAL."
     #   v.transaction_open?             # -> false
     #

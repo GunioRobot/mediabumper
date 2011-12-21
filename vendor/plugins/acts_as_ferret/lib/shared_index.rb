@@ -1,5 +1,5 @@
 module ActsAsFerret
-  
+
   class SharedIndex < LocalIndex
 
     # build a ferret query matching only the record with the given id and class

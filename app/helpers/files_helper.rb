@@ -5,24 +5,24 @@ module FilesHelper
   # files.
   def files_in(repository, relative_path)
     require 'natcmp'
-    
+
     path = repository.path
     if relative_path && !relative_path.empty?
       path = File.join(path, relative_path)
     end
-    
+
     Dir.entries(path).delete_if { |d| d =~ /^\./ }.sort { |a, b| String.natcmp(a, b, true) }
   end
-  
+
   def parent_dir(path)
     path.split(File::SEPARATOR)[0..-2]
   end
-  
+
   # Returns HTML code to display a directory entry which will depend on its
   # type.
   def directory_entry(repository, relative_path, file)
     path = relative_path ? File.join(repository.path, relative_path, file) : File.join(repository.path, file)
-    
+
     if File.directory? path
       link_to h(file), :r => repository, :p => relative_path ? File.join(relative_path, file) : file
     elsif File.file?(path) && MediaFile::EXTENSIONS.include?(File.extname(path))

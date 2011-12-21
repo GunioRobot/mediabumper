@@ -4,15 +4,15 @@ module ActiveSupport
       define_encoder Object do |object|
         object.instance_values.to_json
       end
-      
+
       define_encoder TrueClass do
         'true'
       end
-      
+
       define_encoder FalseClass do
         'false'
       end
-      
+
       define_encoder NilClass do
         'null'
       end
@@ -28,7 +28,7 @@ module ActiveSupport
         '<'  =>    '\\074',
         '>'  =>    '\\076'
       }
-      
+
       define_encoder String do |string|
         '"' + string.gsub(/[\010\f\n\r\t"\\<>]/) { |s|
           ESCAPED_CHARS[s]
@@ -38,11 +38,11 @@ module ActiveSupport
           s.unpack("U*").pack("n*").unpack("H*")[0].gsub(/.{4}/, '\\\\u\&')
         } + '"'
       end
-      
+
       define_encoder Numeric do |numeric|
         numeric.to_s
       end
-      
+
       define_encoder Symbol do |symbol|
         symbol.to_s.to_json
       end
@@ -50,11 +50,11 @@ module ActiveSupport
       define_encoder Enumerable do |enumerable|
         "[#{enumerable.map { |value| value.to_json } * ', '}]"
       end
-      
+
       define_encoder Hash do |hash|
         returning result = '{' do
           result << hash.map do |key, value|
-            key = ActiveSupport::JSON::Variable.new(key.to_s) if 
+            key = ActiveSupport::JSON::Variable.new(key.to_s) if
               ActiveSupport::JSON.can_unquote_identifier?(key)
             "#{key.to_json}: #{value.to_json}"
           end * ', '

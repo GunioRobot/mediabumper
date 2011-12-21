@@ -11,12 +11,12 @@ class Module
 end
 
 def helper
-  @helper_proxy ||= Object.new 
+  @helper_proxy ||= Object.new
 end
 
 require 'application'
 
-class << helper 
+class << helper
   include_all_modules_from ActionView
 end
 

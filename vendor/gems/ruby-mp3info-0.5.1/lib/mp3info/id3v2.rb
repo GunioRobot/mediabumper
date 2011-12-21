@@ -1,9 +1,9 @@
 require "mp3info/extension_modules"
 
 # This class is not intended to be used directly
-class ID3v2 < DelegateClass(Hash) 
+class ID3v2 < DelegateClass(Hash)
   VERSION_MAJ = 3
-  
+
   TAGS = {
     "AENC" => "Audio encryption",
     "APIC" => "Attached picture",
@@ -82,21 +82,21 @@ class ID3v2 < DelegateClass(Hash)
   }
 
   include Mp3Info::HashKeys
-  
+
   attr_reader :io_position
 
   # possibles keys:
   # :+lang+ for writing comments
-  # :+encoding+: :+iso+ or :+unicode+ 
+  # :+encoding+: :+iso+ or :+unicode+
   attr_reader :options
-  
+
   def initialize(options = {})
-    @options = { 
-      :lang => "ENG", 
+    @options = {
+      :lang => "ENG",
       :encoding => :iso  #language encoding bit 0 for iso_8859_1, 1 for unicode
     }
     @options.update(options)
-    
+
     @hash = {}
     #TAGS.keys.each { |k| @hash[k] = nil }
     @hash_orig = {}
@@ -112,7 +112,7 @@ class ID3v2 < DelegateClass(Hash)
   def changed?
     @hash_orig != @hash
   end
-  
+
   def version
     "2.#{@version_maj}.#{@version_min}"
   end
@@ -135,7 +135,7 @@ class ID3v2 < DelegateClass(Hash)
         read_id3v2_3_frames(tag2_len)
     end
     @io_position = @io.pos
-    
+
     @hash_orig = @hash.dup
     #no more reading
     @io = nil
@@ -162,7 +162,7 @@ class ID3v2 < DelegateClass(Hash)
     end
 
     tag_str = ""
-    #version_maj, version_min, unsync, ext_header, experimental, footer 
+    #version_maj, version_min, unsync, ext_header, experimental, footer
     tag_str << [ VERSION_MAJ, 0, "0000" ].pack("CCB4")
     tag_str << to_syncsafe(tag.size)
     tag_str << tag
@@ -186,7 +186,7 @@ class ID3v2 < DelegateClass(Hash)
 	else
 	  "\x01"+value #Iconv.iconv("UNICODE", "ISO-8859-1", value)[0]
 	end
-      #data << "\x00"   
+      #data << "\x00"
     end
   end
 
@@ -201,16 +201,16 @@ class ID3v2 < DelegateClass(Hash)
         out = value
       else
 	encoding = value[0]     # language encoding bit 0 for iso_8859_1, 1 for unicode
-	out = value[1..-1] 
+	out = value[1..-1]
     end
 
     if encoding == 1 #and name[0] == ?T
       require "iconv"
-      
+
       #strip byte-order bytes at the beginning of the unicode string if they exists
       out[0..3] =~ /^[\xff\xfe]+$/ and out = out[2..-1]
       begin
-	out = Iconv.iconv("ISO-8859-1", "UTF-16", out)[0] 
+	out = Iconv.iconv("ISO-8859-1", "UTF-16", out)[0]
       rescue Iconv::IllegalSequence, Iconv::InvalidCharacter
       end
     end
@@ -256,9 +256,9 @@ class ID3v2 < DelegateClass(Hash)
 ##	    add_value_to_tag2(name, data)
 #          else
 #	    decode_tag(
-#            #@file.seek(size-1, IO::SEEK_CUR)  
+#            #@file.seek(size-1, IO::SEEK_CUR)
 #            puts "tag is binary, skipping" if $DEBUG
-#            @io.seek(size, IO::SEEK_CUR)  
+#            @io.seek(size, IO::SEEK_CUR)
 #        end
 
 #	case name
@@ -272,7 +272,7 @@ class ID3v2 < DelegateClass(Hash)
       end
       break if @io.pos >= tag2_len # 2. reach length from header
     end
-  end    
+  end
 
   ### reads id3 ver 2.2.x frames and adds the contents to @tag2 hash
   ###  tag2_len (fixnum) = length of entire id3v2 data, as reported in header
@@ -290,8 +290,8 @@ class ID3v2 < DelegateClass(Hash)
         break if @io.pos >= tag2_len
       end
     end
-  end    
-  
+  end
+
   ### Add data to tag2["name"]
   ### read lang_encoding, decode data if unicode and
   ### create an array if the key already exists in the tag
@@ -306,11 +306,11 @@ class ID3v2 < DelegateClass(Hash)
       end
       self[name] << data
     else
-      self[name] = data 
+      self[name] = data
     end
     p data if $DEBUG
   end
-  
+
   ### runs thru @file one char at a time looking for best guess of first MPEG
   ###  frame, which should be first 0xff byte after id3v2 padding zero's
   def seek_to_v2_end
@@ -319,7 +319,7 @@ class ID3v2 < DelegateClass(Hash)
     end
     @io.seek(-1, IO::SEEK_CUR)
   end
-  
+
   ### convert an 32 integer to a syncsafe string
   def to_syncsafe(num)
     n = ( (num<<3) & 0x7f000000 )  + ( (num<<2) & 0x7f0000 ) + ( (num<<1) & 0x7f00 ) + ( num & 0x7f )

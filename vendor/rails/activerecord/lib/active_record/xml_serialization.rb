@@ -1,12 +1,12 @@
 module ActiveRecord #:nodoc:
   module XmlSerialization
     # Builds an XML document to represent the model.   Some configuration is
-    # availble through +options+, however more complicated cases should use 
+    # availble through +options+, however more complicated cases should use
     # override ActiveRecord's to_xml.
     #
-    # By default the generated XML document will include the processing 
+    # By default the generated XML document will include the processing
     # instruction and all object's attributes.  For example:
-    #    
+    #
     #   <?xml version="1.0" encoding="UTF-8"?>
     #   <topic>
     #     <title>The First Topic</title>
@@ -42,7 +42,7 @@ module ActiveRecord #:nodoc:
     #     <parent-id></parent-id>
     #     <last-read type="date">2004-04-15</last-read>
     #   </topic>
-    # 
+    #
     # To include first level associations use :include
     #
     #   firm.to_xml :include => [ :account, :clients ]
@@ -110,11 +110,11 @@ module ActiveRecord #:nodoc:
 
   class XmlSerializer #:nodoc:
     attr_reader :options
-    
+
     def initialize(record, options = {})
       @record, @options = record, options.dup
     end
-    
+
     def builder
       @builder ||= begin
         options[:indent] ||= 2
@@ -124,7 +124,7 @@ module ActiveRecord #:nodoc:
           builder.instruct!
           options[:skip_instruct] = true
         end
-        
+
         builder
       end
     end
@@ -133,7 +133,7 @@ module ActiveRecord #:nodoc:
       root = (options[:root] || @record.class.to_s.underscore).to_s
       dasherize? ? root.dasherize : root
     end
-    
+
     def dasherize?
       !options.has_key?(:dasherize) || options[:dasherize]
     end
@@ -155,7 +155,7 @@ module ActiveRecord #:nodoc:
         options[:except] = Array(options[:except]) | Array(@record.class.inheritance_column)
         attribute_names = attribute_names - options[:except].collect { |n| n.to_s }
       end
-      
+
       attribute_names.collect { |name| Attribute.new(name, @record) }
     end
 
@@ -215,8 +215,8 @@ module ActiveRecord #:nodoc:
 
     def add_tag(attribute)
       builder.tag!(
-        dasherize? ? attribute.name.dasherize : attribute.name, 
-        attribute.value.to_s, 
+        dasherize? ? attribute.name.dasherize : attribute.name,
+        attribute.value.to_s,
         attribute.decorations(!options[:skip_types])
       )
     end
@@ -226,22 +226,22 @@ module ActiveRecord #:nodoc:
       if options[:namespace]
         args << {:xmlns=>options[:namespace]}
       end
-        
+
       builder.tag!(*args) do
         add_attributes
         add_includes
         add_procs
       end
-    end        
-    
+    end
+
     alias_method :to_s, :serialize
 
     class Attribute #:nodoc:
       attr_reader :name, :value, :type
-    
+
       def initialize(name, record)
         @name, @record = name, record
-      
+
         @type  = compute_type
         @value = compute_value
       end
@@ -258,21 +258,21 @@ module ActiveRecord #:nodoc:
       def needs_encoding?
         ![ :binary, :date, :datetime, :boolean, :float, :integer ].include?(type)
       end
-    
+
       def decorations(include_types = true)
         decorations = {}
 
         if type == :binary
           decorations[:encoding] = 'base64'
         end
-      
+
         if include_types && type != :string
           decorations[:type] = type
         end
-      
+
         decorations
       end
-    
+
       protected
         def compute_type
           type = @record.class.columns_hash[name].type
@@ -286,10 +286,10 @@ module ActiveRecord #:nodoc:
               type
           end
         end
-    
+
         def compute_value
           value = @record.send(name)
-        
+
           if formatter = Hash::XML_FORMATTING[type.to_s]
             value ? formatter.call(value) : nil
           else

@@ -388,7 +388,7 @@ begin
           execute "ALTER TABLE #{table_name} DROP COLUMN #{column_name}"
         end
 
-        # Find a table's primary key and sequence. 
+        # Find a table's primary key and sequence.
         # *Note*: Only primary key is implemented - sequence will be nil.
         def pk_and_sequence_for(table_name)
           (owner, table_name) = @connection.describe(table_name)
@@ -453,7 +453,7 @@ begin
         # Oracle requires the ORDER BY columns to be in the SELECT list for DISTINCT
         # queries. However, with those columns included in the SELECT DISTINCT list, you
         # won't actually get a distinct list of the column you want (presuming the column
-        # has duplicates with multiple values for the ordered-by columns. So we use the 
+        # has duplicates with multiple values for the ordered-by columns. So we use the
         # FIRST_VALUE function to get a single (first) value for each column, effectively
         # making every row the same.
         #
@@ -472,7 +472,7 @@ begin
         end
 
         # ORDER BY clause for the passed order option.
-        # 
+        #
         # Uses column aliases as defined by #distinct.
         def add_order_by_for_association_limiting!(sql, options)
           return sql if options[:order].blank?

@@ -73,7 +73,7 @@ module Sass
         build_tree.to_sass
       rescue Exception => err
         line = @template.string[0...@template.pos].split("\n").size
-        
+
         err.backtrace.unshift "(css):#{line}"
         raise err
       end
@@ -129,13 +129,13 @@ module Sass
         whitespace
 
         assert_match /:/
-        
+
         value = ''
         while @template.scan(/[^;\s]+/)
           value << @template[0] << whitespace
         end
-        
-        assert_match /;/        
+
+        assert_match /;/
         rule << Tree::AttrNode.new(name, value, nil)
       end
 
@@ -181,13 +181,13 @@ module Sass
             prev_rules.pop
             prev_rule_values.pop
           end
-          
+
           unless prev_rules.empty?
             child.rule.slice!(0..(joined_prev_values.size))
             prev_rules[-1] << child
             root.children.delete child
           end
-          
+
           prev_rules << child
           prev_rule_values << child.rule
         end

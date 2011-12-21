@@ -8,7 +8,7 @@ module Sass::Tree
 
     alias_method :rule, :value
     alias_method :rule=, :value=
-    
+
     def to_s(tabs, super_rules = nil)
       attributes = []
       sub_rules = []
@@ -27,7 +27,7 @@ module Sass::Tree
       else
         self.rule
       end
-      
+
       children.each do |child|
         if child.is_a? RuleNode
           sub_rules << child
@@ -35,7 +35,7 @@ module Sass::Tree
           attributes << child
         end
       end
-      
+
       to_return = ''
       unless attributes.empty?
         if @style == :compact
@@ -50,7 +50,7 @@ module Sass::Tree
           to_return << "#{old_spaces}#{total_rule} {\n#{spaces}#{attributes}#{end_attrs}}\n"
         end
       end
-      
+
       tabs += 1 unless attributes.empty?
       sub_rules.each { |sub| to_return << sub.to_s(tabs, total_rule) }
       to_return

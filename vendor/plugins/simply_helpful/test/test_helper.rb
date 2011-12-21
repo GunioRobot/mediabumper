@@ -18,7 +18,7 @@ class Test::Unit::TestCase
     def posts_url
       'http://www.example.com/posts'
     end
-    
+
     def post_url(post)
       "http://www.example.com/posts/#{post.id}"
     end

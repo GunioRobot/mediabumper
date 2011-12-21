@@ -34,7 +34,7 @@ module ActiveRecord #:nodoc:
   end
   class ReadOnlyRecord < StandardError #:nodoc:
   end
-  
+
   class AttributeAssignmentError < ActiveRecordError #:nodoc:
     attr_reader :exception, :attribute
     def initialize(message, exception, attribute)
@@ -102,7 +102,7 @@ module ActiveRecord #:nodoc:
   #
   # The <tt>authenticate_unsafely</tt> method inserts the parameters directly into the query and is thus susceptible to SQL-injection
   # attacks if the <tt>user_name</tt> and +password+ parameters come directly from a HTTP request. The <tt>authenticate_safely</tt>  and
-  # <tt>authenticate_safely_simply</tt> both will sanitize the <tt>user_name</tt> and +password+ before inserting them in the query, 
+  # <tt>authenticate_safely_simply</tt> both will sanitize the <tt>user_name</tt> and +password+ before inserting them in the query,
   # which will ensure that an attacker can't escape the query and fake the login (or worse).
   #
   # When using multiple parameters in the conditions, it can easily become hard to read exactly what the fourth or fifth
@@ -178,7 +178,7 @@ module ActiveRecord #:nodoc:
   #
   #   # No 'Summer' tag exists
   #   Tag.find_or_create_by_name("Summer") # equal to Tag.create(:name => "Summer")
-  #   
+  #
   #   # Now the 'Summer' tag does exist
   #   Tag.find_or_create_by_name("Summer") # equal to Tag.find_by_name("Summer")
   #
@@ -266,15 +266,15 @@ module ActiveRecord #:nodoc:
     # Accepts a logger conforming to the interface of Log4r or the default Ruby 1.8+ Logger class, which is then passed
     # on to any new database connections made and which can be retrieved on both a class and instance level by calling +logger+.
     cattr_accessor :logger, :instance_writer => false
-    
+
     include Reloadable::Deprecated
-    
+
     def self.inherited(child) #:nodoc:
       @@subclasses[self] ||= []
       @@subclasses[self] << child
       super
     end
-    
+
     def self.reset_subclasses #:nodoc:
       nonreloadables = []
       subclasses.each do |klass|
@@ -340,10 +340,10 @@ module ActiveRecord #:nodoc:
     # mode, because the methods would be regenerated on each request.
     cattr_accessor :generate_read_methods, :instance_writer => false
     @@generate_read_methods = true
-    
+
     # Specifies the format to use when dumping the database schema with Rails'
     # Rakefile.  If :sql, the schema is dumped as (potentially database-
-    # specific) SQL statements.  If :ruby, the schema is dumped as an 
+    # specific) SQL statements.  If :ruby, the schema is dumped as an
     # ActiveRecord::Schema file which can be loaded into any database that
     # supports migrations.  Use :ruby if you want to have different database
     # adapters for, e.g., your development and test environments.
@@ -374,7 +374,7 @@ module ActiveRecord #:nodoc:
       # * <tt>:select</tt>: By default, this is * as in SELECT * FROM, but can be changed if you for example want to do a join, but not
       #   include the joined columns.
       # * <tt>:from</tt>: By default, this is the table name of the class, but can be changed to an alternate table name (or even the name
-      #   of a database view). 
+      #   of a database view).
       # * <tt>:readonly</tt>: Mark the returned records read-only so they cannot be saved or updated.
       # * <tt>:lock</tt>: An SQL fragment like "FOR UPDATE" or "LOCK IN SHARE MODE".
       #   :lock => true gives connection's default exclusive lock, usually "FOR UPDATE".
@@ -419,7 +419,7 @@ module ActiveRecord #:nodoc:
           else             find_from_ids(args, options)
         end
       end
-      
+
       # Works like find(:all), but requires a complete SQL string. Examples:
       #   Post.find_by_sql "SELECT p.*, c.author FROM posts p, comments c WHERE p.id = c.post_id"
       #   Post.find_by_sql ["SELECT * FROM posts WHERE author = ? AND created > ?", author_id, start_date]
@@ -428,7 +428,7 @@ module ActiveRecord #:nodoc:
       end
 
       # Returns true if the given +id+ represents the primary key of a record in the database, false otherwise.
-      # You can also pass a set of SQL conditions. 
+      # You can also pass a set of SQL conditions.
       # Example:
       #   Person.exists?(5)
       #   Person.exists?('5')
@@ -456,14 +456,14 @@ module ActiveRecord #:nodoc:
       # Finds the record from the passed +id+, instantly saves it with the passed +attributes+ (if the validation permits it),
       # and returns it. If the save fails under validations, the unsaved object is still returned.
       #
-      # The arguments may also be given as arrays in which case the update method is called for each pair of +id+ and 
+      # The arguments may also be given as arrays in which case the update method is called for each pair of +id+ and
       # +attributes+ and an array of objects is returned.
       #
       # Example of updating one record:
       #   Person.update(15, {:user_name => 'Samuel', :group => 'expert'})
-      # 
+      #
       # Example of updating multiple records:
-      #   people = { 1 => { "first_name" => "David" }, 2 => { "first_name" => "Jeremy"} } 	
+      #   people = { 1 => { "first_name" => "David" }, 2 => { "first_name" => "Jeremy"} }
       #   Person.update(people.keys, people.values)
       def update(id, attributes)
         if id.is_a?(Array)
@@ -753,7 +753,7 @@ module ActiveRecord #:nodoc:
             columns.size > 0
           rescue ActiveRecord::StatementInvalid
             false
-          end          
+          end
         end
       end
 
@@ -957,14 +957,14 @@ module ActiveRecord #:nodoc:
       # Overwrite the default class equality method to provide support for association proxies.
       def ===(object)
         object.is_a?(self)
-      end      
+      end
 
-      # Deprecated 
+      # Deprecated
       def threaded_connections #:nodoc:
         allow_concurrency
       end
 
-      # Deprecated 
+      # Deprecated
       def threaded_connections=(value) #:nodoc:
         self.allow_concurrency = value
       end
@@ -993,7 +993,7 @@ module ActiveRecord #:nodoc:
 
         def find_every(options)
           records = scoped?(:find, :include) || options[:include] ?
-            find_with_associations(options) : 
+            find_with_associations(options) :
             find_by_sql(construct_finder_sql(options))
 
           records.each { |record| record.readonly! } if options[:readonly]
@@ -1017,7 +1017,7 @@ module ActiveRecord #:nodoc:
               find_some(ids, options)
           end
         end
-      
+
         def find_one(id, options)
           conditions = " AND (#{sanitize_sql(options[:conditions])})" if options[:conditions]
           options.update :conditions => "#{table_name}.#{connection.quote_column_name(primary_key)} = #{quote_value(id,columns_hash[primary_key])}#{conditions}"
@@ -1031,7 +1031,7 @@ module ActiveRecord #:nodoc:
             raise RecordNotFound, "Couldn't find #{name} with ID=#{id}#{conditions}"
           end
         end
-      
+
         def find_some(ids, options)
           conditions = " AND (#{sanitize_sql(options[:conditions])})" if options[:conditions]
           ids_list   = ids.map { |id| quote_value(id,columns_hash[primary_key]) }.join(',')
@@ -1189,7 +1189,7 @@ module ActiveRecord #:nodoc:
         # It's even possible to use all the additional parameters to find. For example, the full interface for find_all_by_amount
         # is actually find_all_by_amount(amount, options).
         #
-        # This also enables you to initialize a record if it is not found, such as find_or_initialize_by_amount(amount) 
+        # This also enables you to initialize a record if it is not found, such as find_or_initialize_by_amount(amount)
         # or find_or_create_by_user_and_password(user, password).
         def method_missing(method_id, *arguments)
           if match = /^find_(all_by|by)_([_a-zA-Z]\w*)$/.match(method_id.to_s)
@@ -1337,18 +1337,18 @@ module ActiveRecord #:nodoc:
           scoped_methods = (Thread.current[:scoped_methods] ||= {})
           scoped_methods[self] ||= []
         end
-        
+
         def single_threaded_scoped_methods #:nodoc:
           @scoped_methods ||= []
         end
-        
+
         # pick up the correct scoped_methods version from @@allow_concurrency
         if @@allow_concurrency
           alias_method :scoped_methods, :thread_safe_scoped_methods
         else
           alias_method :scoped_methods, :single_threaded_scoped_methods
         end
-        
+
         def current_scoped_methods #:nodoc:
           scoped_methods.last
         end
@@ -1491,8 +1491,8 @@ module ActiveRecord #:nodoc:
 
         def encode_quoted_value(value) #:nodoc:
           quoted_value = connection.quote(value)
-          quoted_value = "'#{quoted_value[1..-2].gsub(/\'/, "\\\\'")}'" if quoted_value.include?("\\\'") # (for ruby mode) " 
-          quoted_value 
+          quoted_value = "'#{quoted_value[1..-2].gsub(/\'/, "\\\\'")}'" if quoted_value.include?("\\\'") # (for ruby mode) "
+          quoted_value
         end
     end
 
@@ -1547,8 +1547,8 @@ module ActiveRecord #:nodoc:
       def save
         create_or_update
       end
-      
-      # Attempts to save the record, but instead of just returning false if it couldn't happen, it raises a 
+
+      # Attempts to save the record, but instead of just returning false if it couldn't happen, it raises a
       # RecordNotSaved exception
       def save!
         create_or_update || raise(RecordNotSaved)
@@ -1594,7 +1594,7 @@ module ActiveRecord #:nodoc:
         self.attributes = attributes
         save
       end
-      
+
       # Updates an object just like Base.update_attributes but calls save! instead of save so an exception is raised if the record is invalid.
       def update_attributes!(attributes)
         self.attributes = attributes
@@ -1682,7 +1682,7 @@ module ActiveRecord #:nodoc:
       # Returns a hash of all the attributes with their names as keys and clones of their objects as values.
       def attributes(options = nil)
         attributes = clone_attributes :read_attribute
-        
+
         if options.nil?
           attributes
         else
@@ -1730,8 +1730,8 @@ module ActiveRecord #:nodoc:
       # Returns true if the +comparison_object+ is the same object, or is of the same type and has the same id.
       def ==(comparison_object)
         comparison_object.equal?(self) ||
-          (comparison_object.instance_of?(self.class) && 
-            comparison_object.id == id && 
+          (comparison_object.instance_of?(self.class) &&
+            comparison_object.id == id &&
             !comparison_object.new_record?)
       end
 
@@ -1910,33 +1910,33 @@ module ActiveRecord #:nodoc:
       def define_read_method(symbol, attr_name, column)
         cast_code = column.type_cast_code('v') if column
         access_code = cast_code ? "(v=@attributes['#{attr_name}']) && #{cast_code}" : "@attributes['#{attr_name}']"
-        
+
         unless attr_name.to_s == self.class.primary_key.to_s
           access_code = access_code.insert(0, "raise NoMethodError, 'missing attribute: #{attr_name}', caller unless @attributes.has_key?('#{attr_name}'); ")
           self.class.read_methods << attr_name
         end
-        
+
         evaluate_read_method attr_name, "def #{symbol}; #{access_code}; end"
       end
-      
+
       # Define read method for serialized attribute.
       def define_read_method_for_serialized_attribute(attr_name)
         unless attr_name.to_s == self.class.primary_key.to_s
           self.class.read_methods << attr_name
         end
-        
+
         evaluate_read_method attr_name, "def #{attr_name}; unserialize_attribute('#{attr_name}'); end"
       end
-           
+
       # Define an attribute ? method.
       def define_question_method(attr_name)
         unless attr_name.to_s == self.class.primary_key.to_s
           self.class.read_methods << "#{attr_name}?"
         end
-        
+
         evaluate_read_method attr_name, "def #{attr_name}?; query_attribute('#{attr_name}'); end"
       end
-      
+
       # Evaluate the definition for an attribute reader or ? method
       def evaluate_read_method(attr_name, method_definition)
         begin
@@ -2047,8 +2047,8 @@ module ActiveRecord #:nodoc:
         self.class.connection.quote(value, column)
       end
       deprecate :quote => :quote_value
-      
-      
+
+
       # Interpolate custom sql string in instance context.
       # Optional record argument is meant for custom insert_sql.
       def interpolate_sql(sql, record = nil)

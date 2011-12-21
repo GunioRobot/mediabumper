@@ -3,7 +3,7 @@ tree_1:
   id: 1001
   type: TreeMixin
   parent_id:
-  
+
 tree_2:
   id: 1002
   type: TreeMixin
@@ -11,12 +11,12 @@ tree_2:
 
 tree_3:
   id: 1003
-  type: TreeMixin  
+  type: TreeMixin
   parent_id: 1002
 
 tree_4:
   id: 1004
-  type: TreeMixin  
+  type: TreeMixin
   parent_id: 1001
 
 tree2_1:
@@ -61,7 +61,7 @@ recursively_cascaded_tree_4:
 
 # List mixins
 
-<% (1..4).each do |counter| %>  
+<% (1..4).each do |counter| %>
 list_<%= counter %>:
   id: <%= counter+1006 %>
   pos: <%= counter  %>
@@ -71,7 +71,7 @@ list_<%= counter %>:
 
 # Nested set mixins
 
-<% (1..10).each do |counter| %>  
+<% (1..10).each do |counter| %>
 set_<%= counter %>:
   id: <%= counter+3000 %>
   type: NestedSet
@@ -92,7 +92,7 @@ sti_set_<%= sti[0] %>:
   rgt: <%= sti[3] %>
   type: <%= sti[4] %>
   root_id: 3100
-  
+
 <% end %>
 
 # Big old set
@@ -123,5 +123,5 @@ list_sub_<%= i %>:
   id: <%= i + 5000 %>
   pos: <%= i %>
   parent_id: 5000
-  type: <%= (i % 2 == 1) ? ListMixinSub1 : ListMixinSub2 %> 
+  type: <%= (i % 2 == 1) ? ListMixinSub1 : ListMixinSub2 %>
 <% end %>

@@ -50,7 +50,7 @@ namespace :doc do
   task :plugins => plugins.collect { |plugin| "doc:plugins:#{plugin}" }
 
   desc "Remove plugin documentation"
-  task :clobber_plugins do 
+  task :clobber_plugins do
     rm_rf 'doc/plugins' rescue nil
   end
 
@@ -68,7 +68,7 @@ namespace :doc do
 
         files.include("#{plugin_base}/lib/**/*.rb")
         if File.exists?("#{plugin_base}/README")
-          files.include("#{plugin_base}/README")    
+          files.include("#{plugin_base}/README")
           options << "--main '#{plugin_base}/README'"
         end
         files.include("#{plugin_base}/CHANGELOG") if File.exists?("#{plugin_base}/CHANGELOG")

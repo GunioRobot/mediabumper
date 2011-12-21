@@ -24,7 +24,7 @@ module InvocationTest
     end
   end
 
-  InterceptorClass = Interceptor.new 
+  InterceptorClass = Interceptor.new
 
   class Service < ActionController::Base
     web_service_api API
@@ -33,7 +33,7 @@ module InvocationTest
     after_invocation :intercept_after, :except => [:no_after]
     prepend_after_invocation :intercept_after_first, :except => [:no_after]
     prepend_before_invocation :intercept_only, :only => [:only_one, :only_two]
-    after_invocation(:only => [:only_one]) do |*args| 
+    after_invocation(:only => [:only_one]) do |*args|
       args[0].instance_variable_set('@block_invoked', args[1])
     end
     after_invocation InterceptorClass, :only => [:only_one]
@@ -44,7 +44,7 @@ module InvocationTest
     attr_accessor :only_invoked
     attr_accessor :block_invoked
     attr_accessor :invocation_result
-  
+
     def initialize
       @before_invoked = nil
       @after_invoked = nil
@@ -53,41 +53,41 @@ module InvocationTest
       @invocation_result = nil
       @block_invoked = nil
     end
-  
+
     def add(a, b)
       a + b
     end
-  
+
     def transmogrify(str)
       str.upcase
     end
-    
+
     def fail_with_reason
     end
-  
+
     def fail_generic
     end
-  
+
     def no_before
       5
     end
-  
+
     def no_after
     end
-  
+
     def only_one
     end
-  
+
     def only_two
     end
-  
+
     protected
       def intercept_before(name, args)
         @before_invoked = name
         return [false, "permission denied"] if name == :fail_with_reason
         return false if name == :fail_generic
       end
-  
+
       def intercept_after(name, args, result)
         @after_invoked = name
         @invocation_result = result
@@ -96,7 +96,7 @@ module InvocationTest
       def intercept_after_first(name, args, result)
         @after_first_invoked = name
       end
-  
+
       def intercept_only(name, args)
         raise "Interception error" unless name == :only_one || name == :only_two
         @only_invoked = name

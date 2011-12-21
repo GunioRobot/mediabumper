@@ -5,7 +5,7 @@ class TextHelperTest < Test::Unit::TestCase
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::TagHelper
   include TestingSandbox
-  
+
   def setup
     # This simulates the fact that instance variables are reset every time
     # a view is rendered.  The cycle helper depends on this behavior.
@@ -33,14 +33,14 @@ class TextHelperTest < Test::Unit::TestCase
 
   def test_truncate_multibyte
     with_kcode 'none' do
-      assert_equal "\354\225\210\353\205\225\355...", truncate("\354\225\210\353\205\225\355\225\230\354\204\270\354\232\224", 10) 
+      assert_equal "\354\225\210\353\205\225\355...", truncate("\354\225\210\353\205\225\355\225\230\354\204\270\354\232\224", 10)
     end
     with_kcode 'u' do
       assert_equal "\354\225\204\353\246\254\353\236\221 \354\225\204\353\246\254 ...",
         truncate("\354\225\204\353\246\254\353\236\221 \354\225\204\353\246\254 \354\225\204\353\235\274\353\246\254\354\230\244", 10)
     end
   end
-  
+
   def test_strip_links
     assert_equal "on my mind\nall day long", strip_links("<a href='almost'>on my mind</a>\n<A href='almost'>all day long</A>")
   end
@@ -60,7 +60,7 @@ class TextHelperTest < Test::Unit::TestCase
       "This is a <b>beautiful</b> morning, but also a <b>beautiful</b> day",
       highlight("This is a beautiful morning, but also a beautiful day", "beautiful", '<b>\1</b>')
     )
-    
+
     assert_equal(
       "This text is not changed because we supplied an empty phrase",
       highlight("This text is not changed because we supplied an empty phrase", nil)
@@ -104,7 +104,7 @@ class TextHelperTest < Test::Unit::TestCase
       assert_equal("...\203ciency could not be h...", excerpt("That's why eﬃciency could not be helped", 'could', 8))
     end
   end
-    
+
   def test_word_wrap
     assert_equal("my very very\nvery long\nstring", word_wrap("my very very very long string", 15))
   end
@@ -247,13 +247,13 @@ class TextHelperTest < Test::Unit::TestCase
     result = sanitize(raw)
     assert_equal %{href="javascript:bang" <a name="hello">foo</a>, <span>bar</span>}, result
   end
-  
+
   def test_sanitize_image_src
     raw = %{src="javascript:bang" <img src="javascript:bang" width="5">foo</img>, <span src="javascript:bang">bar</span>}
     result = sanitize(raw)
     assert_equal %{src="javascript:bang" <img width="5">foo</img>, <span>bar</span>}, result
   end
-  
+
   def test_cycle_class
     value = Cycle.new("one", 2, "3")
     assert_equal("one", value.to_s)
@@ -265,7 +265,7 @@ class TextHelperTest < Test::Unit::TestCase
     assert_equal("2", value.to_s)
     assert_equal("3", value.to_s)
   end
-  
+
   def test_cycle_class_with_no_arguments
     assert_raise(ArgumentError) { value = Cycle.new() }
   end
@@ -278,11 +278,11 @@ class TextHelperTest < Test::Unit::TestCase
     assert_equal("2", cycle("one", 2, "3"))
     assert_equal("3", cycle("one", 2, "3"))
   end
-  
+
   def test_cycle_with_no_arguments
     assert_raise(ArgumentError) { value = cycle() }
   end
-  
+
   def test_cycle_resets_with_new_values
     assert_equal("even", cycle("even", "odd"))
     assert_equal("odd", cycle("even", "odd"))
@@ -292,7 +292,7 @@ class TextHelperTest < Test::Unit::TestCase
     assert_equal("3", cycle(1, 2, 3))
     assert_equal("1", cycle(1, 2, 3))
   end
-  
+
   def test_named_cycles
     assert_equal("1", cycle(1, 2, 3, :name => "numbers"))
     assert_equal("red", cycle("red", "blue", :name => "colors"))
@@ -301,24 +301,24 @@ class TextHelperTest < Test::Unit::TestCase
     assert_equal("3", cycle(1, 2, 3, :name => "numbers"))
     assert_equal("red", cycle("red", "blue", :name => "colors"))
   end
-  
+
   def test_default_named_cycle
     assert_equal("1", cycle(1, 2, 3))
     assert_equal("2", cycle(1, 2, 3, :name => "default"))
     assert_equal("3", cycle(1, 2, 3))
   end
-  
+
   def test_reset_cycle
     assert_equal("1", cycle(1, 2, 3))
     assert_equal("2", cycle(1, 2, 3))
     reset_cycle
     assert_equal("1", cycle(1, 2, 3))
   end
-  
+
   def test_reset_unknown_cycle
     reset_cycle("colors")
   end
-  
+
   def test_recet_named_cycle
     assert_equal("1", cycle(1, 2, 3, :name => "numbers"))
     assert_equal("red", cycle("red", "blue", :name => "colors"))
@@ -328,7 +328,7 @@ class TextHelperTest < Test::Unit::TestCase
     assert_equal("2", cycle(1, 2, 3, :name => "numbers"))
     assert_equal("red", cycle("red", "blue", :name => "colors"))
   end
-  
+
   def test_cycle_no_instance_variable_clashes
     @cycles = %w{Specialized Fuji Giant}
     assert_equal("red", cycle("red", "blue"))

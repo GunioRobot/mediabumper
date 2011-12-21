@@ -21,7 +21,7 @@ module Haml
           @opts.parse!(@args)
 
           process_result
-          
+
           @options
         rescue Exception => e
           raise e if e.is_a? SystemExit
@@ -43,7 +43,7 @@ module Haml
       def to_s
         @opts.to_s
       end
-      
+
       private
 
       def set_opts(opts)
@@ -126,7 +126,7 @@ Description:
 
 Options:
 END
-       
+
         opts.on('--rails RAILS_DIR', "Install Haml from the Gem to a Rails project") do |dir|
           original_dir = dir
 

@@ -11,11 +11,11 @@ class DeprecatedBaseMethodsTest < Test::Unit::TestCase
     def deprecated_symbol_parameter_to_url_for
       redirect_to(url_for(:home_url, "superstars"))
     end
-    
+
     def deprecated_render_parameters
       render "fun/games/hello_world"
     end
-    
+
     def home_url(greeting)
       "http://example.com/#{greeting}"
     end
@@ -48,7 +48,7 @@ class DeprecatedBaseMethodsTest < Test::Unit::TestCase
 
     assert_redirected_to "http://example.com/superstars"
   end
-  
+
   def test_deprecated_render_parameters
     assert_deprecated("render('fun/games/hello_world')") do
       get :deprecated_render_parameters

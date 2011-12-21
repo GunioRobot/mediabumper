@@ -66,7 +66,7 @@ module Haml
 
     unless NOT_LOADED.include? 'redcloth'
       class ::RedCloth; alias_method :render, :to_html; end
-      
+
       # Uses RedCloth to provide only Textile (not Markdown) parsing
       class Textile < RedCloth
         def render

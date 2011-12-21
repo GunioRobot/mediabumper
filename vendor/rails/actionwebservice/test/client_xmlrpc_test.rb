@@ -12,7 +12,7 @@ module ClientXmlRpcTest
       test_request.env['HTTP_CONTENT_TYPE'] = 'text/xml'
       test_request.env['RAW_POST_DATA'] = req.body
       response = ActionController::TestResponse.new
-      @controller.process(test_request, response) 
+      @controller.process(test_request, response)
       res.header['content-type'] = 'text/xml'
       res.body = response.body
       # puts res.body
@@ -44,7 +44,7 @@ end
 class TC_ClientXmlRpc < Test::Unit::TestCase
   include ClientTest
   include ClientXmlRpcTest
-  
+
   fixtures :users
 
   def setup
@@ -85,7 +85,7 @@ class TC_ClientXmlRpc < Test::Unit::TestCase
     assert_equal(true, @client.struct_pass([new_person]))
     assert_equal([[new_person]], @container.value_struct_pass)
   end
-  
+
   def test_nil_struct_return
     assert_equal false, @client.nil_struct_return
   end
@@ -135,7 +135,7 @@ class TC_ClientXmlRpc < Test::Unit::TestCase
       assert_kind_of User, user
     end
   end
-  
+
   def test_scoped_model_return
     scoped_model = @client.scoped_model_return
     assert_kind_of Accounting::User, scoped_model

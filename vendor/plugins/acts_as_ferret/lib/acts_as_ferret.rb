@@ -45,7 +45,7 @@ require 'ferret_server'
 # This mixin adds full text search capabilities to any Rails model.
 #
 # The current version emerged from on the original acts_as_ferret plugin done by
-# Kasper Weibel and a modified version done by Thomas Lockney, which  both can be 
+# Kasper Weibel and a modified version done by Thomas Lockney, which  both can be
 # found on the Ferret Wiki: http://ferret.davebalmain.com/trac/wiki/FerretOnRails.
 #
 # basic usage:
@@ -53,13 +53,13 @@ require 'ferret_server'
 # acts_as_ferret :fields => [ :title, :description ]
 #
 # now you can use ModelClass.find_by_contents(query) to find instances of your model
-# whose indexed fields match a given query. All query terms are required by default, but 
+# whose indexed fields match a given query. All query terms are required by default, but
 # explicit OR queries are possible. This differs from the ferret default, but imho is the more
 # often needed/expected behaviour (more query terms result in less results).
 #
 # Released under the MIT license.
 #
-# Authors: 
+# Authors:
 # Kasper Weibel Nielsen-Refs (original author)
 # Jens Kraemer <jk@jkraemer.net> (active maintainer)
 #
@@ -75,7 +75,7 @@ module ActsAsFerret
     # key is the index directory.
     @@ferret_indexes = Hash.new
     def self.ferret_indexes; @@ferret_indexes end
- 
+
   # decorator that adds a total_hits accessor to search result arrays
   class SearchResults
     attr_reader :total_hits
@@ -90,26 +90,26 @@ module ActsAsFerret
       self.methods.include?(name) || @results.respond_to?(name)
     end
   end
-  
+
   def self.ensure_directory(dir)
     FileUtils.mkdir_p dir unless File.directory? dir
   end
-  
+
   # make sure the default index base dir exists. by default, all indexes are created
   # under RAILS_ROOT/index/RAILS_ENV
   def self.init_index_basedir
     index_base = "#{RAILS_ROOT}/index"
     @@index_dir = "#{index_base}/#{RAILS_ENV}"
   end
-  
+
   mattr_accessor :index_dir
   init_index_basedir
-  
+
   def self.append_features(base)
     super
     base.extend(ClassMethods)
   end
-  
+
 end
 
 # include acts_as_ferret method into ActiveRecord::Base
@@ -120,9 +120,9 @@ ActiveRecord::Base.extend ActsAsFerret::ActMethods
 # TODO check if this is still necessary
 class Ferret::Index::MultiReader
   def latest?
-    # TODO: Exception handling added to resolve ticket #6. 
+    # TODO: Exception handling added to resolve ticket #6.
     # It should be clarified wether this is a bug in Ferret
-    # in which case a bug report should be posted on the Ferret Trac. 
+    # in which case a bug report should be posted on the Ferret Trac.
     begin
       @sub_readers.each { |r| return false unless r.latest? }
     rescue

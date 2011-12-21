@@ -12,10 +12,10 @@ class XmlNode #:nodoc:
 
   def self.from_xml(xml_or_io)
     document = REXML::Document.new(xml_or_io)
-    if document.root 
-      XmlNode.new(document.root) 
+    if document.root
+      XmlNode.new(document.root)
     else
-      XmlNode.new(document) 
+      XmlNode.new(document)
     end
   end
 

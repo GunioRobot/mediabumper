@@ -9,7 +9,7 @@ module Mediabumper
           instance_variable_set :"@#{key}", mp3info.tag.send(key)
           self.class.send :attr_reader, :"#{key}"
         end
-        
+
         [:bitrate, :length, :vbr].each do |key|
           instance_variable_set :"@#{key}", mp3info.send(key)
           self.class.send :attr_reader, :"#{key}"

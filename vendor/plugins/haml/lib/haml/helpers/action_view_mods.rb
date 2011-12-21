@@ -8,10 +8,10 @@ rescue LoadError
   action_view_included = false
 end
 
-if action_view_included  
+if action_view_included
   module ActionView
     class Base # :nodoc:
-      def render_with_haml(*args)        
+      def render_with_haml(*args)
         was_haml = is_haml?
         @haml_is_haml = false
         res = render_without_haml(*args)
@@ -54,7 +54,7 @@ if action_view_included
         def form_tag_with_haml(url_for_options = {}, options = {}, *parameters_for_url, &proc)
           if is_haml?
             if block_given?
-              oldproc = proc 
+              oldproc = proc
               proc = bind_proc do |*args|
                 concat "\n"
                 tab_up
@@ -76,7 +76,7 @@ if action_view_included
       module FormHelper
         def form_for_with_haml(object_name, *args, &proc)
           if block_given? && is_haml?
-            oldproc = proc 
+            oldproc = proc
             proc = bind_proc do |*args|
               tab_up
               oldproc.call(*args)

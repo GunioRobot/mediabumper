@@ -47,8 +47,8 @@ module ActionView
     #
     # If the object name contains square brackets the id for the object will be inserted. Example:
     #
-    #   <%= text_field "person[]", "name" %> 
-    # 
+    #   <%= text_field "person[]", "name" %>
+    #
     # ...becomes:
     #
     #   <input type="text" id="person_<%= @person.id %>_name" name="person[<%= @person.id %>][name]" value="<%= @person.name %>" />
@@ -75,14 +75,14 @@ module ActionView
       #     Admin?    : <%= f.check_box :admin %>
       #   <% end %>
       #
-      # Worth noting is that the form_for tag is called in a ERb evaluation block, not a ERb output block. So that's <tt><% %></tt>, 
+      # Worth noting is that the form_for tag is called in a ERb evaluation block, not a ERb output block. So that's <tt><% %></tt>,
       # not <tt><%= %></tt>. Also worth noting is that the form_for yields a form_builder object, in this example as f, which emulates
       # the API for the stand-alone FormHelper methods, but without the object name. So instead of <tt>text_field :person, :name</tt>,
-      # you get away with <tt>f.text_field :name</tt>. 
+      # you get away with <tt>f.text_field :name</tt>.
       #
       # That in itself is a modest increase in comfort. The big news is that form_for allows us to more easily escape the instance
-      # variable convention, so while the stand-alone approach would require <tt>text_field :person, :name, :object => person</tt> 
-      # to work with local variables instead of instance ones, the form_for calls remain the same. You simply declare once with 
+      # variable convention, so while the stand-alone approach would require <tt>text_field :person, :name, :object => person</tt>
+      # to work with local variables instead of instance ones, the form_for calls remain the same. You simply declare once with
       # <tt>:person, person</tt> and all subsequent field calls save <tt>:person</tt> and <tt>:object => person</tt>.
       #
       # Also note that form_for doesn't create an exclusive scope. It's still possible to use both the stand-alone FormHelper methods
@@ -99,21 +99,21 @@ module ActionView
       # Like collection_select and datetime_select.
       #
       # Html attributes for the form tag can be given as :html => {...}. Example:
-      #     
+      #
       #   <% form_for :person, @person, :html => {:id => 'person_form'} do |f| %>
       #     ...
       #   <% end %>
       #
       # You can also build forms using a customized FormBuilder class. Subclass FormBuilder and override or define some more helpers,
       # then use your custom builder like so:
-      #   
+      #
       #   <% form_for :person, @person, :url => { :action => "update" }, :builder => LabellingFormBuilder do |f| %>
       #     <%= f.text_field :first_name %>
       #     <%= f.text_field :last_name %>
       #     <%= text_area :person, :biography %>
       #     <%= check_box_tag "person[admin]", @person.company.admin? %>
       #   <% end %>
-      # 
+      #
       # In many cases you will want to wrap the above in another helper, such as:
       #
       #   def labelled_form_for(name, object, options, &proc)
@@ -134,7 +134,7 @@ module ActionView
       #   <% form_for :person, @person, :url => { :action => "update" } do |person_form| %>
       #     First name: <%= person_form.text_field :first_name %>
       #     Last name : <%= person_form.text_field :last_name %>
-      #     
+      #
       #     <% fields_for :permission, @person.permission do |permission_fields| %>
       #       Admin?  : <%= permission_fields.check_box :admin %>
       #     <% end %>
@@ -273,7 +273,7 @@ module ActionView
         end
         options["checked"]  = "checked" if checked
         pretty_tag_value    = tag_value.to_s.gsub(/\s/, "_").gsub(/\W/, "").downcase
-        options["id"]     ||= defined?(@auto_index) ?             
+        options["id"]     ||= defined?(@auto_index) ?
           "#{@object_name}_#{@auto_index}_#{@method_name}_#{pretty_tag_value}" :
           "#{@object_name}_#{@method_name}_#{pretty_tag_value}"
         add_default_name_and_id(options)
@@ -327,11 +327,11 @@ module ActionView
         tag_text << " selected" if value
         tag_text << ">True</option></select>"
       end
-      
+
       def to_content_tag(tag_name, options = {})
         content_tag(tag_name, value(object), options)
       end
-      
+
       def object
         @object || @template_object.instance_variable_get("@#{@object_name}")
       end
@@ -343,12 +343,12 @@ module ActionView
       def value_before_type_cast(object)
         self.class.value_before_type_cast(object, @method_name)
       end
-      
+
       class << self
         def value(object, method_name)
           object.send method_name unless object.nil?
         end
-        
+
         def value_before_type_cast(object, method_name)
           unless object.nil?
             object.respond_to?(method_name + "_before_type_cast") ?
@@ -356,7 +356,7 @@ module ActionView
             object.send(method_name)
           end
         end
-        
+
         def check_box_checked?(value, checked_value)
           case value
           when TrueClass, FalseClass
@@ -371,7 +371,7 @@ module ActionView
             value.to_i != 0
           end
         end
-        
+
         def radio_button_checked?(value, checked_value)
           value.to_s == checked_value.to_s
         end
@@ -417,9 +417,9 @@ module ActionView
       attr_accessor :object_name, :object, :options
 
       def initialize(object_name, object, template, options, proc)
-        @object_name, @object, @template, @options, @proc = object_name, object, template, options, proc        
+        @object_name, @object, @template, @options, @proc = object_name, object, template, options, proc
       end
-      
+
       (field_helpers - %w(check_box radio_button)).each do |selector|
         src = <<-end_src
           def #{selector}(method, options = {})
@@ -428,11 +428,11 @@ module ActionView
         end_src
         class_eval src, __FILE__, __LINE__
       end
-      
+
       def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
         @template.check_box(@object_name, method, options.merge(:object => @object), checked_value, unchecked_value)
       end
-      
+
       def radio_button(method, tag_value, options = {})
         @template.radio_button(@object_name, method, tag_value, options.merge(:object => @object))
       end

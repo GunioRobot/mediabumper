@@ -27,7 +27,7 @@ class HelperMailer < ActionMailer::Base
     recipients recipient
     subject    "using mailing helpers"
     from       "tester@example.com"
-    self.body = { :text => 
+    self.body = { :text =>
       "But soft! What light through yonder window breaks? It is the east, " +
       "and Juliet is the sun. Arise, fair sun, and kill the envious moon, " +
       "which is sick and pale with grief that thou, her maid, art far more " +

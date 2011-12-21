@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../abstract_unit'
 module AttributeAliasing
   class Content
     attr_accessor :title
-  
+
     def title?
       !title.nil?
     end

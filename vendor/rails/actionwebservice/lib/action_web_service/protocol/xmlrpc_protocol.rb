@@ -8,7 +8,7 @@ module XMLRPC # :nodoc:
 end
 
 module ActionWebService # :nodoc:
-  module API # :nodoc: 
+  module API # :nodoc:
     class Base # :nodoc:
       def self.xmlrpc_client(endpoint_uri, options={})
         ActionWebService::Client::XmlRpc.new self, endpoint_uri, options
@@ -21,7 +21,7 @@ module ActionWebService # :nodoc:
       def self.included(base)
         base.register_protocol(XmlRpcProtocol)
       end
-      
+
       class XmlRpcProtocol < AbstractProtocol # :nodoc:
         def self.create(controller)
           XmlRpcProtocol.new
@@ -61,7 +61,7 @@ module ActionWebService # :nodoc:
         def encode_multicall_response(responses, protocol_options={})
           result = responses.map do |return_value, return_type|
             if return_value && return_type
-              return_value = value_to_xmlrpc_wire_format(return_value, return_type) 
+              return_value = value_to_xmlrpc_wire_format(return_value, return_type)
               return_value = [return_value] unless return_value.nil?
             end
             return_value = false if return_value.nil?

@@ -1,17 +1,17 @@
 module ActsAsFerret
-  
+
   # class methods for classes using acts_as_ferret :single_index => true
   module SharedIndexClassMethods
 
     def find_id_by_contents(q, options = {}, &block)
       # add class name scoping to query if necessary
       unless options[:models] == :all # search needs to be restricted by one or more class names
-        options[:models] ||= [] 
+        options[:models] ||= []
         # add this class to the list of given models
         options[:models] << self unless options[:models].include?(self)
-        # keep original query 
+        # keep original query
         original_query = q
-        
+
         if original_query.is_a? String
           model_query = options[:models].map(&:name).join '|'
           q << %{ +class_name:"#{model_query}"}
@@ -26,14 +26,14 @@ module ActsAsFerret
         end
       end
       options.delete :models
-      
+
       super(q, options, &block)
     end
 
     # Overrides the standard find_by_contents for searching a shared index.
     #
     # please note that records from different models will be fetched in
-    # separate sql calls, so any sql order_by clause given with 
+    # separate sql calls, so any sql order_by clause given with
     # find_options[:order] will be ignored.
     def find_by_contents(q, options = {}, find_options = {})
       if order = find_options.delete(:order)
@@ -66,7 +66,7 @@ module ActsAsFerret
       [ total_hits, id_arrays ]
     end
 
-    
+
     # determine all field names in the shared index
     # TODO unused
 #    def single_index_field_names(models)
@@ -76,7 +76,7 @@ module ActsAsFerret
 #            (searcher.reader.send(:get_field_names) - ['id', 'class_name']).to_a
 #          else
 #            puts <<-END
-#unable to retrieve field names for class #{self.name}, please 
+#unable to retrieve field names for class #{self.name}, please
 #consider naming all indexed fields in your call to acts_as_ferret!
 #            END
 #            models.map { |m| m.content_columns.map { |col| col.name } }.flatten
@@ -84,7 +84,7 @@ module ActsAsFerret
 #      )
 #
 #    end
- 
+
   end
 end
 

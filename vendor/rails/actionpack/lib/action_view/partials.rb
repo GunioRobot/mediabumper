@@ -1,13 +1,13 @@
 module ActionView
-  # There's also a convenience method for rendering sub templates within the current controller that depends on a single object 
-  # (we call this kind of sub templates for partials). It relies on the fact that partials should follow the naming convention of being 
-  # prefixed with an underscore -- as to separate them from regular templates that could be rendered on their own. 
+  # There's also a convenience method for rendering sub templates within the current controller that depends on a single object
+  # (we call this kind of sub templates for partials). It relies on the fact that partials should follow the naming convention of being
+  # prefixed with an underscore -- as to separate them from regular templates that could be rendered on their own.
   #
   # In a template for Advertiser#account:
   #
   #  <%= render :partial => "account" %>
   #
-  # This would render "advertiser/_account.rhtml" and pass the instance variable @account in as a local variable +account+ to 
+  # This would render "advertiser/_account.rhtml" and pass the instance variable @account in as a local variable +account+ to
   # the template for display.
   #
   # In another template for Advertiser#buy, we could have:
@@ -18,7 +18,7 @@ module ActionView
   #     <%= render :partial => "ad", :locals => { :ad => ad } %>
   #   <% end %>
   #
-  # This would first render "advertiser/_account.rhtml" with @buyer passed in as the local variable +account+, then render 
+  # This would first render "advertiser/_account.rhtml" with @buyer passed in as the local variable +account+, then render
   # "advertiser/_ad.rhtml" and pass the local variable +ad+ to the template for display.
   #
   # == Rendering a collection of partials
@@ -31,12 +31,12 @@ module ActionView
   #   <%= render :partial => "ad", :collection => @advertisements %>
   #
   # This will render "advertiser/_ad.rhtml" and pass the local variable +ad+ to the template for display. An iteration counter
-  # will automatically be made available to the template with a name of the form +partial_name_counter+. In the case of the 
+  # will automatically be made available to the template with a name of the form +partial_name_counter+. In the case of the
   # example above, the template would be fed +ad_counter+.
   #
   # NOTE: Due to backwards compatibility concerns, the collection can't be one of hashes. Normally you'd also just keep domain objects,
   # like Active Records, in there.
-  # 
+  #
   # == Rendering shared partials
   #
   # Two controllers can share a set of partials and render them like this:
@@ -82,9 +82,9 @@ module ActionView
         collection_of_partials.join
       end
     end
-    
+
     alias_method :render_collection_of_partials, :render_partial_collection
-    
+
     private
       def partial_pieces(partial_path)
         if partial_path.include?('/')
@@ -97,7 +97,7 @@ module ActionView
       def partial_counter_name(partial_name)
         "#{partial_name.split('/').last}_counter".intern
       end
-      
+
       def extracting_object(partial_name, local_assigns, deprecated_local_assigns)
         if local_assigns.is_a?(Hash) || local_assigns.nil?
           controller.instance_variable_get("@#{partial_name}")
@@ -106,11 +106,11 @@ module ActionView
           local_assigns
         end
       end
-      
+
       def extract_local_assigns(local_assigns, deprecated_local_assigns)
         local_assigns.is_a?(Hash) ? local_assigns : deprecated_local_assigns
       end
-      
+
       def add_counter_to_local_assigns!(partial_name, local_assigns)
         counter_name = partial_counter_name(partial_name)
         local_assigns[counter_name] = 1 unless local_assigns.has_key?(counter_name)

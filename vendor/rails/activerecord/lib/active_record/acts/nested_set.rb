@@ -2,8 +2,8 @@ module ActiveRecord
   module Acts #:nodoc:
     module NestedSet #:nodoc:
       def self.included(base)
-        base.extend(ClassMethods)              
-      end  
+        base.extend(ClassMethods)
+      end
 
       # This acts provides Nested Set functionality.  Nested Set is similiar to Tree, but with
       # the added feature that you can select the children and all of their descendents with
@@ -39,7 +39,7 @@ module ActiveRecord
       #    |   |  |  C 1.1  |  |  C 1.2 |  |   |  |  C 2.1  |  |  C 2.2 |  |   |
       #    1   2  3_________4  5________6  7   8  9_________10 11_______12 13  14
       #    |   |___________________________|   |___________________________|   |
-      #    |___________________________________________________________________| 
+      #    |___________________________________________________________________|
       #
       # The numbers represent the left and right boundries.  The table then might
       # look like this:
@@ -57,34 +57,34 @@ module ActiveRecord
       #
       # To get the count, it's (LEFT - RIGHT + 1)/2, etc.
       #
-      # To get the direct parent, it falls back to using the PARENT_ID field.   
+      # To get the direct parent, it falls back to using the PARENT_ID field.
       #
       # There are instance methods for all of these.
       #
       # The structure is good if you need to group things together; the downside is that
       # keeping data integrity is a pain, and both adding and removing an entry
-      # require a full table write.        
+      # require a full table write.
       #
       # This sets up a before_destroy trigger to prune the tree correctly if one of its
       # elements gets deleted.
       #
-      module ClassMethods                      
+      module ClassMethods
         # Configuration options are:
         #
         # * +parent_column+ - specifies the column name to use for keeping the position integer (default: parent_id)
         # * +left_column+ - column name for left boundry data, default "lft"
         # * +right_column+ - column name for right boundry data, default "rgt"
-        # * +scope+ - restricts what is to be considered a list. Given a symbol, it'll attach "_id" 
-        #   (if that hasn't been already) and use that as the foreign key restriction. It's also possible 
+        # * +scope+ - restricts what is to be considered a list. Given a symbol, it'll attach "_id"
+        #   (if that hasn't been already) and use that as the foreign key restriction. It's also possible
         #   to give it an entire string that is interpolated if you need a tighter scope than just a foreign key.
         #   Example: <tt>acts_as_list :scope => 'todo_list_id = #{todo_list_id} AND completed = 0'</tt>
         def acts_as_nested_set(options = {})
           configuration = { :parent_column => "parent_id", :left_column => "lft", :right_column => "rgt", :scope => "1 = 1" }
-          
+
           configuration.update(options) if options.is_a?(Hash)
-          
+
           configuration[:scope] = "#{configuration[:scope]}_id".intern if configuration[:scope].is_a?(Symbol) && configuration[:scope].to_s !~ /_id$/
-          
+
           if configuration[:scope].is_a?(Symbol)
             scope_condition_method = %(
               def scope_condition
@@ -98,46 +98,46 @@ module ActiveRecord
           else
             scope_condition_method = "def scope_condition() \"#{configuration[:scope]}\" end"
           end
-        
+
           class_eval <<-EOV
             include ActiveRecord::Acts::NestedSet::InstanceMethods
 
             #{scope_condition_method}
-            
+
             def left_col_name() "#{configuration[:left_column]}" end
 
             def right_col_name() "#{configuration[:right_column]}" end
-              
+
             def parent_column() "#{configuration[:parent_column]}" end
 
           EOV
         end
       end
-      
+
       module InstanceMethods
-        # Returns true is this is a root node.  
+        # Returns true is this is a root node.
         def root?
           parent_id = self[parent_column]
           (parent_id == 0 || parent_id.nil?) && (self[left_col_name] == 1) && (self[right_col_name] > self[left_col_name])
-        end                                                                                             
-                                    
+        end
+
         # Returns true is this is a child node
-        def child?                          
+        def child?
           parent_id = self[parent_column]
           !(parent_id == 0 || parent_id.nil?) && (self[left_col_name] > 1) && (self[right_col_name] > self[left_col_name])
-        end     
-        
+        end
+
         # Returns true if we have no idea what this is
         def unknown?
           !root? && !child?
         end
 
-                     
+
         # Adds a child to this object in the tree.  If this object hasn't been initialized,
         # it gets set up as a root node.  Otherwise, this method will update all of the
         # other elements in the tree and shift them to the right, keeping everything
-        # balanced. 
-        def add_child( child )     
+        # balanced.
+        def add_child( child )
           self.reload
           child.reload
 
@@ -148,10 +148,10 @@ module ActiveRecord
               # Looks like we're now the root node!  Woo
               self[left_col_name] = 1
               self[right_col_name] = 4
-              
+
               # What do to do about validation?
               return nil unless self.save
-              
+
               child[parent_column] = self.id
               child[left_col_name] = 2
               child[right_col_name]= 3
@@ -170,29 +170,29 @@ module ActiveRecord
                 child.save
               }
             end
-          end                                   
+          end
         end
-                                   
+
         # Returns the number of nested children of this object.
         def children_count
           return (self[right_col_name] - self[left_col_name] - 1)/2
         end
-                                                               
+
         # Returns a set of itself and all of its nested children
         def full_set
           self.class.base_class.find(:all, :conditions => "#{scope_condition} AND (#{left_col_name} BETWEEN #{self[left_col_name]} and #{self[right_col_name]})" )
         end
-                  
+
         # Returns a set of all of its children and nested children
         def all_children
           self.class.base_class.find(:all, :conditions => "#{scope_condition} AND (#{left_col_name} > #{self[left_col_name]}) and (#{right_col_name} < #{self[right_col_name]})" )
         end
-                                  
+
         # Returns a set of only this entry's immediate children
         def direct_children
           self.class.base_class.find(:all, :conditions => "#{scope_condition} and #{parent_column} = #{self.id}")
         end
-                                      
+
         # Prunes a branch off of the tree, shifting all of the elements on the right
         # back to the left so the counts still work.
         def before_destroy

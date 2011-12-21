@@ -8,7 +8,7 @@ require 'profile' if ARGV[1] == "profile"
 RUNS = ARGV[0].to_i
 
 runtime = Benchmark::measure {
-  RUNS.times { 
+  RUNS.times {
     result = conn.query("SELECT * FROM posts LIMIT 100")
     result.each_hash { |p| p["title"] }
   }

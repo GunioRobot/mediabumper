@@ -39,7 +39,7 @@ class AuthenticatedGenerator < Rails::Generator::NamedBase
     # model controller
     base_name, @model_controller_class_path, @model_controller_file_path, @model_controller_class_nesting, @model_controller_class_nesting_depth = extract_modules(@model_controller_name)
     @model_controller_class_name_without_nesting, @model_controller_singular_name, @model_controller_plural_name = inflect_names(base_name)
-    
+
     if @model_controller_class_nesting.empty?
       @model_controller_class_name = @model_controller_class_name_without_nesting
     else
@@ -155,7 +155,7 @@ class AuthenticatedGenerator < Rails::Generator::NamedBase
     action = nil
     action = $0.split("/")[1]
     case action
-      when "generate" 
+      when "generate"
         puts
         puts ("-" * 70)
         puts "Don't forget to:"
@@ -177,7 +177,7 @@ class AuthenticatedGenerator < Rails::Generator::NamedBase
         puts
         puts ("-" * 70)
         puts
-      when "destroy" 
+      when "destroy"
         puts
         puts ("-" * 70)
         puts
@@ -205,9 +205,9 @@ class AuthenticatedGenerator < Rails::Generator::NamedBase
     def add_options!(opt)
       opt.separator ''
       opt.separator 'Options:'
-      opt.on("--skip-migration", 
+      opt.on("--skip-migration",
              "Don't generate a migration file for this model") { |v| options[:skip_migration] = v }
-      opt.on("--include-activation", 
+      opt.on("--include-activation",
              "Generate signup 'activation code' confirmation via email") { |v| options[:include_activation] = v }
     end
 end

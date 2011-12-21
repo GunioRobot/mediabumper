@@ -86,11 +86,11 @@ class FixturesTest < Test::Unit::TestCase
       assert_equal("The First Topic", firstRow["title"])
 
       secondRow = ActiveRecord::Base.connection.select_one("SELECT * FROM prefix_topics_suffix WHERE author_name = 'Mary'")
-      assert_nil(secondRow["author_email_address"])        
+      assert_nil(secondRow["author_email_address"])
     ensure
       # Restore prefix/suffix to its previous values
-      ActiveRecord::Base.table_name_prefix = old_prefix 
-      ActiveRecord::Base.table_name_suffix = old_suffix 
+      ActiveRecord::Base.table_name_prefix = old_prefix
+      ActiveRecord::Base.table_name_suffix = old_suffix
 
       ActiveRecord::Base.connection.drop_table :prefix_topics_suffix rescue nil
     end
@@ -333,7 +333,7 @@ end
 class SetTableNameFixturesTest < Test::Unit::TestCase
   set_fixture_class :funny_jokes => 'Joke'
   fixtures :funny_jokes
-  
+
   def test_table_method
     assert_kind_of Joke, funny_jokes(:a_joke)
   end
@@ -342,7 +342,7 @@ end
 class CustomConnectionFixturesTest < Test::Unit::TestCase
   set_fixture_class :courses => Course
   fixtures :courses
-  
+
   def test_connection
     assert_kind_of Course, courses(:ruby)
     assert_equal Course.connection, courses(:ruby).connection
@@ -372,7 +372,7 @@ class DevelopersProject; end;
 
 class ManyToManyFixturesWithClassDefined < Test::Unit::TestCase
   fixtures :developers_projects
-  
+
   def test_this_should_run_cleanly
     assert true
   end

@@ -18,7 +18,7 @@ module ActionWebService # :nodoc:
         base.class_inheritable_option(:wsdl_service_name)
         base.class_inheritable_option(:wsdl_namespace)
       end
-      
+
       class SoapProtocol < AbstractProtocol # :nodoc:
         AWSEncoding = 'UTF-8'
         XSDEncoding = 'UTF8'
@@ -38,7 +38,7 @@ module ActionWebService # :nodoc:
           return nil unless soap_action = has_valid_soap_action?(action_pack_request)
           service_name = action_pack_request.parameters['action']
           input_encoding = parse_charset(action_pack_request.env['HTTP_CONTENT_TYPE'])
-          protocol_options = { 
+          protocol_options = {
             :soap_action => soap_action,
             :charset  => input_encoding
           }

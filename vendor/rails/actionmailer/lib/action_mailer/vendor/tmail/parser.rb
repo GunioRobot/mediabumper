@@ -432,7 +432,7 @@ nerr = 0   # tmp
         toks.each {|t| out.print ' ', racc_token2str(t) }
       end
       out.puts " --> #{racc_token2str(sim)}"
-          
+
       racc_print_stacks tstack, vstack
       @racc_debug_out.puts
     end
@@ -562,7 +562,7 @@ module_eval <<'..end parser.y modeval..id43721faf1c', 'parser.y', 331
     yield @first
     @scanner.scan(&block)
   end
-  
+
   def on_error( t, val, vstack )
     raise SyntaxError, "parse error on token #{racc_token2str t}"
   end

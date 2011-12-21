@@ -1,5 +1,5 @@
 module ActionController #:nodoc:
-  # Actions that fail to perform as expected throw exceptions. These exceptions can either be rescued for the public view 
+  # Actions that fail to perform as expected throw exceptions. These exceptions can either be rescued for the public view
   # (with a nice user-friendly explanation) or for the developers view (with tons of debugging information). The developers view
   # is already implemented by the Action Controller, but the public view should be tailored to your specific application. So too
   # could the decision on whether something is a public or a developer request.
@@ -64,19 +64,19 @@ module ActionController #:nodoc:
         [request.remote_addr, request.remote_ip] == ["127.0.0.1"] * 2
       end
 
-      # Renders a detailed diagnostics screen on action exceptions. 
+      # Renders a detailed diagnostics screen on action exceptions.
       def rescue_action_locally(exception)
         add_variables_to_assigns
         @template.instance_variable_set("@exception", exception)
-        @template.instance_variable_set("@rescues_path", File.dirname(rescues_path("stub")))    
+        @template.instance_variable_set("@rescues_path", File.dirname(rescues_path("stub")))
         @template.send(:assign_variables_from_controller)
 
         @template.instance_variable_set("@contents", @template.render_file(template_path_for_local_rescue(exception), false))
-    
+
         response.content_type = Mime::HTML
         render_file(rescues_path("layout"), response_code_for_rescue(exception))
       end
-    
+
     private
       def perform_action_with_rescue #:nodoc:
         begin
@@ -125,16 +125,16 @@ module ActionController #:nodoc:
           end
         )
       end
-      
+
       def response_code_for_rescue(exception)
         case exception
-          when UnknownAction, RoutingError 
+          when UnknownAction, RoutingError
             "404 Page Not Found"
           else
             "500 Internal Error"
         end
       end
-      
+
       def clean_backtrace(exception)
         exception.backtrace.collect { |line| Object.const_defined?(:RAILS_ROOT) ? line.gsub(RAILS_ROOT, "") : line }
       end

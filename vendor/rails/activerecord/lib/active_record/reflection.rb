@@ -20,7 +20,7 @@ module ActiveRecord
         write_inheritable_hash :reflections, name => reflection
         reflection
       end
-      
+
       # Returns a hash containing all AssociationReflection objects for the current class
       # Example:
       #
@@ -30,7 +30,7 @@ module ActiveRecord
       def reflections
         read_inheritable_attribute(:reflections) || write_inheritable_attribute(:reflections, {})
       end
-       
+
       # Returns an array of AggregateReflection objects for all the aggregations in the class.
       def reflect_on_all_aggregations
         reflections.values.select { |reflection| reflection.is_a?(AggregateReflection) }
@@ -45,7 +45,7 @@ module ActiveRecord
       end
 
       # Returns an array of AssociationReflection objects for all the aggregations in the class. If you only want to reflect on a
-      # certain association type, pass in the symbol (:has_many, :has_one, :belongs_to) for that as the first parameter. 
+      # certain association type, pass in the symbol (:has_many, :has_one, :belongs_to) for that as the first parameter.
       # Example:
       #
       #   Account.reflect_on_all_associations             # returns an array of all associations
@@ -96,7 +96,7 @@ module ActiveRecord
       # Returns the class for the macro, so "composed_of :balance, :class_name => 'Money'" would return the Money class and
       # "has_many :clients" would return the Client class.
       def klass() end
-        
+
       def class_name
         @class_name ||= name_to_class_name(name.id2name)
       end
@@ -140,7 +140,7 @@ module ActiveRecord
             @primary_key_name = options[:foreign_key] || active_record.name.foreign_key
         end
       end
-      
+
       def association_foreign_key
         @association_foreign_key ||= @options[:association_foreign_key] || class_name.foreign_key
       end
@@ -167,7 +167,7 @@ module ActiveRecord
 
       # Gets the source of the through reflection.  It checks both a singularized and pluralized form for :belongs_to or :has_many.
       # (The :tags association on Tagging below)
-      # 
+      #
       #   class Post
       #     has_many :tags, :through => :taggings
       #   end
@@ -182,7 +182,7 @@ module ActiveRecord
           if through_reflection.nil?
             raise HasManyThroughAssociationNotFoundError.new(active_record.name, self)
           end
-          
+
           if source_reflection.nil?
             raise HasManyThroughSourceAssociationNotFoundError.new(self)
           end
@@ -190,11 +190,11 @@ module ActiveRecord
           if options[:source_type] && source_reflection.options[:polymorphic].nil?
             raise HasManyThroughAssociationPointlessSourceTypeError.new(active_record.name, self, source_reflection)
           end
-          
+
           if source_reflection.options[:polymorphic] && options[:source_type].nil?
             raise HasManyThroughAssociationPolymorphicError.new(active_record.name, self, source_reflection)
           end
-          
+
           unless [:belongs_to, :has_many].include?(source_reflection.macro) && source_reflection.options[:through].nil?
             raise HasManyThroughSourceAssociationMacroError.new(self)
           end

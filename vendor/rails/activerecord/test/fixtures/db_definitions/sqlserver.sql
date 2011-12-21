@@ -124,14 +124,14 @@ CREATE TABLE colnametests (
 
 CREATE TABLE mixins (
   id int NOT NULL IDENTITY(1, 1) PRIMARY KEY,
-  parent_id int default NULL, 
+  parent_id int default NULL,
   pos int default NULL,
   created_at datetime default NULL,
   updated_at datetime default NULL,
   lft int default NULL,
   rgt int default NULL,
   root_id int default NULL,
-  type varchar(40) default NULL    
+  type varchar(40) default NULL
 );
 
 CREATE TABLE people (

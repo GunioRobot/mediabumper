@@ -10,7 +10,7 @@ module ActionController
           assert_block(full_message) { expected_dom == actual_dom }
         end
       end
-      
+
       # The negated form of +assert_dom_equivalent+.
       def assert_dom_not_equal(expected, actual, message="")
         clean_backtrace do

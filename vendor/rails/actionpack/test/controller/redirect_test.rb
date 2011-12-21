@@ -4,11 +4,11 @@ class RedirectController < ActionController::Base
   def simple_redirect
     redirect_to :action => "hello_world"
   end
-  
+
   def method_redirect
     redirect_to :dashbord_url, 1, "hello"
   end
-  
+
   def host_redirect
     redirect_to :action => "other_host", :only_path => false, :host => 'other.test.host'
   end
@@ -27,9 +27,9 @@ class RedirectController < ActionController::Base
   end
 
   def rescue_errors(e) raise e end
-    
+
   def rescue_action(e) raise end
-  
+
   protected
     def dashbord_url(id, message)
       url_for :action => "dashboard", :params => { "id" => id, "message" => message }
@@ -100,7 +100,7 @@ class RedirectTest < Test::Unit::TestCase
     assert_response :redirect
     assert_equal "http://www.example.com/coming/from", redirect_to_url
   end
-  
+
   def test_redirect_to_back_with_no_referer
     assert_raises(ActionController::RedirectBackError) {
       @request.env["HTTP_REFERER"] = nil
@@ -122,19 +122,19 @@ module ModuleTest
       @request    = ActionController::TestRequest.new
       @response   = ActionController::TestResponse.new
     end
-  
+
     def test_simple_redirect
       get :simple_redirect
       assert_response :redirect
       assert_equal "http://test.host/module_test/module_redirect/hello_world", redirect_to_url
     end
-  
+
     def test_redirect_with_method_reference_and_parameters
       assert_deprecated(/redirect_to/) { get :method_redirect }
       assert_response :redirect
       assert_equal "http://test.host/module_test/module_redirect/dashboard/1?message=hello", redirect_to_url
     end
-    
+
     def test_simple_redirect_using_options
       get :host_redirect
       assert_response :redirect

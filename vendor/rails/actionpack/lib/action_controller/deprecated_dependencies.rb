@@ -21,7 +21,7 @@ module ActionController #:nodoc:
         depend_on(:service, services)
       end
       deprecate :service
-      
+
       # Specifies a variable number of observers that are to govern when this controller is handling actions. The observers will
       # automatically have .instance called on them to make them active on assignment.
       def observer(*observers)
@@ -47,7 +47,7 @@ module ActionController #:nodoc:
         def instantiate_observers(observers)
           observers.flatten.each { |observer| Object.const_get(Inflector.classify(observer.to_s)).instance }
         end
-        
+
         def require_dependencies(layer, dependencies)
           dependencies.flatten.each do |dependency|
             begin

@@ -7,7 +7,7 @@ Description:
     The generator creates a plugin directory in vendor/plugins that includes
     both init.rb and README files as well as lib, task, and test directories.
 
-    It's also possible to generate stub files for a generator to go with the 
+    It's also possible to generate stub files for a generator to go with the
     plugin by using --with-generator
 
 Example:

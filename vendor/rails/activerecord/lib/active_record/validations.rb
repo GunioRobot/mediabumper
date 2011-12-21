@@ -143,7 +143,7 @@ module ActiveRecord
     def empty?
       @errors.empty?
     end
-    
+
     # Removes all the errors that have been added.
     def clear
       @errors = {}
@@ -154,7 +154,7 @@ module ActiveRecord
     def size
       @errors.values.inject(0) { |error_count, attribute| error_count + attribute.size }
     end
-    
+
     alias_method :count, :size
     alias_method :length, :size
 
@@ -374,7 +374,7 @@ module ActiveRecord
       #   end
       #
       # The first_name attribute must be in the object and it cannot be blank.
-      #      
+      #
       # If you want to validate the presence of a boolean field (where the real values are true and false),
       # you will want to use validates_inclusion_of :field_name, :in => [true, false]
       # This is due to the way Object#blank? handles boolean values. false.blank? # => true
@@ -507,10 +507,10 @@ module ActiveRecord
       #   end
       #
       # It can also validate whether the value of the specified attributes are unique based on multiple scope parameters.  For example,
-      # making sure that a teacher can only be on the schedule once per semester for a particular class. 
+      # making sure that a teacher can only be on the schedule once per semester for a particular class.
       #
       #   class TeacherSchedule < ActiveRecord::Base
-      #     validates_uniqueness_of :teacher_id, :scope => [:semester_id, :class_id] 
+      #     validates_uniqueness_of :teacher_id, :scope => [:semester_id, :class_id]
       #   end
       #
       # When the record is created, a check is performed to make sure that no record exists in the database with the given value for the specified
@@ -524,7 +524,7 @@ module ActiveRecord
       # * <tt>if</tt> - Specifies a method, proc or string to call to determine if the validation should
       # occur (e.g. :if => :allow_validation, or :if => Proc.new { |user| user.signup_step > 2 }).  The
       # method, proc or string should return or evaluate to a true or false value.
-       
+
       def validates_uniqueness_of(*attr_names)
         configuration = { :message => ActiveRecord::Errors.default_error_messages[:taken], :case_sensitive => true }
         configuration.update(attr_names.pop) if attr_names.last.is_a?(Hash)
@@ -554,7 +554,7 @@ module ActiveRecord
         end
       end
 
-      
+
 
       # Validates whether the value of the specified attribute is of the correct form by matching it against the regular expression
       # provided.

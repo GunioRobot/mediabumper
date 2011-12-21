@@ -23,7 +23,7 @@ module ActiveRecord
     class AbstractAdapter
       include Quoting, DatabaseStatements, SchemaStatements
       @@row_even = true
-      
+
       def initialize(connection, logger = nil) #:nodoc:
         @connection, @logger = connection, logger
         @runtime = 0
@@ -41,7 +41,7 @@ module ActiveRecord
       def supports_migrations?
         false
       end
-      
+
       # Does this adapter support using DISTINCT within COUNT?  This is +true+
       # for all adapters except sqlite.
       def supports_count_distinct?
@@ -86,7 +86,7 @@ module ActiveRecord
       end
 
       # Lazily verify this connection, calling +active?+ only if it hasn't
-      # been called for +timeout+ seconds.       
+      # been called for +timeout+ seconds.
       def verify!(timeout)
         now = Time.now.to_i
         if (now - @last_verification) > timeout
@@ -94,7 +94,7 @@ module ActiveRecord
           @last_verification = now
         end
       end
-      
+
       # Provides access to the underlying database connection. Useful for
       # when you need to call a proprietary method such as postgresql's lo_*
       # methods

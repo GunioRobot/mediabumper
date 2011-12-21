@@ -7,9 +7,9 @@ require 'logger'; class Logger; def format_message(severity, timestamp, msg, pro
 
 ActiveRecord::Base.logger = Logger.new(STDOUT)
 ActiveRecord::Base.establish_connection(
-  :adapter  => "mysql", 
-  :host     => "localhost", 
-  :username => "root", 
-  :password => "", 
+  :adapter  => "mysql",
+  :host     => "localhost",
+  :username => "root",
+  :password => "",
   :database => "activerecord_examples"
 )

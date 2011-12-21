@@ -22,9 +22,9 @@ module WillPaginate
 
     # Renders Digg-style pagination. (We know you wanna!)
     # Returns nil if there is only one page in total (can't paginate that).
-    # 
+    #
     # Options for will_paginate view helper:
-    # 
+    #
     #   class:        CSS class name for the generated DIV (default "pagination")
     #   prev_label:   default '&laquo; Previous',
     #   next_label:   default 'Next &raquo;',
@@ -44,18 +44,18 @@ module WillPaginate
         inner_window, outer_window = options.delete(:inner_window).to_i, options.delete(:outer_window).to_i
         min = page - inner_window
         max = page + inner_window
-        
+
         # adjust lower or upper limit if other is out of bounds
         if max > total_pages then min -= max - total_pages
         elsif min < 1  then max += 1 - min
         end
-        
+
         current   = min..max
         beginning = 1..(1 + outer_window)
         tail      = (total_pages - outer_window)..total_pages
         visible   = [current, beginning, tail].map(&:to_a).flatten
         visible  &= (1..total_pages).to_a
-        
+
         # build the list of the links
         links = (1..total_pages).inject([]) do |list, n|
           if visible.include? n
@@ -66,15 +66,15 @@ module WillPaginate
           end
           list
         end
-        
+
         # next and previous buttons
         links.unshift page_link_or_span(entries.previous_page, 'disabled', options.delete(:prev_label))
         links.push    page_link_or_span(entries.next_page,     'disabled', options.delete(:next_label))
-        
+
         content_tag :div, links.join(options.delete(:separator)), options
       end
     end
-    
+
   protected
 
     def page_link_or_span(page, span_class = nil, text = page.to_s)

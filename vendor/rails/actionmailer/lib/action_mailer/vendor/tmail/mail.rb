@@ -305,7 +305,7 @@ module TMail
           unixfrom = $1
 
   		  when /^charset=.*/
-				
+
         else
           raise SyntaxError, "wrong mail header: '#{line.inspect}'"
         end
@@ -378,7 +378,7 @@ module TMail
       parse_body
       @parts
     end
-    
+
     def each_part( &block )
       parts().each(&block)
     end
@@ -414,7 +414,7 @@ module TMail
         }
       end
     end
-    
+
     def read_multipart( src )
       bound = @header['content-type'].params['boundary']
       is_sep = /\A--#{Regexp.quote bound}(?:--)?[ \t]*(?:\n|\r\n|\r)/

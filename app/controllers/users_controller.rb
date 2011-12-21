@@ -12,8 +12,8 @@ class UsersController < ApplicationController
   rescue ActiveRecord::RecordInvalid
     render :action => 'new'
   end
-  
+
   def profile
-    
+
   end
 end

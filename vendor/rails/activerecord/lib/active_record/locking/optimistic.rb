@@ -6,10 +6,10 @@ module ActiveRecord
     #
     #   p1 = Person.find(1)
     #   p2 = Person.find(1)
-    #   
+    #
     #   p1.first_name = "Michael"
     #   p1.save
-    #   
+    #
     #   p2.first_name = "should fail"
     #   p2.save # Raises a ActiveRecord::StaleObjectError
     #
@@ -31,7 +31,7 @@ module ActiveRecord
 
         base.alias_method_chain :update, :lock
         base.alias_method_chain :attributes_from_column_definition, :lock
-        
+
         class << base
           alias_method :locking_column=, :set_locking_column
         end
@@ -43,16 +43,16 @@ module ActiveRecord
 
       def attributes_from_column_definition_with_lock
         result = attributes_from_column_definition_without_lock
-        
+
         # If the locking column has no default value set,
         # start the lock version at zero.  Note we can't use
         # locking_enabled? at this point as @attributes may
         # not have been initialized yet
-        
+
         if lock_optimistically && result.include?(self.class.locking_column)
           result[self.class.locking_column] ||= 0
         end
-        
+
         return result
       end
 

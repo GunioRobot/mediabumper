@@ -18,8 +18,8 @@
 
 
  Mp3Info.open("myfile.mp3") do |mp3|
-  puts mp3.tag.title   
-  puts mp3.tag.artist   
+  puts mp3.tag.title
+  puts mp3.tag.artist
   puts mp3.tag.album
   puts mp3.tag.tracknum
 

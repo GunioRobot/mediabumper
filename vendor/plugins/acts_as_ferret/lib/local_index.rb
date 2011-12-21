@@ -1,5 +1,5 @@
 module ActsAsFerret
-  
+
   class LocalIndex < AbstractIndex
     include MoreLikeThis::IndexMethods
 
@@ -20,14 +20,14 @@ module ActsAsFerret
     def ensure_index_exists
       unless File.file? "#{aaf_configuration[:index_dir]}/segments"
         close
-        rebuild_index 
+        rebuild_index
       end
     end
 
     # Closes the underlying index instance
     def close
       @ferret_index.close if @ferret_index
-    rescue StandardError 
+    rescue StandardError
       # is raised when index already closed
     ensure
       @ferret_index = nil
@@ -40,7 +40,7 @@ module ActsAsFerret
       logger.debug "rebuild index: #{models.inspect}"
       models << aaf_configuration[:class_name] unless models.include?(aaf_configuration[:class_name])
       models = models.flatten.uniq.map(&:constantize)
-      index = Ferret::Index::Index.new(aaf_configuration[:ferret].dup.update(:auto_flush => false, 
+      index = Ferret::Index::Index.new(aaf_configuration[:ferret].dup.update(:auto_flush => false,
                                                                              :field_infos => field_infos(models),
                                                                              :create => true))
       models.each do |model|
@@ -63,7 +63,7 @@ module ActsAsFerret
       end
     end
 
-    # Total number of hits for the given query. 
+    # Total number of hits for the given query.
     def total_hits(query, options = {})
       ferret_index.search(query, options).total_hits
     end
@@ -103,9 +103,9 @@ module ActsAsFerret
       return block_given? ? total_hits : [total_hits, result]
     end
 
-    # Queries multiple Ferret indexes to retrieve model class, id and score for 
+    # Queries multiple Ferret indexes to retrieve model class, id and score for
     # each hit. Use the models parameter to give the list of models to search.
-    # If a block is given, model, id and score are yielded and the number of 
+    # If a block is given, model, id and score are yielded and the number of
     # total hits is returned. Otherwise [total_hits, result_array] is returned.
     def id_multi_search(query, models, options = {})
       models.map!(&:constantize)
@@ -190,7 +190,7 @@ module ActsAsFerret
       multi_config.delete :default_field  # we don't want the default field list of *this* class for multi_searching
       ActsAsFerret::multi_indexes[key] ||= MultiIndex.new(model_classes, multi_config)
     end
- 
+
     def close_multi_indexes
       # close combined index readers, just in case
       # this seems to fix a strange test failure that seems to relate to a
@@ -231,23 +231,23 @@ module ActsAsFerret
     # for the given model classes.
     def field_infos(models)
       # default attributes for fields
-      fi = Ferret::Index::FieldInfos.new(:store => :no, 
-                                         :index => :yes, 
+      fi = Ferret::Index::FieldInfos.new(:store => :no,
+                                         :index => :yes,
                                          :term_vector => :no,
                                          :boost => 1.0)
       # primary key
-      fi.add_field(:id, :store => :yes, :index => :untokenized) 
+      fi.add_field(:id, :store => :yes, :index => :untokenized)
       # class_name
       if aaf_configuration[:store_class_name]
-        fi.add_field(:class_name, :store => :yes, :index => :untokenized) 
+        fi.add_field(:class_name, :store => :yes, :index => :untokenized)
       end
       fields = {}
       models.each do |model|
         fields.update(model.aaf_configuration[:ferret_fields])
       end
       fields.each_pair do |field, options|
-        fi.add_field(field, { :store => :no, 
-                              :index => :yes }.update(options)) 
+        fi.add_field(field, { :store => :no,
+                              :index => :yes }.update(options))
       end
       return fi
     end

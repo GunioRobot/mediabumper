@@ -36,8 +36,8 @@ class CookieTest < Test::Unit::TestCase
       render_text "hello world"
     end
 
-    def rescue_action(e) 
-      raise unless ActionController::MissingTemplate # No templates here, and we don't care about the output 
+    def rescue_action(e)
+      raise unless ActionController::MissingTemplate # No templates here, and we don't care about the output
     end
   end
 
@@ -77,12 +77,12 @@ class CookieTest < Test::Unit::TestCase
   def test_setting_test_cookie
     assert_nothing_raised { get :access_frozen_cookies }
   end
-  
+
   def test_expiring_cookie
     get :logout
     assert_equal [ CGI::Cookie::new("name" => "user_name", "value" => "", "expires" => Time.at(0)) ], @response.headers["cookie"]
-  end  
-  
+  end
+
   def test_cookiejar_accessor
     @request.cookies["user_name"] = CGI::Cookie.new("name" => "user_name", "value" => "david", "expires" => Time.local(2025, 10, 10))
     @controller.request = @request

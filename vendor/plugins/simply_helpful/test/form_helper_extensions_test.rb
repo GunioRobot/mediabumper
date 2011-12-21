@@ -19,7 +19,7 @@ class FormHelperExtensionsTest < Test::Unit::TestCase
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::TextHelper
   include SimplyHelpful::RecordIdentificationHelper
-  
+
   def setup
     @record = Post.new
     @controller = Class.new do
@@ -31,11 +31,11 @@ class FormHelperExtensionsTest < Test::Unit::TestCase
     end
     @controller = @controller.new
   end
-  
+
   def test_form_for_with_record_identification_with_new_record
     _erbout = ''
     form_for(@record, {:html => { :id => 'create-post' }}) {}
-    
+
     expected = "<form action='#{posts_url}' class='new_post' id='create-post' method='post'></form>"
     assert_dom_equal expected, _erbout
   end
@@ -44,18 +44,18 @@ class FormHelperExtensionsTest < Test::Unit::TestCase
     form_for(@record, :builder => LabelledFormBuilder) do |f|
       _erbout.concat(f.text_field(:name))
     end
-    
+
     expected = "<form action='#{posts_url}' class='new_post' id='new_post' method='post'>" +
       "<label for='name'>Name:</label>" +
       " <input type='text' size='30' name='post[name]' id='post_name' value='new post' /><br />" +
       "</form>"
-    assert_dom_equal expected, _erbout    
+    assert_dom_equal expected, _erbout
   end
-  
+
   def test_form_for_with_record_identification_without_html_options
     _erbout = ''
     form_for(@record) {}
-    
+
     expected = "<form action='#{posts_url}' class='new_post' method='post' id='new_post'></form>"
     assert_dom_equal expected, _erbout
   end
@@ -64,7 +64,7 @@ class FormHelperExtensionsTest < Test::Unit::TestCase
     @record.save
     _erbout = ''
     form_for(@record) {}
-    
+
     expected = "<form action='#{post_url(@record)}' class='edit_post' id='edit_post_1' method='post'><div style='margin:0;padding:0'><input name='_method' type='hidden' value='put' /></div></form>"
     assert_dom_equal expected, _erbout
   end
@@ -72,7 +72,7 @@ class FormHelperExtensionsTest < Test::Unit::TestCase
   def test_remote_form_for_with_record_identification_with_new_record
     _erbout = ''
     remote_form_for(@record, {:html => { :id => 'create-post' }}) {}
-    
+
     expected = %(<form action='#{posts_url}' onsubmit="new Ajax.Request('#{posts_url}', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;" class='new_post' id='create-post' method='post'></form>)
     assert_dom_equal expected, _erbout
   end
@@ -80,7 +80,7 @@ class FormHelperExtensionsTest < Test::Unit::TestCase
   def test_remote_form_for_with_record_identification_without_html_options
     _erbout = ''
     remote_form_for(@record) {}
-    
+
     expected = %(<form action='#{posts_url}' onsubmit="new Ajax.Request('#{posts_url}', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;" class='new_post' method='post' id='new_post'></form>)
     assert_dom_equal expected, _erbout
   end
@@ -89,7 +89,7 @@ class FormHelperExtensionsTest < Test::Unit::TestCase
     @record.save
     _erbout = ''
     remote_form_for(@record) {}
-    
+
     expected = %(<form action='#{post_url(@record)}' id='edit_post_1' method='post' onsubmit="new Ajax.Request('#{post_url(@record)}', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;" class='edit_post'><div style='margin:0;padding:0'><input name='_method' type='hidden' value='put' /></div></form>)
     assert_dom_equal expected, _erbout
   end

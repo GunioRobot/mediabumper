@@ -668,7 +668,7 @@ class DependenciesTest < Test::Unit::TestCase
         assert !defined?(::RaisesNoMethodError), "::RaisesNoMethodError is defined but it should have failed!"
       end
     end
-  
+
   ensure
     Object.send(:remove_const, :RaisesNoMethodError) if defined?(::RaisesNoMethodError)
   end
@@ -681,7 +681,7 @@ class DependenciesTest < Test::Unit::TestCase
         assert !defined?(::RaisesNoMethodError), "::RaisesNoMethodError is defined but it should have failed!"
       end
     end
-  
+
   ensure
     Object.send(:remove_const, :RaisesNoMethodError) if defined?(::RaisesNoMethodError)
   end
@@ -709,7 +709,7 @@ class DependenciesTest < Test::Unit::TestCase
   ensure
     Object.send(:remove_const, :RaisesNameError) if defined?(::RaisesNameError)
   end
-  
+
   def test_remove_constant_handles_double_colon_at_start
     Object.const_set 'DeleteMe', Module.new
     DeleteMe.const_set 'OrMe', Module.new
@@ -719,7 +719,7 @@ class DependenciesTest < Test::Unit::TestCase
     Dependencies.send :remove_constant, "::DeleteMe"
     assert ! defined?(DeleteMe)
   end
-  
+
   def test_load_once_constants_should_not_be_unloaded
     with_loading 'autoloading_fixtures' do
       Dependencies.load_once_paths = Dependencies.load_paths
@@ -732,7 +732,7 @@ class DependenciesTest < Test::Unit::TestCase
     Dependencies.load_once_paths = []
     Object.send :remove_const, :A rescue nil
   end
-  
+
   def test_load_once_paths_should_behave_when_recursively_loading
     with_loading 'dependencies', 'autoloading_fixtures' do
       Dependencies.load_once_paths = [Dependencies.load_paths.last]
@@ -748,5 +748,5 @@ class DependenciesTest < Test::Unit::TestCase
   ensure
     Dependencies.load_once_paths = []
   end
-  
+
 end

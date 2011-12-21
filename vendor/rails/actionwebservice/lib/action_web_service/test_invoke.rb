@@ -36,7 +36,7 @@ module Test # :nodoc:
           @request.env['RAW_POST_DATA'] = encode_rpc_call(service_name, api_method_name, *args)
           case protocol
           when ActionWebService::Protocol::Soap::SoapProtocol
-            soap_action = "/#{@controller.controller_name}/#{service_name}/#{public_method_name(service_name, api_method_name)}" 
+            soap_action = "/#{@controller.controller_name}/#{service_name}/#{public_method_name(service_name, api_method_name)}"
             @request.env['HTTP_SOAPACTION'] = soap_action
           when ActionWebService::Protocol::XmlRpc::XmlRpcProtocol
             @request.env.delete('HTTP_SOAPACTION')

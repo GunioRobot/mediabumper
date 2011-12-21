@@ -9,7 +9,7 @@ module ActionController #:nodoc:
   # * session: Objects being saved in the session.
   # * flash: The flash objects currently in the session.
   # * cookies: Cookies being sent to the user on this request.
-  # 
+  #
   # These collections can be used just like any other hash:
   #
   #   assert_not_nil assigns(:person) # makes sure that a @person instance variable was set
@@ -40,7 +40,7 @@ module ActionController #:nodoc:
   # == Testing named routes
   #
   # If you're using named routes, they can be easily tested using the original named routes methods straight in the test case.
-  # Example: 
+  # Example:
   #
   #  assert_redirected_to page_url(:title => 'foo')
   module Assertions
@@ -58,7 +58,7 @@ module ActionController #:nodoc:
 
     def clean_backtrace(&block)
       yield
-    rescue Test::Unit::AssertionFailedError => e         
+    rescue Test::Unit::AssertionFailedError => e
       path = File.expand_path(__FILE__)
       raise Test::Unit::AssertionFailedError, e.message, e.backtrace.reject { |line| File.expand_path(line) =~ /#{path}/ }
     end

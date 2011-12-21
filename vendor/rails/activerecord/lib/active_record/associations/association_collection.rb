@@ -7,13 +7,13 @@ module ActiveRecord
         load_target
         @target.to_ary
       end
-  
+
       def reset
         reset_target!
         @loaded = false
       end
 
-      # Add +records+ to this association.  Returns +self+ so method calls may be chained.  
+      # Add +records+ to this association.  Returns +self+ so method calls may be chained.
       # Since << flattens its argument list and inserts each record, +push+ and +concat+ behave identically.
       def <<(*records)
         result = true
@@ -34,7 +34,7 @@ module ActiveRecord
 
       alias_method :push, :<<
       alias_method :concat, :<<
-                      
+
       # Remove all records from this association
       def delete_all
         load_target
@@ -53,7 +53,7 @@ module ActiveRecord
         records.each { |record| raise_on_type_mismatch(record) }
         records.reject! { |record| @target.delete(record) if record.new_record? }
         return if records.empty?
-        
+
         @owner.transaction do
           records.each { |record| callback(:before_remove, record) }
           delete_records(records)
@@ -70,13 +70,13 @@ module ActiveRecord
 
         if @reflection.options[:dependent] && @reflection.options[:dependent] == :delete_all
           destroy_all
-        else          
+        else
           delete_all
         end
 
         self
       end
-      
+
       def destroy_all
         @owner.transaction do
           each { |record| record.destroy }
@@ -179,12 +179,12 @@ module ActiveRecord
             end
           end
         end
-        
+
         def callbacks_for(callback_name)
           full_callback_name = "#{callback_name}_for_#{@reflection.name}"
           @owner.class.read_inheritable_attribute(full_callback_name.to_sym) || []
         end
-        
+
     end
   end
 end

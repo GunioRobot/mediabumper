@@ -11,7 +11,7 @@ module ActionView
     #
     # == Add javascript to header using content_for
     #
-    # content_for("name") is a wrapper for capture which will 
+    # content_for("name") is a wrapper for capture which will
     # make the fragment available by name to a yielding layout or template.
     #
     # layout.rhtml:
@@ -29,7 +29,7 @@ module ActionView
     #   </html>
     #
     # view.rhtml
-    #   
+    #
     #   This page shows an alert box!
     #
     #   <% content_for("script") do %>
@@ -38,18 +38,18 @@ module ActionView
     #
     #   Normal view text
     module CaptureHelper
-      # Capture allows you to extract a part of the template into an 
+      # Capture allows you to extract a part of the template into an
       # instance variable. You can use this instance variable anywhere
-      # in your templates and even in your layout. 
-      # 
+      # in your templates and even in your layout.
+      #
       # Example of capture being used in a .rhtml page:
-      # 
+      #
       #   <% @greeting = capture do %>
       #     Welcome To my shiny new web page!
       #   <% end %>
       #
       # Example of capture being used in a .rxml page:
-      # 
+      #
       #   @greeting = capture do
       #     'Welcome To my shiny new web page!'
       #   end
@@ -60,20 +60,20 @@ module ActionView
         rescue
           buffer = nil
         end
-        
+
         if buffer.nil?
           capture_block(*args, &block)
         else
           capture_erb_with_buffer(buffer, *args, &block)
         end
       end
-      
+
       # Calling content_for stores the block of markup for later use.
       # Subsequently, you can make calls to it by name with <tt>yield</tt>
-      # in another template or in the layout. 
-      # 
+      # in another template or in the layout.
+      #
       # Example:
-      # 
+      #
       #   <% content_for("header") do %>
       #     alert('hello world')
       #   <% end %>
@@ -97,29 +97,29 @@ module ActionView
         def capture_block(*args, &block)
           block.call(*args)
         end
-      
+
         def capture_erb(*args, &block)
           buffer = eval("_erbout", block.binding)
           capture_erb_with_buffer(buffer, *args, &block)
         end
-      
+
         def capture_erb_with_buffer(buffer, *args, &block)
           pos = buffer.length
           block.call(*args)
-        
-          # extract the block 
+
+          # extract the block
           data = buffer[pos..-1]
-        
+
           # replace it in the original with empty string
           buffer[pos..-1] = ''
-        
+
           data
         end
-      
+
         def erb_content_for(name, &block)
           eval "@content_for_#{name} = (@content_for_#{name} || '') + capture_erb(&block)"
         end
-      
+
         def block_content_for(name, &block)
           eval "@content_for_#{name} = (@content_for_#{name} || '') + capture_block(&block)"
         end

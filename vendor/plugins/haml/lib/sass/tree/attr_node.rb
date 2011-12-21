@@ -3,12 +3,12 @@ require 'sass/tree/node'
 module Sass::Tree
   class AttrNode < ValueNode
     attr_accessor :name
-    
+
     def initialize(name, value, style)
       @name = name
       super(value, style)
     end
-    
+
     def to_s(parent_name = nil)
       if value[-1] == ?;
         raise Sass::SyntaxError.new("Invalid attribute: #{declaration.dump} (This isn't CSS!)", @line)

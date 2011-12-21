@@ -67,7 +67,7 @@ module ActionWebService # :nodoc:
           # This is a work-around for the fact that XML-RPC special-cases DateTime values into its own DateTime type
           # in order to support iso8601 dates. This doesn't work too well for us, so we'll convert it into a Time,
           # with the caveat that we won't be able to handle pre-1970 dates that are sent to us.
-          # 
+          #
           # See http://dev.rubyonrails.com/ticket/2516
           value = value.to_time if value.is_a?(XMLRPC::DateTime)
 

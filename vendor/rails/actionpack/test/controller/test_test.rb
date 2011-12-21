@@ -486,7 +486,7 @@ HTML
     get :test_params
     uri = @request.request_uri
     assert_equal @request.env['REQUEST_URI'], uri
-    
+
     get :test_uri
     assert_not_equal uri, @request.request_uri
     uri = @request.request_uri

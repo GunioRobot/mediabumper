@@ -200,7 +200,7 @@ class TestMailer < ActionMailer::Base
     end
     attachment :content_type => "application/octet-stream",:filename => "test.txt", :body => "test abcdefghijklmnopqstuvwxyz"
   end
-  
+
   def attachment_with_custom_header(recipient)
     recipients   recipient
     subject      "custom header in attachment"
@@ -274,7 +274,7 @@ class ActionMailerTest < Test::Unit::TestCase
     assert_nothing_raised { created = TestMailer.create_nested_multipart(@recipient)}
     assert_equal 2,created.parts.size
     assert_equal 2,created.parts.first.parts.size
-    
+
     assert_equal "multipart/mixed", created.content_type
     assert_equal "multipart/alternative", created.parts.first.content_type
     assert_equal "bar", created.parts.first.header['foo'].to_s
@@ -306,7 +306,7 @@ class ActionMailerTest < Test::Unit::TestCase
     assert_not_nil ActionMailer::Base.deliveries.first
     assert_equal expected.encoded, ActionMailer::Base.deliveries.first.encoded
   end
-  
+
   def test_custom_template
     expected = new_mail
     expected.to      = @recipient
@@ -320,7 +320,7 @@ class ActionMailerTest < Test::Unit::TestCase
     assert_not_nil created
     assert_equal expected.encoded, created.encoded
   end
-  
+
   def test_cancelled_account
     expected = new_mail
     expected.to      = @recipient
@@ -338,7 +338,7 @@ class ActionMailerTest < Test::Unit::TestCase
     assert_not_nil ActionMailer::Base.deliveries.first
     assert_equal expected.encoded, ActionMailer::Base.deliveries.first.encoded
   end
-  
+
   def test_cc_bcc
     expected = new_mail
     expected.to      = @recipient
@@ -531,7 +531,7 @@ EOF
     assert_not_nil ActionMailer::Base.deliveries.first
     assert_equal expected.encoded, ActionMailer::Base.deliveries.first.encoded
   end
-  
+
   def test_utf8_body_is_not_quoted
     @recipient = "Foo áëô îü <extended@example.net>"
     expected = new_mail "utf-8"
@@ -621,7 +621,7 @@ EOF
     mail = TestMailer.create_multipart_with_mime_version(@recipient)
     assert_equal "1.1", mail.mime_version
   end
-  
+
   def test_multipart_with_utf8_subject
     mail = TestMailer.create_multipart_with_utf8_subject(@recipient)
     assert_match(/\nSubject: =\?utf-8\?Q\?Foo_.*?\?=/, mail.encoded)
@@ -686,7 +686,7 @@ EOF
     mail = TestMailer.create_implicitly_multipart_example(@recipient, 'iso-8859-1')
 
     assert_equal "multipart/alternative", mail.header['content-type'].body
-    
+
     assert_equal 'iso-8859-1', mail.parts[0].sub_header("content-type", "charset")
     assert_equal 'iso-8859-1', mail.parts[1].sub_header("content-type", "charset")
     assert_equal 'iso-8859-1', mail.parts[2].sub_header("content-type", "charset")
@@ -713,7 +713,7 @@ EOF
     assert_equal "line #1\nline #2\nline #3\nline #4\n\n", mail.parts[0].body
     assert_equal "<p>line #1</p>\n<p>line #2</p>\n<p>line #3</p>\n<p>line #4</p>\n\n", mail.parts[1].body
   end
-  
+
   def test_headers_removed_on_smtp_delivery
     ActionMailer::Base.delivery_method = :smtp
     TestMailer.deliver_cc_bcc(@recipient)
@@ -787,7 +787,7 @@ EOF
     assert_match %r{format=flowed}, mail['content-type'].to_s
     assert_match %r{charset=utf-8}, mail['content-type'].to_s
   end
-  
+
   def test_deprecated_server_settings
     old_smtp_settings = ActionMailer::Base.smtp_settings
     assert_deprecated do
@@ -798,7 +798,7 @@ EOF
       assert_equal Hash.new, ActionMailer::Base.smtp_settings
     end
   ensure
-    ActionMailer::Base.smtp_settings=old_smtp_settings    
+    ActionMailer::Base.smtp_settings=old_smtp_settings
   end
 end
 

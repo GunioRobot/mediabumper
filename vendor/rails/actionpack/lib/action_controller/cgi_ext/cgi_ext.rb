@@ -3,7 +3,7 @@ require 'cgi/session'
 require 'cgi/session/pstore'
 require 'action_controller/cgi_ext/cgi_methods'
 
-# Wrapper around the CGIMethods that have been secluded to allow testing without 
+# Wrapper around the CGIMethods that have been secluded to allow testing without
 # an instantiated CGI object
 class CGI #:nodoc:
   class << self
@@ -13,7 +13,7 @@ class CGI #:nodoc:
       escapeHTML_fail_on_nil(string) unless string.nil?
     end
   end
-  
+
   # Returns a parameter hash including values from both the request (POST/GET)
   # and the query string with the latter taking precedence.
   def parameters
@@ -27,7 +27,7 @@ class CGI #:nodoc:
   def request_parameters
     CGIMethods.parse_request_parameters(params, env_table)
   end
-  
+
   def session(parameters = nil)
     parameters = {} if parameters.nil?
     parameters['database_manager'] = CGI::Session::PStore

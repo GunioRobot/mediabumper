@@ -17,29 +17,29 @@ module ActionController #:nodoc:
     end
 
     # The template helpers serve to relieve the templates from including the same inline code again and again. It's a
-    # set of standardized methods for working with forms (FormHelper), dates (DateHelper), texts (TextHelper), and 
+    # set of standardized methods for working with forms (FormHelper), dates (DateHelper), texts (TextHelper), and
     # Active Records (ActiveRecordHelper) that's available to all templates by default.
     #
     # It's also really easy to make your own helpers and it's much encouraged to keep the template files free
-    # from complicated logic. It's even encouraged to bundle common compositions of methods from other helpers 
+    # from complicated logic. It's even encouraged to bundle common compositions of methods from other helpers
     # (often the common helpers) as they're used by the specific application.
-    # 
+    #
     #   module MyHelper
     #     def hello_world() "hello world" end
     #   end
-    # 
+    #
     # MyHelper can now be included in a controller, like this:
-    # 
+    #
     #   class MyController < ActionController::Base
     #     helper :my_helper
     #   end
-    # 
+    #
     # ...and, same as above, used in any template rendered from MyController, like this:
-    # 
+    #
     # Let's hear what the helper has to say: <tt><%= hello_world %></tt>
     module ClassMethods
       # Makes all the (instance) methods in the helper module available to templates rendered through this controller.
-      # See ActionView::Helpers (link:classes/ActionView/Helpers.html) for more about making your own helper modules 
+      # See ActionView::Helpers (link:classes/ActionView/Helpers.html) for more about making your own helper modules
       # available to the templates.
       def add_template_helper(helper_module) #:nodoc:
         master_helper_module.send(:include, helper_module)
@@ -62,7 +62,7 @@ module ActionController #:nodoc:
             when String, Symbol
               file_name  = arg.to_s.underscore + '_helper'
               class_name = file_name.camelize
-                
+
               begin
                 require_dependency(file_name)
               rescue LoadError => load_error
@@ -104,7 +104,7 @@ module ActionController #:nodoc:
         attrs.flatten.each { |attr| helper_method(attr, "#{attr}=") }
       end
 
-      private 
+      private
         def default_helper_module!
           module_name = name.sub(/Controller$|$/, 'Helper')
           module_path = module_name.split('::').map { |m| m.underscore }.join('/')

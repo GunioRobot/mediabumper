@@ -32,7 +32,7 @@ class ModelGenerator < Rails::Generator::NamedBase
     def add_options!(opt)
       opt.separator ''
       opt.separator 'Options:'
-      opt.on("--skip-migration", 
+      opt.on("--skip-migration",
              "Don't generate a migration file for this model") { |v| options[:skip_migration] = v }
     end
 end

@@ -29,7 +29,7 @@ end
 class MabView
   def initialize(view)
   end
-  
+
   def render(text, locals = {})
     text
   end
@@ -44,26 +44,26 @@ class LayoutAutoDiscoveryTest < Test::Unit::TestCase
 
     @request.host = "www.nextangle.com"
   end
-  
+
   def test_application_layout_is_default_when_no_controller_match
     @controller = ProductController.new
     get :hello
     assert_equal 'layout_test.rhtml hello.rhtml', @response.body
   end
-  
+
   def test_controller_name_layout_name_match
     @controller = ItemController.new
     get :hello
     assert_equal 'item.rhtml hello.rhtml', @response.body
   end
-  
+
   def test_third_party_template_library_auto_discovers_layout
     @controller = ThirdPartyTemplateLibraryController.new
     get :hello
     assert_equal 'layouts/third_party_template_library', @controller.active_layout
     assert_equal 'Mab', @response.body
   end
-  
+
   def test_namespaced_controllers_auto_detect_layouts
     @controller = ControllerNameSpace::NestedController.new
     get :hello
@@ -147,19 +147,19 @@ class LayoutSetInResponseTest < Test::Unit::TestCase
     get :hello
     assert_equal 'layouts/layout_test', @response.layout
   end
-  
+
   def test_layout_set_when_set_in_controller
     @controller = HasOwnLayoutController.new
     get :hello
     assert_equal 'layouts/item', @response.layout
   end
-  
+
   def test_layout_set_when_using_render
     @controller = SetsLayoutInRenderController.new
     get :hello
     assert_equal 'layouts/third_party_template_library', @response.layout
   end
-  
+
   def test_layout_is_not_set_when_none_rendered
     @controller = RendersNoLayoutController.new
     get :hello

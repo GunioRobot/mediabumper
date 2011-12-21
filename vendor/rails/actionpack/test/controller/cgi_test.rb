@@ -11,7 +11,7 @@ class CGITest < Test::Unit::TestCase
     @query_string_with_nil = "action=create_customer&full_name="
     @query_string_with_array = "action=create_customer&selected[]=1&selected[]=2&selected[]=3"
     @query_string_with_amps  = "action=create_customer&name=Don%27t+%26+Does"
-    @query_string_with_multiple_of_same_name = 
+    @query_string_with_multiple_of_same_name =
       "action=update_order&full_name=Lau%20Taarnskov&products=4&products=2&products=3"
     @query_string_with_many_equal = "action=create_customer&full_name=abc=def=ghi"
     @query_string_without_equal = "action"
@@ -26,12 +26,12 @@ class CGITest < Test::Unit::TestCase
       CGIMethods.parse_query_parameters(@query_string)
     )
   end
-  
+
   def test_deep_query_string
     expected = {'x' => {'y' => {'z' => '10'}}}
     assert_equal(expected, CGIMethods.parse_query_parameters('x[y][z]=10'))
   end
-  
+
   def test_deep_query_string_with_array
     assert_equal({'x' => {'y' => {'z' => ['10']}}}, CGIMethods.parse_query_parameters('x[y][z][]=10'))
     assert_equal({'x' => {'y' => {'z' => ['10', '5']}}}, CGIMethods.parse_query_parameters('x[y][z][]=10&x[y][z][]=5'))
@@ -47,7 +47,7 @@ class CGITest < Test::Unit::TestCase
     assert_equal("10", CGIMethods.parse_query_parameters('x[y][][z]=10&x[y][][z]=20')["x"]["y"].first["z"])
     assert_equal("10", CGIMethods.parse_query_parameters('x[y][][z]=10&x[y][][z]=20').with_indifferent_access[:x][:y].first[:z])
   end
-  
+
   def test_request_hash_parsing
     query = {
       "note[viewers][viewer][][type]" => ["User", "Group"],
@@ -58,14 +58,14 @@ class CGITest < Test::Unit::TestCase
 
     assert_equal(expected, CGIMethods.parse_request_parameters(query))
   end
-  
+
   def test_deep_query_string_with_array_of_hashes_with_multiple_pairs
     assert_equal(
-      {'x' => {'y' => [{'z' => '10', 'w' => 'a'}, {'z' => '20', 'w' => 'b'}]}}, 
+      {'x' => {'y' => [{'z' => '10', 'w' => 'a'}, {'z' => '20', 'w' => 'b'}]}},
       CGIMethods.parse_query_parameters('x[y][][z]=10&x[y][][w]=a&x[y][][z]=20&x[y][][w]=b')
     )
   end
-  
+
   def test_query_string_with_nil
     assert_equal(
       { "action" => "create_customer", "full_name" => nil},
@@ -84,23 +84,23 @@ class CGITest < Test::Unit::TestCase
     assert_equal(
       { "action" => "create_customer", "name" => "Don't & Does"},
       CGIMethods.parse_query_parameters(@query_string_with_amps)
-    )    
+    )
   end
-  
+
   def test_query_string_with_many_equal
     assert_equal(
       { "action" => "create_customer", "full_name" => "abc=def=ghi"},
       CGIMethods.parse_query_parameters(@query_string_with_many_equal)
-    )    
+    )
   end
-  
+
   def test_query_string_without_equal
     assert_equal(
       { "action" => nil },
       CGIMethods.parse_query_parameters(@query_string_without_equal)
-    )    
+    )
   end
-  
+
   def test_query_string_with_empty_key
     assert_equal(
       { "action" => "create_customer", "full_name" => "David Heinemeier Hansson" },
@@ -128,7 +128,7 @@ class CGITest < Test::Unit::TestCase
       "products[second]" => [ "Pc" ],
       "" => [ 'Save' ]
     }
-    
+
     expected_output =  {
       "customers" => {
         "boston" => {
@@ -153,13 +153,13 @@ class CGITest < Test::Unit::TestCase
 
     assert_equal expected_output, CGIMethods.parse_request_parameters(input)
   end
-  
+
   def test_parse_params_from_multipart_upload
     mockup = Struct.new(:content_type, :original_filename, :read, :rewind)
     file = mockup.new('img/jpeg', 'foo.jpg')
     ie_file = mockup.new('img/jpeg', 'c:\\Documents and Settings\\foo\\Desktop\\bar.jpg')
     non_file_text_part = mockup.new('text/plain', '', 'abc')
-  
+
     input = {
       "something" => [ StringIO.new("") ],
       "array_of_stringios" => [[ StringIO.new("One"), StringIO.new("Two") ]],
@@ -209,14 +209,14 @@ class CGITest < Test::Unit::TestCase
     assert_equal 'bar.jpg', params['ie_mixed_types_as_checkboxes']['strings']['nested'].first.original_filename
     assert_equal 'bar.jpg', params['ie_products']['file'].original_filename
   end
-  
+
   def test_parse_params_with_file
     input = {
       "customers[boston][first][name]" => [ "David" ],
       "something_else" => [ "blah" ],
       "logo" => [ File.new(File.dirname(__FILE__) + "/cgi_test.rb").path ]
     }
-    
+
     expected_output = {
       "customers" => {
         "boston" => {
@@ -269,7 +269,7 @@ class CGITest < Test::Unit::TestCase
     expected  = { "a/b@" => { "c" => { }}}
     assert_equal expected, CGIMethods.parse_request_parameters(input)
   end
-  
+
   def test_parse_params_with_nil_key
     input = { nil => nil, "test2" => %w(value1) }
     expected = { "test2" => "value1" }
@@ -383,20 +383,20 @@ class CGIRequestTest < Test::Unit::TestCase
     @fake_cgi = Struct.new(:env_table).new(@request_hash)
     @request = ActionController::CgiRequest.new(@fake_cgi)
   end
-  
+
   def test_proxy_request
     assert_equal 'glu.ttono.us', @request.host_with_port
   end
-  
+
   def test_http_host
     @request_hash.delete "HTTP_X_FORWARDED_HOST"
     @request_hash['HTTP_HOST'] = "rubyonrails.org:8080"
     assert_equal "rubyonrails.org:8080", @request.host_with_port
-    
+
     @request_hash['HTTP_X_FORWARDED_HOST'] = "www.firsthost.org, www.secondhost.org"
     assert_equal "www.secondhost.org", @request.host
   end
-  
+
   def test_http_host_with_default_port_overrides_server_port
     @request_hash.delete "HTTP_X_FORWARDED_HOST"
     @request_hash['HTTP_HOST'] = "rubyonrails.org"
@@ -420,12 +420,12 @@ class CGIRequestTest < Test::Unit::TestCase
     cookies = CGI::Cookie::parse(@request_hash["HTTP_COOKIE"]);
     assert_equal ["c84ace84796670c052c6ceb2451fb0f2"], cookies["_session_id"]
     assert_equal ["yes"], cookies["is_admin"]
-    
+
     alt_cookies = CGI::Cookie::parse(@alt_cookie_fmt_request_hash["HTTP_COOKIE"]);
     assert_equal ["c84ace84796670c052c6ceb2451fb0f2"], alt_cookies["_session_id"]
     assert_equal ["yes"], alt_cookies["is_admin"]
   end
-  
+
   def test_unbalanced_query_string_with_array
    assert_equal(
      {'location' => ["1", "2"], 'age_group' => ["2"]},

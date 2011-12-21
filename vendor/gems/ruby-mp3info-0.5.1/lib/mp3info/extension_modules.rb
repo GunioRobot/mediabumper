@@ -1,4 +1,4 @@
-class Mp3Info 
+class Mp3Info
   module HashKeys #:nodoc:
     ### lets you specify hash["key"] as hash.key
     ### this came from CodingInRuby on RubyGarden

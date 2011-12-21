@@ -12,10 +12,10 @@ module SimplyHelpful
     def polymorphic_path(record)
       SimplyHelpful::RecordIdentifier.polymorphic_path(record, self)
     end
-    
+
     def redirect_to_with_record_identification(*args)
       return redirect_to_without_record_identification *args unless args.size == 1
-      
+
       potential_object = args.first
 
       case potential_object

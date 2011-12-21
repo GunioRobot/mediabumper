@@ -8,14 +8,14 @@ module ActionController #:nodoc:
   module SessionManagement #:nodoc:
     def self.included(base)
       base.extend(ClassMethods)
-      
+
       base.send :alias_method_chain, :process, :session_management_support
       base.send :alias_method_chain, :process_cleanup, :session_management_support
     end
 
     module ClassMethods
       # Set the session store to be used for keeping the session data between requests. The default is using the
-      # file system, but you can also specify one of the other included stores (:active_record_store, :drb_store, 
+      # file system, but you can also specify one of the other included stores (:active_record_store, :drb_store,
       # :mem_cache_store, or :memory_store) or use your own class.
       def session_store=(store)
         ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS[:database_manager] =
@@ -33,7 +33,7 @@ module ActionController #:nodoc:
       def session_options
         ActionController::CgiRequest::DEFAULT_SESSION_OPTIONS
       end
-      
+
       # Specify how sessions ought to be managed for a subset of the actions on
       # the controller. Like filters, you can specify <tt>:only</tt> and
       # <tt>:except</tt> clauses to restrict the subset, otherwise options
@@ -97,7 +97,7 @@ module ActionController #:nodoc:
               options.merge!(opts)
             end
           end
-          
+
           if options.empty? then options
           else
             options.delete :only
@@ -118,7 +118,7 @@ module ActionController #:nodoc:
       def set_session_options(request)
         request.session_options = self.class.session_options_for(request, request.parameters["action"] || "index")
       end
-      
+
       def process_cleanup_with_session_management_support
         clear_persistent_model_associations
         process_cleanup_without_session_management_support

@@ -125,7 +125,7 @@ end
 #   ...
 #
 # By adding a "fixtures" method to the test case and passing it a list of symbols (only one is shown here tho), we trigger
-# the testing environment to automatically load the appropriate fixtures into the database before each test.  
+# the testing environment to automatically load the appropriate fixtures into the database before each test.
 # To ensure consistent data, the environment deletes the fixtures before running the load.
 #
 # In addition to being available in the database, the fixtures are also loaded into a hash stored in an instance variable
@@ -151,7 +151,7 @@ end
 #       self.use_instantiated_fixtures = false
 #
 #   - to keep the fixture instance (@web_sites) available, but do not automatically 'find' each instance:
-#       self.use_instantiated_fixtures = :no_instances 
+#       self.use_instantiated_fixtures = :no_instances
 #
 # Even if auto-instantiated fixtures are disabled, you can still access them
 # by name via special dynamic methods. Each method has the same name as the
@@ -183,37 +183,37 @@ end
 #
 # = Transactional fixtures
 #
-# TestCases can use begin+rollback to isolate their changes to the database instead of having to delete+insert for every test case. 
+# TestCases can use begin+rollback to isolate their changes to the database instead of having to delete+insert for every test case.
 # They can also turn off auto-instantiation of fixture data since the feature is costly and often unused.
 #
 #   class FooTest < Test::Unit::TestCase
 #     self.use_transactional_fixtures = true
 #     self.use_instantiated_fixtures = false
-#   
+#
 #     fixtures :foos
-#   
+#
 #     def test_godzilla
 #       assert !Foo.find(:all).empty?
 #       Foo.destroy_all
 #       assert Foo.find(:all).empty?
 #     end
-#   
+#
 #     def test_godzilla_aftermath
 #       assert !Foo.find(:all).empty?
 #     end
 #   end
-#   
-# If you preload your test database with all fixture data (probably in the Rakefile task) and use transactional fixtures, 
+#
+# If you preload your test database with all fixture data (probably in the Rakefile task) and use transactional fixtures,
 # then you may omit all fixtures declarations in your test cases since all the data's already there and every case rolls back its changes.
 #
-# In order to use instantiated fixtures with preloaded data, set +self.pre_loaded_fixtures+ to true. This will provide 
+# In order to use instantiated fixtures with preloaded data, set +self.pre_loaded_fixtures+ to true. This will provide
 # access to fixture data for every table that has been loaded through fixtures (depending on the value of +use_instantiated_fixtures+)
 #
-# When *not* to use transactional fixtures: 
-#   1. You're testing whether a transaction works correctly. Nested transactions don't commit until all parent transactions commit, 
-#      particularly, the fixtures transaction which is begun in setup and rolled back in teardown. Thus, you won't be able to verify 
-#      the results of your transaction until Active Record supports nested transactions or savepoints (in progress.) 
-#   2. Your database does not support transactions. Every Active Record database supports transactions except MySQL MyISAM. 
+# When *not* to use transactional fixtures:
+#   1. You're testing whether a transaction works correctly. Nested transactions don't commit until all parent transactions commit,
+#      particularly, the fixtures transaction which is begun in setup and rolled back in teardown. Thus, you won't be able to verify
+#      the results of your transaction until Active Record supports nested transactions or savepoints (in progress.)
+#   2. Your database does not support transactions. Every Active Record database supports transactions except MySQL MyISAM.
 #      Use InnoDB, MaxDB, or NDB instead.
 class Fixtures < YAML::Omap
   DEFAULT_FILTER_RE = /\.ya?ml$/
@@ -238,7 +238,7 @@ class Fixtures < YAML::Omap
       Fixtures.instantiate_fixtures(object, table_name, fixtures, load_instances)
     end
   end
-  
+
   cattr_accessor :all_loaded_fixtures
   self.all_loaded_fixtures = {}
 
@@ -249,8 +249,8 @@ class Fixtures < YAML::Omap
       fixtures_map = {}
       fixtures = table_names.map do |table_name|
         fixtures_map[table_name] = Fixtures.new(connection, File.split(table_name.to_s).last, class_names[table_name.to_sym], File.join(fixtures_directory, table_name.to_s))
-      end               
-      all_loaded_fixtures.merge! fixtures_map  
+      end
+      all_loaded_fixtures.merge! fixtures_map
 
       connection.transaction(Thread.current['open_transactions'] == 0) do
         fixtures.reverse.each { |fixture| fixture.delete_existing_fixtures }
@@ -273,7 +273,7 @@ class Fixtures < YAML::Omap
 
   def initialize(connection, table_name, class_name, fixture_path, file_filter = DEFAULT_FILTER_RE)
     @connection, @table_name, @fixture_path, @file_filter = connection, table_name, fixture_path, file_filter
-    @class_name = class_name || 
+    @class_name = class_name ||
                   (ActiveRecord::Base.pluralize_table_names ? @table_name.singularize.camelize : @table_name.camelize)
     @table_name = ActiveRecord::Base.table_name_prefix + @table_name + ActiveRecord::Base.table_name_suffix
     @table_name = class_name.table_name if class_name.respond_to?(:table_name)
@@ -461,16 +461,16 @@ module Test #:nodoc:
       self.use_transactional_fixtures = false
       self.use_instantiated_fixtures = true
       self.pre_loaded_fixtures = false
-      
+
       self.fixture_class_names = {}
-      
+
       @@already_loaded_fixtures = {}
       self.fixture_class_names = {}
-      
+
       def self.set_fixture_class(class_names = {})
         self.fixture_class_names = self.fixture_class_names.merge(class_names)
       end
-      
+
       def self.fixtures(*table_names)
         table_names = table_names.flatten.map { |n| n.to_s }
         self.fixture_table_names |= table_names
@@ -479,7 +479,7 @@ module Test #:nodoc:
       end
 
       def self.require_fixture_classes(table_names=nil)
-        (table_names || fixture_table_names).each do |table_name| 
+        (table_names || fixture_table_names).each do |table_name|
           file_name = table_name.to_s
           file_name = file_name.singularize if ActiveRecord::Base.pluralize_table_names
           begin
@@ -525,7 +525,7 @@ module Test #:nodoc:
         return unless defined?(ActiveRecord::Base) && !ActiveRecord::Base.configurations.blank?
 
         if pre_loaded_fixtures && !use_transactional_fixtures
-          raise RuntimeError, 'pre_loaded_fixtures requires use_transactional_fixtures' 
+          raise RuntimeError, 'pre_loaded_fixtures requires use_transactional_fixtures'
         end
 
         @fixture_cache = Hash.new

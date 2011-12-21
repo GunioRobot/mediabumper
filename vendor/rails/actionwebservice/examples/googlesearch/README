@@ -34,7 +34,7 @@ There is also an example for API definition file autoloading.
 
       * Copy autoloading/google_search_controller.rb "app/controllers"
         in a Rails project.
-  
+
 
   2. Go to the WSDL url in a browser, and check that it looks correct.
 
@@ -43,10 +43,10 @@ There is also an example for API definition file autoloading.
 
       "Autoloading" example:
         http://url_to_project/google_search/wsdl
-     
+
      You can compare it to Google's hand-coded WSDL at http://api.google.com/GoogleSearch.wsdl
-     and see how close (or not) the generated version is. 
-     
+     and see how close (or not) the generated version is.
+
      Note that I used GoogleSearch as the canonical "best practice"
      interoperable example when implementing WSDL/SOAP support, which might
      explain extreme similarities :)
@@ -58,14 +58,14 @@ There is also an example for API definition file autoloading.
         $ mv wsdl GoogleSearch.wsdl
         $ wsdl -out:GoogleSearch.cs GoogleSearch.wsdl
 
-     Add these lines to the GoogleSearchService class body (be mindful of the 
+     Add these lines to the GoogleSearchService class body (be mindful of the
      wrapping):
 
         public static void Main(string[] args)
         {
             GoogleSearchResult result;
             GoogleSearchService service;
-        
+
             service = new GoogleSearchService();
             result = service.doGoogleSearch("myApiKey", "my query", 10, 30, true, "restrict", false, "lr", "ie", "oe");
             System.Console.WriteLine("documentFiltering: {0}", result.documentFiltering);

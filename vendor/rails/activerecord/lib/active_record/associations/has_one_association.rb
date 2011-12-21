@@ -16,7 +16,7 @@ module ActiveRecord
         record = @reflection.klass.new(attributes)
 
         if replace_existing
-          replace(record, true) 
+          replace(record, true)
         else
           record[@reflection.primary_key_name] = @owner.id unless @owner.new_record?
           self.target = record
@@ -54,12 +54,12 @@ module ActiveRecord
           return (obj.nil? ? nil : self)
         end
       end
-            
+
       private
         def find_target
-          @reflection.klass.find(:first, 
-            :conditions => @finder_sql, 
-            :order      => @reflection.options[:order], 
+          @reflection.klass.find(:first,
+            :conditions => @finder_sql,
+            :order      => @reflection.options[:order],
             :include    => @reflection.options[:include]
           )
         end
@@ -67,9 +67,9 @@ module ActiveRecord
         def construct_sql
           case
             when @reflection.options[:as]
-              @finder_sql = 
-                "#{@reflection.klass.table_name}.#{@reflection.options[:as]}_id = #{@owner.quoted_id} AND " + 
-                "#{@reflection.klass.table_name}.#{@reflection.options[:as]}_type = #{@owner.class.quote_value(@owner.class.base_class.name.to_s)}"          
+              @finder_sql =
+                "#{@reflection.klass.table_name}.#{@reflection.options[:as]}_id = #{@owner.quoted_id} AND " +
+                "#{@reflection.klass.table_name}.#{@reflection.options[:as]}_type = #{@owner.class.quote_value(@owner.class.base_class.name.to_s)}"
             else
               @finder_sql = "#{@reflection.table_name}.#{@reflection.primary_key_name} = #{@owner.quoted_id}"
           end

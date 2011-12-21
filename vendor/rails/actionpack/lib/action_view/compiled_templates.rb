@@ -19,7 +19,7 @@ module ActionView
       end
       @mtimes = {}
     end
-    
+
     # Return the full key for the given identifier and argument names
     def full_key(identifier, arg_names)
       [identifier, arg_names]
@@ -36,7 +36,7 @@ module ActionView
     def mtime(identifier, arg_names)
       @mtimes[full_key(identifier, arg_names)]
     end
-    
+
     # Compile the provided source code for the given argument names and with the given initial line number.
     # The identifier should be unique to this source.
     #
@@ -49,9 +49,9 @@ module ActionView
       name = method_names[full_key(identifier, arg_names)]
       arg_desc = arg_names.empty? ? '' : "(#{arg_names * ', '})"
       fake_file_name = "#{file_name}#{arg_desc}" # Include the arguments for this version (for now)
-      
+
       method_def = wrap_source(name, arg_names, source)
-      
+
       begin
         module_eval(method_def, fake_file_name, initial_line_number)
         @mtimes[full_key(identifier, arg_names)] = Time.now
@@ -61,7 +61,7 @@ module ActionView
       end
       name
     end
-    
+
     # Wrap the provided source in a def ... end block.
     def wrap_source(name, arg_names, source)
       "def #{name}(#{arg_names * ', '})\n#{source}\nend"

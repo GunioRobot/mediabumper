@@ -557,7 +557,7 @@ module FileOperations
   def ruby(str)
     command config('rubyprog') + ' ' + str
   end
-  
+
   def make(task = '')
     command config('makeprog') + ' ' + task
   end
@@ -648,7 +648,7 @@ module HookScriptAPI
   def srcdirectory?(path)
     File.dir?(srcfile(path))
   end
-  
+
   def srcfile?(path)
     File.file? srcfile(path)
   end
@@ -729,7 +729,7 @@ class ToplevelInstaller
       __send__ "exec_#{task}"
     end
   end
-  
+
   def run_metaconfigs
     eval_file_ifexist "#{@ardir}/metaconfig"
   end
@@ -794,7 +794,7 @@ class ToplevelInstaller
       when '-v', '--version'
         puts "#{File.basename($0)} version #{Version}"
         exit 0
-      
+
       when '--copyright'
         puts Copyright
         exit 0
@@ -1216,9 +1216,9 @@ class Installer
   def ruby_scripts
     collect_filenames_auto().select {|n| /\.rb\z/ =~ n }
   end
-  
+
   # picked up many entries from cvs-1.11.1/src/ignore.c
-  reject_patterns = %w( 
+  reject_patterns = %w(
     core RCSLOG tags TAGS .make.state
     .nse_depinfo #* .#* cvslog.* ,* .del-* *.olb
     *~ *.old *.bak *.BAK *.orig *.rej _$* *$

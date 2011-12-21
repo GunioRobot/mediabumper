@@ -6,7 +6,7 @@ class WebServiceTest < Test::Unit::TestCase
   class MockCGI < CGI #:nodoc:
     attr_accessor :stdinput, :stdoutput, :env_table
 
-    def initialize(env, data = '')      
+    def initialize(env, data = '')
       self.env_table = env
       self.stdinput = StringIO.new(data)
       self.stdoutput = StringIO.new
@@ -37,13 +37,13 @@ class WebServiceTest < Test::Unit::TestCase
 
     def rescue_action(e) raise end
   end
-  
+
   def setup
     @controller = TestController.new
     ActionController::Base.param_parsers.clear
     ActionController::Base.param_parsers[Mime::XML] = :xml_node
   end
-  
+
   def test_check_parameters
     process('GET')
     assert_equal '', @controller.response.body
@@ -51,16 +51,16 @@ class WebServiceTest < Test::Unit::TestCase
 
   def test_post_xml
     process('POST', 'application/xml', '<entry attributed="true"><summary>content...</summary></entry>')
-    
+
     assert_equal 'entry', @controller.response.body
     assert @controller.params.has_key?(:entry)
     assert_equal 'content...', @controller.params["entry"].summary.node_value
     assert_equal 'true', @controller.params["entry"]['attributed']
   end
-  
+
   def test_put_xml
     process('PUT', 'application/xml', '<entry attributed="true"><summary>content...</summary></entry>')
-    
+
     assert_equal 'entry', @controller.response.body
     assert @controller.params.has_key?(:entry)
     assert_equal 'content...', @controller.params["entry"].summary.node_value
@@ -74,7 +74,7 @@ class WebServiceTest < Test::Unit::TestCase
     assert @controller.params.has_key?(:entry)
     assert_equal 'loaded from yaml', @controller.params["entry"]
   end
-  
+
   def test_register_and_use_yaml_as_symbol
     ActionController::Base.param_parsers[Mime::YAML] = :yaml
     process('POST', 'application/x-yaml', {"entry" => "loaded from yaml"}.to_yaml)
@@ -98,14 +98,14 @@ class WebServiceTest < Test::Unit::TestCase
     assert_nothing_raised { process('POST', 'application/xml', "") }
     assert_equal "", @controller.response.body
   end
-  
+
   def test_deprecated_request_methods
     process('POST', 'application/x-yaml')
     assert_equal Mime::YAML, @controller.request.content_type
     assert_equal true, @controller.request.post?
     assert_equal :yaml, @controller.request.post_format
     assert_equal true, @controller.request.yaml_post?
-    assert_equal false, @controller.request.xml_post?    
+    assert_equal false, @controller.request.xml_post?
   end
 
   def test_dasherized_keys_as_xml
@@ -173,11 +173,11 @@ class WebServiceTest < Test::Unit::TestCase
     assert_equal "unparsed", params[:data][:f]
     assert_equal [1, "hello", Date.new(1974,7,25)], params[:data][:g]
   end
-  
-  private  
-  
+
+  private
+
   def process(verb, content_type = 'application/x-www-form-urlencoded', data = '', full=false)
-    
+
     cgi = MockCGI.new({
       'REQUEST_METHOD' => verb,
       'CONTENT_TYPE'   => content_type,
@@ -187,10 +187,10 @@ class WebServiceTest < Test::Unit::TestCase
       "CONTENT_LENGTH" => data.size,
       "SERVER_PORT"    => "80",
       "HTTPS"          => "off"}, data)
-          
+
     @controller.send(:process, ActionController::CgiRequest.new(cgi, {}), ActionController::CgiResponse.new(cgi))
   end
-    
+
 end
 
 
@@ -212,7 +212,7 @@ class XmlNodeTest < Test::Unit::TestCase
       </page>
       </response>
      }
-    )     
+    )
     assert_equal 'UTF-8', xn.node.document.encoding
     assert_equal '1.0', xn.node.document.version
     assert_equal 'true', xn['success']
@@ -238,7 +238,7 @@ class XmlNodeTest < Test::Unit::TestCase
     xn.page.tags.tag[1]['id'] = '7'
     assert_equal '7', xn.page.tags.tag[1]['id']
   end
-  
+
 
   def test_small_entry
     node = XmlNode.from_xml('<entry>hi</entry>')

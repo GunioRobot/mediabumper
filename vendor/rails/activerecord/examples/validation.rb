@@ -16,7 +16,7 @@ logger.info "\nCreate tables"
 # Class setup ---------------
 
 class Person < ActiveRecord::Base
-  # Using 
+  # Using
   def self.authenticate(name, pass)
     # find_first "name = '#{name}' AND pass = '#{pass}'" would be open to sql-injection (in a web-app scenario)
     find_first [ "name = '%s' AND pass = '%s'", name, pass ]
@@ -36,7 +36,7 @@ class Person < ActiveRecord::Base
   def email_address_with_name
     "\"#{name}\" <#{email}>"
   end
-        
+
   protected
     def validate
       errors.add_on_empty(%w(name pass email))
@@ -54,7 +54,7 @@ class Person < ActiveRecord::Base
           errors.add("name", "is already taken by another person")
       end
     end
-  
+
   private
     def email_address_valid?() email =~ /\w[-.\w]*\@[-\w]+[-.\w]*\.\w+/ end
 end

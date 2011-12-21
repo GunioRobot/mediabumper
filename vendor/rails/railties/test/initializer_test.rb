@@ -11,7 +11,7 @@ class InitializerTest < Test::Unit::TestCase
       super()
       @envpath = envpath
     end
-    
+
     def environment_path
       @envpath
     end

@@ -35,13 +35,13 @@ module ActiveRecord
       clear_query_cache
       @connection.delete(sql, name)
     end
-    
+
     private
       def method_missing(method, *arguments, &proc)
         @connection.send(method, *arguments, &proc)
       end
   end
-  
+
   class Base
     # Set the connection for the class with caching on
     class << self
@@ -55,7 +55,7 @@ module ActiveRecord
       end
     end
   end
-  
+
   class AbstractAdapter #:nodoc:
     # Stub method to be able to treat the connection the same whether the query cache has been turned on or not
     def clear_query_cache

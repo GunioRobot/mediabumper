@@ -8,7 +8,7 @@ class BinaryTest < Test::Unit::TestCase
     Binary.connection.execute 'DELETE FROM binaries'
     @data = File.read(BINARY_FIXTURE_PATH).freeze
   end
-  
+
   def test_truth
     assert true
   end
@@ -26,7 +26,7 @@ class BinaryTest < Test::Unit::TestCase
       bin.data = @data
 
       assert @data == bin.data, 'Newly assigned data differs from original'
-          
+
       bin.save
       assert @data == bin.data, 'Data differs from original after save'
 

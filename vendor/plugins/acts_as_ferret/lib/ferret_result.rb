@@ -19,7 +19,7 @@ module ActsAsFerret
       @ferret_score = score
       @data = data
     end
-    
+
     def method_missing(method, *args)
       if @ar_record || @data[method].nil?
         ferret_load_record unless @ar_record

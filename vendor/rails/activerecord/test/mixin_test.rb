@@ -8,7 +8,7 @@ require 'fixtures/mixin'
 class Time
   @@forced_now_time = nil
   cattr_accessor :forced_now_time
-  
+
   class << self
     def now_with_forcing
       if @@forced_now_time
@@ -325,11 +325,11 @@ end
 
 class TouchTest < Test::Unit::TestCase
   fixtures :mixins
-  
+
   def setup
     Time.forced_now_time = Time.now
   end
-  
+
   def teardown
     Time.forced_now_time = nil
   end
@@ -338,7 +338,7 @@ class TouchTest < Test::Unit::TestCase
     five_minutes_ago = 5.minutes.ago
     Time.forced_now_time = five_minutes_ago
     assert_equal five_minutes_ago, Time.now
-    
+
     Time.forced_now_time = nil
     assert_not_equal five_minutes_ago, Time.now
   end

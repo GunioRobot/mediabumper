@@ -24,9 +24,9 @@ module TMail
 
     def body(to_charset = 'utf-8', &block)
       attachment_presenter = block || Proc.new { |file_name| "Attachment: #{file_name}\n" }
-    
+
       if multipart?
-        parts.collect { |part| 
+        parts.collect { |part|
           header = part["content-type"]
 
           if part.multipart?
@@ -70,13 +70,13 @@ module TMail
             end
         end
       end
- 
+
       def unquote_quoted_printable_and_convert_to(text, to, from, preserve_underscores=false)
         text = text.gsub(/_/, " ") unless preserve_underscores
         text = text.gsub(/\r\n|\r/, "\n") # normalize newlines
         convert_to(text.unpack("M*").first, to, from)
       end
- 
+
       def unquote_base64_and_convert_to(text, to, from)
         convert_to(Base64.decode(text).first, to, from)
       end
@@ -111,7 +111,7 @@ if __FILE__ == $0
 
   class TC_Unquoter < Test::Unit::TestCase
     def test_unquote_quoted_printable
-      a ="=?ISO-8859-1?Q?[166417]_Bekr=E6ftelse_fra_Rejsefeber?=" 
+      a ="=?ISO-8859-1?Q?[166417]_Bekr=E6ftelse_fra_Rejsefeber?="
       b = TMail::Unquoter.unquote_and_convert_to(a, 'utf-8')
       assert_equal "[166417] Bekr\303\246ftelse fra Rejsefeber", b
     end
@@ -123,7 +123,7 @@ if __FILE__ == $0
     end
 
     def test_unquote_without_charset
-      a ="[166417]_Bekr=E6ftelse_fra_Rejsefeber" 
+      a ="[166417]_Bekr=E6ftelse_fra_Rejsefeber"
       b = TMail::Unquoter.unquote_and_convert_to(a, 'utf-8')
       assert_equal "[166417]_Bekr=E6ftelse_fra_Rejsefeber", b
     end

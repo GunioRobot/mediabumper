@@ -86,7 +86,7 @@ class GoogleSearchService < ActionWebService::Base
 
     # For Mono, we have to clone objects if they're referenced by more than one place, otherwise
     # the Ruby SOAP collapses them into one instance and uses references all over the
-    # place, confusing Mono. 
+    # place, confusing Mono.
     #
     # This has recently been fixed:
     #   http://bugzilla.ximian.com/show_bug.cgi?id=72265

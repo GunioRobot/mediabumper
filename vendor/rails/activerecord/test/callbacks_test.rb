@@ -351,7 +351,7 @@ class CallbacksTest < Test::Unit::TestCase
     david = ImmutableDeveloper.find(1)
     assert !david.destroy
     assert_not_nil ImmutableDeveloper.find_by_id(1)
-  end  
+  end
 
   def test_zzz_callback_returning_false # must be run last since we modify CallbackDeveloper
     david = CallbackDeveloper.find(1)

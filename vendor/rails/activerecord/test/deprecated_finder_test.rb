@@ -60,7 +60,7 @@ class DeprecatedFinderTest < Test::Unit::TestCase
       }
     end
   end
-  
+
   def test_bind_variables_with_quotes
     Company.create("name" => "37signals' go'es agains")
     assert_deprecated do

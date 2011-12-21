@@ -66,13 +66,13 @@ module Haml
           # String#chomp is slow
           result = result[0...-1]
         end
-        
+
         result = result.gsub("\n", "\n#{tabs(tabulation)}")
         push_text result, tabulation
       end
       nil
     end
-    
+
     def open_prerendered_tag(tag, tabulation)
       @buffer << "#{tabs(tabulation)}#{tag}"
       @real_tabs += 1
@@ -169,7 +169,7 @@ module Haml
       end
       result.sort.join
     end
-    
+
     # Returns whether or not the given value is short enough to be rendered
     # on one line.
     def self.one_liner?(value)
@@ -215,7 +215,7 @@ end
 unless String.methods.include? 'old_comp'
   class String # :nodoc
     alias_method :old_comp, :<=>
-    
+
     def <=>(other)
       if other.is_a? NilClass
         -1
@@ -224,10 +224,10 @@ unless String.methods.include? 'old_comp'
       end
     end
   end
-    
+
   class NilClass # :nodoc:
     include Comparable
-    
+
     def <=>(other)
       other.nil? ? 0 : 1
     end

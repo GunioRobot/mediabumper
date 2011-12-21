@@ -355,11 +355,11 @@ class HashToXmlTest < Test::Unit::TestCase
     EOT
 
     expected_topic_hash = {
-      :title      => nil, 
+      :title      => nil,
       :id         => nil,
       :approved   => nil,
       :written_on => nil,
-      :viewed_at  => nil, 
+      :viewed_at  => nil,
       :parent_id  => nil
     }.stringify_keys
 

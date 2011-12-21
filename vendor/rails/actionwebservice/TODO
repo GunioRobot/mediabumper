@@ -26,7 +26,7 @@
 
   - Allow AWS user to participate in typecasting, so they can centralize
     workarounds for buggy input in one place
-  
+
 = Refactoring
   - Don't have clean way to go from SOAP Class object to the xsd:NAME type
     string -- NaHi possibly looking at remedying this situation

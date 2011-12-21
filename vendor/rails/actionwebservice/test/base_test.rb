@@ -18,11 +18,11 @@ module BaseTest
 
     def add(a, b)
     end
-  
+
     def void
     end
   end
-  
+
   class PristineService < ActionWebService::Base
     web_service_api PristineAPI
 

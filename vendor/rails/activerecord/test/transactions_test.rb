@@ -81,11 +81,11 @@ class TransactionTest < Test::Unit::TestCase
 
     assert @first.approved?, "First should still be changed in the objects"
     assert !@second.approved?, "Second should still be changed in the objects"
-    
+
     assert !Topic.find(1).approved?, "First shouldn't have been approved"
     assert Topic.find(2).approved?, "Second should still be approved"
   end
-  
+
   def test_failing_with_object_rollback
     assert !@first.approved?, "First should be unapproved initially"
 
@@ -102,11 +102,11 @@ class TransactionTest < Test::Unit::TestCase
     rescue
       # caught it
     end
-    
+
     assert !@first.approved?, "First shouldn't have been approved"
     assert @second.approved?, "Second should still be approved"
   end
-  
+
   def test_callback_rollback_in_save
     add_exception_raising_after_save_callback_to_topic
 
@@ -140,7 +140,7 @@ class TransactionTest < Test::Unit::TestCase
     def add_exception_raising_after_save_callback_to_topic
       Topic.class_eval { def after_save() raise "Make the transaction rollback" end }
     end
-    
+
     def remove_exception_raising_after_save_callback_to_topic
       Topic.class_eval { remove_method :after_save }
     end

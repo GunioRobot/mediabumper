@@ -40,7 +40,7 @@ production:
   adapter: mysql
   database: <%= app_name %>_production
   username: root
-  password: 
+  password:
 <% if socket -%>
   socket: <%= socket %>
 <% else -%>
